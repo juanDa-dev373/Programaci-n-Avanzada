@@ -13,11 +13,10 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Document("clientes")
 public class Cliente implements Serializable{
+    private String fotoPerfil;
     @Id
     private String codigo;
-    private String nombre;
-    private String apellido;
-    private String email;
-    private String telefono;
+    private String nickName;
+    private String ciudad;
 
 }
