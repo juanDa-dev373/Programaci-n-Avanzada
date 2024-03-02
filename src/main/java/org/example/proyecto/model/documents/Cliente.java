@@ -1,4 +1,4 @@
-package org.example.proyecto;
+package org.example.proyecto.model.documents;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

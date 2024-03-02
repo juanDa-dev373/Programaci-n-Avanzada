@@ -1,4 +1,4 @@
-package org.example.proyecto;
+package org.example.proyecto.model.enums;
 
 public enum TipoNegocio {
     PANADERIA, OTRO, CAFETERIA, BAR,
