@@ -1,5 +1,5 @@
 package org.example.proyecto;
 
-public class Moderador {
+public class Moderador extends Ubicacion {
     private String codigo;
 }

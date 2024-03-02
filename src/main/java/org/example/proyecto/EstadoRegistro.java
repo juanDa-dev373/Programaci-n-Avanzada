@@ -1,5 +1,5 @@
 package org.example.proyecto;
 
-public enum EstadoRegistro {
+public enum EstadoRegistro extends Cliente {
     ACTIVO, INACTIVO;
 }
