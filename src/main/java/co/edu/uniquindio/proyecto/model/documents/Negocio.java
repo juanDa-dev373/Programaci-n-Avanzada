@@ -1,10 +1,10 @@
-package org.example.proyecto.model.documents;
+package co.edu.uniquindio.proyecto.model.documents;
 
-import org.example.proyecto.model.enums.TipoNegocio;
-import org.example.proyecto.model.entity.Ubicacion;
-import org.example.proyecto.model.entity.HistorialRevicion;
-import org.example.proyecto.model.entity.Horario;
-import org.example.proyecto.model.enums.EstadoNegocio;
+import co.edu.uniquindio.proyecto.model.enums.TipoNegocio;
+import co.edu.uniquindio.proyecto.model.entity.Ubicacion;
+import co.edu.uniquindio.proyecto.model.entity.HistorialRevicion;
+import co.edu.uniquindio.proyecto.model.entity.Horario;
+import co.edu.uniquindio.proyecto.model.enums.EstadoNegocio;
 
 import java.util.List;
 

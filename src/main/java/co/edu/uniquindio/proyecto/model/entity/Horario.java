@@ -1,4 +1,4 @@
-package org.example.proyecto.model.entity;
+package co.edu.uniquindio.proyecto.model.entity;
 
 import java.time.LocalTime;
 

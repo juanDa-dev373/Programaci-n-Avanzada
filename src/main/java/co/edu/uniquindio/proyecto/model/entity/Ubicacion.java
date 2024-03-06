@@ -1,4 +1,4 @@
-package org.example.proyecto.model.entity;
+package co.edu.uniquindio.proyecto.model.entity;
 
 public class Ubicacion {
     private double longitud;

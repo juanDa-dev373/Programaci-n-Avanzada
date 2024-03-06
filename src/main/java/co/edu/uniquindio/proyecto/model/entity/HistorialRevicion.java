@@ -1,6 +1,6 @@
-package org.example.proyecto.model.entity;
+package co.edu.uniquindio.proyecto.model.entity;
 
-import org.example.proyecto.model.enums.EstadoNegocio;
+import co.edu.uniquindio.proyecto.model.enums.EstadoNegocio;
 
 import java.time.LocalDateTime;
 

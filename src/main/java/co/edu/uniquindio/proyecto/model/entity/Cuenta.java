@@ -1,6 +1,6 @@
-package org.example.proyecto.model.entity;
+package co.edu.uniquindio.proyecto.model.entity;
 
-import org.example.proyecto.model.enums.EstadoRegistro;
+import co.edu.uniquindio.proyecto.model.enums.EstadoRegistro;
 
 public class Cuenta {
 
