@@ -1,4 +1,10 @@
-package org.example.proyecto;
+package org.example.proyecto.model.documents;
+
+import org.example.proyecto.model.enums.TipoNegocio;
+import org.example.proyecto.model.entity.Ubicacion;
+import org.example.proyecto.model.entity.HistorialRevicion;
+import org.example.proyecto.model.entity.Horario;
+import org.example.proyecto.model.enums.EstadoNegocio;
 
 import java.util.List;
 

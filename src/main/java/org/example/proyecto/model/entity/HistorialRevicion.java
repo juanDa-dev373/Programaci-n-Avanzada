@@ -1,4 +1,6 @@
-package org.example.proyecto;
+package org.example.proyecto.model.entity;
+
+import org.example.proyecto.model.enums.EstadoNegocio;
 
 import java.time.LocalDateTime;
 
