@@ -1,4 +1,5 @@
 package co.edu.uniquindio.proyecto.services.interfaces;
 
-public interface ModeradorServicio {
+public interface ModeradorServicio extends CuentaServicio{
+
 }

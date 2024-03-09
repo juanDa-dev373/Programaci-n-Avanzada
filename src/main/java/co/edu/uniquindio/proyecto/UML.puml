@@ -1,0 +1,67 @@
+@startuml
+class Cliente extends Cuenta implements Serializable{
+    private String fotoPerfil;
+    @Id
+    private String codigo;
+    private String nickName;
+    private String ciudad;
+}
+class Comentario {
+    private LocalDateTime fecha;
+    private int calificacion;
+    private String codigoCliente;
+    private String codigoNegocio;
+    private String codigo;
+    private String mensaje;
+    private String respuesta;
+}
+class Evento {
+    private String codigo;
+    private String descripcion;
+    private String titulo;
+    private Cliente Cliente;
+    private List<Negocio> negocio;
+}
+class Moderador extends Cuenta {
+    private String codigo;
+}
+class Negocio {
+     private Ubicacion ubicacion;
+     private String nombre;
+     private String descripcion;
+     private List<Horario> horarios;
+     private EstadoNegocio estado;
+     private List<String> imagenes;
+     private List<HistorialRevicion> historialReviciones;
+     private String codigo;
+     private String codigoCliente;
+     private TipoNegocio tipoNegocio;
+     private List<String> telefonos;
+ }
+ class Cuenta {
+
+      private String nombre;
+      private String password;
+      private String emain;
+      private EstadoRegistro estado;
+  }
+  class HistorialRevicion {
+      private String descripcion;
+      private EstadoNegocio estadoNegocio;
+      private LocalDateTime fecha;
+      private String codigoModerador;
+  }
+  class Horario extends HistorialRevicion {
+      private LocalTime horafin;
+      private String dia;
+      private LocalTime horaInicio;
+  }
+  class ListaCliente {
+      private String nombreLista;
+      private List<String> codigosLugares;
+
+  }
+
+
+
+@enduml

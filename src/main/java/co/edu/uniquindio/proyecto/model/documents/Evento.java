@@ -8,6 +8,4 @@ public class Evento {
     private String titulo;
     private Cliente Cliente;
     private List<Negocio> negocio;
-
-
 }
