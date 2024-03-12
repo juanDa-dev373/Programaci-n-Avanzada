@@ -1,4 +1,4 @@
 package co.edu.uniquindio.proyecto.repositories;
 
-public interface EventoRepo {
+public interface BusinessRepo {
 }

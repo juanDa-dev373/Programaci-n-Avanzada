@@ -1,4 +1,4 @@
 package co.edu.uniquindio.proyecto.repositories;
 
-public interface NegocioRepo {
+public interface CommentRepo {
 }

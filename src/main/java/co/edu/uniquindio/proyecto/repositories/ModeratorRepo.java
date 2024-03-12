@@ -1,4 +1,4 @@
 package co.edu.uniquindio.proyecto.repositories;
 
-public interface ComentarioRepo {
+public interface ModeratorRepo {
 }

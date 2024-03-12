@@ -1,11 +1,11 @@
 package co.edu.uniquindio.proyecto.model.entity;
 
-import co.edu.uniquindio.proyecto.model.enums.EstadoRegistro;
+import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 
-public class Cuenta {
+public class Account {
 
     private String nombre;
     private String password;
     private String emain;
-    private EstadoRegistro estado;
+    private StateRecord estado;
 }

@@ -2,7 +2,7 @@ package co.edu.uniquindio.proyecto.model.documents;
 
 import java.time.LocalDateTime;
 
-public class Comentario {
+public class Comment {
     private LocalDateTime fecha;
     private int calificacion;
     private String codigoCliente;

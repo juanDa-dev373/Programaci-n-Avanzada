@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @Document("clientes")
-public class Cliente implements Serializable{
+public class Client implements Serializable{
     private String fotoPerfil;
     @Id
     private String codigo;
