@@ -1,12 +1,20 @@
 package co.edu.uniquindio.proyecto.model.entity;
 
 import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class HistoryReview {
-    private String descripcion;
-    private StateBusiness estadoNegocio;
-    private LocalDateTime fecha;
-    private String codigoModerador;
+    private String description;
+    private StateBusiness stateBusiness;
+    private LocalDateTime date;
+    private String codeModerator;
 }

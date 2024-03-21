@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalTime;
+import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Schedule extends HistoryReview {
-    private LocalTime start;
-    private String day;
-    private LocalTime end;
+public class ListBusiness {
+    private String listName;
+    private List<String> codesBusiness;
+
 }

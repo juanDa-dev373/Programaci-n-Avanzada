@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalTime;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Schedule extends HistoryReview {
-    private LocalTime start;
-    private String day;
-    private LocalTime end;
+public class Location {
+    private double longitude;
+    private double latitude;
 }
