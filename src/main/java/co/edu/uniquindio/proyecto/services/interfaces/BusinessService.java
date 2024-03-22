@@ -7,7 +7,7 @@ import co.edu.uniquindio.proyecto.model.documents.Business;
 
 import java.util.List;
 
-public interface BusinessServices {
+public interface BusinessService {
     void addBusiness(AddBusinessDTO addBusinessDto) throws Exception;
     void updateBusiness(UpdateBusinessDTO updateBusinessDTO) throws Exception;
     void deleteBusiness(String id) throws Exception;

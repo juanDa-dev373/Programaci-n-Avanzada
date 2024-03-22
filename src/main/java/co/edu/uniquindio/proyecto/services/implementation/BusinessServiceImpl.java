@@ -4,13 +4,13 @@ import co.edu.uniquindio.proyecto.dto.AddBusinessDTO;
 import co.edu.uniquindio.proyecto.dto.ListBusinessOwnerDTO;
 import co.edu.uniquindio.proyecto.dto.UpdateBusinessDTO;
 import co.edu.uniquindio.proyecto.model.documents.Business;
-import co.edu.uniquindio.proyecto.services.interfaces.BusinessServices;
+import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class BusinessServiceImpl implements BusinessServices {
+public class BusinessServiceImpl implements BusinessService {
 
 
     @Override

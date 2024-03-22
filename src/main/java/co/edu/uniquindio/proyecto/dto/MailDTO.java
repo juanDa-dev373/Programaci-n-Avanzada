@@ -1,4 +1,4 @@
 package co.edu.uniquindio.proyecto.dto;
 
-public record ClientDTO() {
+public record MailDTO() {
 }

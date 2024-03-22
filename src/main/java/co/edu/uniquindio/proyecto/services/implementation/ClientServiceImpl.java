@@ -1,9 +1,8 @@
 package co.edu.uniquindio.proyecto.services.implementation;
 
-import co.edu.uniquindio.proyecto.dto.ItemClientDTO;
-import co.edu.uniquindio.proyecto.dto.SingUpDTO;
-import co.edu.uniquindio.proyecto.dto.ClientDTO;
+import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Client;
+import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.repositories.ClientRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
@@ -16,10 +15,11 @@ import java.util.Optional;
 @Service
 public class ClientServiceImpl extends AccountServiceImpl implements ClientService {
 
-   private final ClientRepo clienteRepo;
+   private final ClientRepo clientRepo;
 
-    public ClientServiceImpl(ClientRepo clienteRepo) {
-        this.clienteRepo = clienteRepo;
+    public ClientServiceImpl(ClientRepo clientRepo) {
+        super(clientRepo);
+        this.clientRepo = clientRepo;
     }
 
     @Override
@@ -43,43 +43,43 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
      cliente.setEmail( sing.email() );
      cliente.setPassword( sing.password() );
      cliente.setState(StateRecord.ACTIVE);
+     cliente.setListClient(new ArrayList<ListBusiness>());
+     cliente.getListClient().add(
+             new ListBusiness("01", "Favorites", new ArrayList<String>())
+     );
 
 //Se guarda en la base de datos y obtenemos el objeto registrado
-     Client clientSave = clienteRepo.save(cliente);
+     Client clientSave = clientRepo.save(cliente);
 
 //Retornamos el id (código) del cliente registrado
       return clientSave.getId();
     }
 
     @Override
-    public void deleteAccount() {
-
-    }
-
-    @Override
-    public void listBusiness() {
-
+    public List<ListBusiness> getListBusiness(String idClient) throws Exception {
+        Client client= getClientById(idClient);
+        List<ListBusiness> listBusinesses = client.getListClient();
+        //Si no se encontró el cliente, lanzamos una excepción
+        if(listBusinesses.isEmpty()){
+           throw new Exception("No cuenta con listas de negocios");
+        }
+        return listBusinesses;
     }
 
 
     private boolean existEmail(String email) {
-     return clienteRepo.findByEmail(email).isPresent();
+     return clientRepo.findByEmail(email).isPresent();
  }
 
 
     private boolean existNickname(String nickname) {
-        return clienteRepo.findByNickname(nickname).isPresent();
+        return clientRepo.findByNickname(nickname).isPresent();
  }
-
-    @Override
-    public void updateClient(Client client) throws Exception {
-
-    }
 
     @Override
     public Client getClientById(String idClient) throws Exception {
         //Buscamos el cliente que se quiere actualizar
-        Optional<Client> optionalClient = clienteRepo.findById( idClient );
+        Optional<Client> optionalClient = clientRepo.findById( idClient );
 
 //Si no se encontró el cliente, lanzamos una excepción
         if(optionalClient.isEmpty()){
@@ -94,7 +94,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     @Override
     public Client getClientByNickname(String nickname) throws Exception {
         //Buscamos el cliente que se quiere actualizar
-        Optional<Client> optionalClient = clienteRepo.findByNickname( nickname );
+        Optional<Client> optionalClient = clientRepo.findByNickname( nickname );
 
         //Si no se encontró el cliente, lanzamos una excepción
         if(optionalClient.isEmpty()){
@@ -107,9 +107,9 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public void removeClient(String nickname) throws Exception {
+    public boolean removeClient(String idClient) throws Exception {
         //Buscamos el cliente que se quiere eliminar
-        Optional<Client> optionalCliente = clienteRepo.findByNickname( nickname );
+        Optional<Client> optionalCliente = clientRepo.findById( idClient );
 
         //Si no se encontró el cliente, lanzamos una excepción
         if(optionalCliente.isEmpty()){
@@ -122,13 +122,14 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
 
         //Como el objeto cliente ya tiene un id, el save() no crea un nuevo registro sino que
         // actualiza el que ya existe
-        clienteRepo.save(cliente);
+        clientRepo.save(cliente);
+        return true;
     }
 
     @Override
     public List<ItemClientDTO> listClient() {
         //Obtenemos todos los clientes de la base de datos
-        List<Client> clientes = clienteRepo.findAll();
+        List<Client> clientes = clientRepo.findAll();
 
         //Creamos una lista de DTOs de clientes
         List<ItemClientDTO> items = new ArrayList<>();

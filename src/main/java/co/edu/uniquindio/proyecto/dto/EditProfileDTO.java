@@ -1,10 +1,11 @@
 package co.edu.uniquindio.proyecto.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record EditProfileDTO(
-        String id,
-        String nombre,
-        String fotoPerfil,
-        String email,
-        String ciudadResidencia
+        @NotBlank String id,
+        @NotBlank String name,
+        @NotBlank String profilePhoto,
+        @NotBlank String city
 ) {
 }

@@ -1,9 +1,8 @@
 package co.edu.uniquindio.proyecto.services.interfaces;
 
-import co.edu.uniquindio.proyecto.dto.ClientDTO;
-import co.edu.uniquindio.proyecto.dto.ItemClientDTO;
-import co.edu.uniquindio.proyecto.dto.SingUpDTO;
+import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Client;
+import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 
 import java.util.List;
 
@@ -15,13 +14,9 @@ public interface ClientService extends AccountService {
 
     Client getClientByNickname(String nickname) throws Exception;
 
-    void deleteAccount();
+    List<ListBusiness> getListBusiness(String idClient) throws Exception;
 
-    void listBusiness();
-
-    void updateClient(Client cliente)throws Exception;
-
-    void removeClient(String idCuenta)throws Exception;
+    boolean removeClient(String idClient)throws Exception;
 
     List<ItemClientDTO> listClient();
 

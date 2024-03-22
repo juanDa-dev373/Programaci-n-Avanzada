@@ -1,7 +1,9 @@
 package co.edu.uniquindio.proyecto;
 
+import co.edu.uniquindio.proyecto.dto.EditProfileDTO;
 import co.edu.uniquindio.proyecto.dto.ItemClientDTO;
 import co.edu.uniquindio.proyecto.dto.SingUpDTO;
+import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -44,7 +46,28 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void removeClient(){
-
+    public void removeClient() throws Exception {
+        boolean remove= clienteService.removeClient("65fcae70800eb473f90181d9");
+        Assertions.assertTrue(remove);
     }
+
+    @Test
+    public void getListBusiness() throws Exception {
+        List<ListBusiness> list= clienteService.getListBusiness("Cliente1");
+        Assertions.assertEquals(1,list.size());
+    }
+
+
+    @Test
+    public void editProfile() throws Exception {
+        String account= clienteService.editProfile(new EditProfileDTO(
+                "Cliente1",
+                "Juan",
+                "My photo",
+                "Armenia"
+        ));
+        System.out.println(account);
+        Assertions.assertEquals("Update",account);
+    }
+
 }

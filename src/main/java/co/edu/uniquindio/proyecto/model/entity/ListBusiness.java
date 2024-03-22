@@ -12,7 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ListBusiness {
+
+    private String id;
     private String listName;
-    private List<String> codesBusiness;
+    private List<String> idBusiness;
 
 }

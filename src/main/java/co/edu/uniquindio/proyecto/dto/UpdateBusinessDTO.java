@@ -1,4 +1,8 @@
 package co.edu.uniquindio.proyecto.dto;
 
-public record UpdateBusinessDTO() {
+import jakarta.validation.constraints.NotBlank;
+
+public record UpdateBusinessDTO(
+        @NotBlank String id
+) {
 }
