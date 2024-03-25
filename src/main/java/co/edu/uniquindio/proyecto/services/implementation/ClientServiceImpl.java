@@ -98,7 +98,10 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
 
         //Si no se encontró el cliente, lanzamos una excepción
         if(optionalClient.isEmpty()){
-            throw new Exception("No se encontró el cliente a actualizar");
+            throw new Exception(
+                    "{message:"+ "\"No se encontró el cliente a actualizar\","+
+                            "statusCode: Error }"
+            );
         }
 
         //Obtenemos el cliente que se quiere actualizar y le asignamos los
@@ -109,20 +112,23 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     @Override
     public boolean removeClient(String idClient) throws Exception {
         //Buscamos el cliente que se quiere eliminar
-        Optional<Client> optionalCliente = clientRepo.findById( idClient );
+        Optional<Client> optionalClient = clientRepo.findById( idClient );
 
         //Si no se encontró el cliente, lanzamos una excepción
-        if(optionalCliente.isEmpty()){
-            throw new Exception("No se encontró el cliente a eliminar");
+        if(optionalClient.isEmpty()){
+            throw new Exception(
+            "{message:"+ "\"No se encuentra un cliente con ese id\","+
+                    "statusCode: Error }"
+            );
         }
 
         //Obtenemos el cliente que se quiere eliminar y le asignamos el estado inactivo
-        Client cliente = optionalCliente.get();
-        cliente.setState(StateRecord.INACTIVE);
+        Client client = optionalClient.get();
+        client.setState(StateRecord.INACTIVE);
 
         //Como el objeto cliente ya tiene un id, el save() no crea un nuevo registro sino que
         // actualiza el que ya existe
-        clientRepo.save(cliente);
+        clientRepo.save(client);
         return true;
     }
 

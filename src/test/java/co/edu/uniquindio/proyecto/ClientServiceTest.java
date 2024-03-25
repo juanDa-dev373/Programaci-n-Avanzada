@@ -40,14 +40,14 @@ public class ClientServiceTest {
 //Se obtiene la lista de clientes
         List<ItemClientDTO> lista = clienteService.listClient();
 
-//Se verifica que la lista no sea nula y que tenga 3 elementos
+//Se verifica que la lista no sea nula y que tenga 4 elementos
         Assertions.assertEquals(4, lista.size());
 
     }
 
     @Test
     public void removeClient() throws Exception {
-        boolean remove= clienteService.removeClient("65fcae70800eb473f90181d9");
+        boolean remove= clienteService.removeClient("Cliente1");
         Assertions.assertTrue(remove);
     }
 
@@ -62,7 +62,7 @@ public class ClientServiceTest {
     public void editProfile() throws Exception {
         String account= clienteService.editProfile(new EditProfileDTO(
                 "Cliente1",
-                "Juan",
+                "David",
                 "My photo",
                 "Armenia"
         ));
