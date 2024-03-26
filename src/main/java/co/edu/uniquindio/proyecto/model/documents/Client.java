@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.model.documents;
 
 import co.edu.uniquindio.proyecto.model.entity.Account;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
+import co.edu.uniquindio.proyecto.model.entity.Location;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Client extends Account implements Serializable{
     private List<ListBusiness> listClient;
     private String profilePhoto;
     private String city;
+    private Location location;
 
 
 }
