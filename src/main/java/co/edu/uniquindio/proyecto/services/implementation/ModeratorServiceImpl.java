@@ -1,9 +1,11 @@
 package co.edu.uniquindio.proyecto.services.implementation;
 
 import co.edu.uniquindio.proyecto.dto.AccountDetailDTO;
+import co.edu.uniquindio.proyecto.dto.HistoryReviewDTO;
 import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.documents.Moderator;
+import co.edu.uniquindio.proyecto.model.entity.HistoryReview;
 import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.repositories.BusinessRepo;
@@ -12,28 +14,29 @@ import co.edu.uniquindio.proyecto.repositories.ModeratorRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.ModeratorService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 public class ModeratorServiceImpl extends AccountServiceImpl implements ModeratorService {
 
-    private final ModeratorRepo moderatorRepository;
+    private final ModeratorRepo moderatorRepo;
 
-    private final BusinessRepo businessRepository;
+    private final BusinessRepo businessRepo;
 
-    private final ClientRepo clientRepository;
+    private final ClientRepo clientRepo;
 
     public ModeratorServiceImpl(ModeratorRepo moderatorRepository, BusinessRepo businessRepository, ClientRepo clientRepository) {
         super(moderatorRepository);
-        this.moderatorRepository = moderatorRepository;
-        this.businessRepository = businessRepository;
-        this.clientRepository = clientRepository;
+        this.moderatorRepo = moderatorRepository;
+        this.businessRepo = businessRepository;
+        this.clientRepo = clientRepository;
     }
 
     @Override
     public AccountDetailDTO getModeratorById(String idModerator) throws Exception {
         //Buscamos el cliente que se quiere actualizar
-        Optional<Moderator> optionalModerator = moderatorRepository.findById( idModerator );
+        Optional<Moderator> optionalModerator = moderatorRepo.findById( idModerator );
 
         //Si no se encontró el cliente, lanzamos una excepción
         if(optionalModerator.isEmpty())
@@ -53,64 +56,85 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
         );
     }
     @Override
-    public String verifyAndApproveBusiness(String moderatorId, String placeId) {
-        Business business=verifyModeratorBusiness(moderatorId,placeId);
+    public String verifyAndApproveBusiness(HistoryReviewDTO reviewDTO) {
+
+        Moderator moderator= existModerator(reviewDTO.idModerator());
+        Business business= existBusiness(reviewDTO.idBusiness());
         business.setState(StateBusiness.APPROVED);
-        businessRepository.save(business);
+        HistoryReview history= new HistoryReview(
+                    reviewDTO.description(),
+                    StateBusiness.APPROVED,
+                    LocalDateTime.now(),
+                    reviewDTO.idModerator(),
+                    reviewDTO.idBusiness()
+        );
+        business.setState(StateBusiness.APPROVED);
+        moderator.getHistoryReview().add(history);
+        businessRepo.save(business);
+        moderatorRepo.save(moderator);
         return business.getState().toString();
     }
 
     @Override
-    public String rejectBusiness(String moderatorId, String placeId) {
-        Business business= verifyModeratorBusiness(moderatorId,placeId);
+    public String rejectBusiness(HistoryReviewDTO reviewDTO) {
+        Moderator moderator= existModerator(reviewDTO.idModerator());
+        Business business= existBusiness(reviewDTO.idBusiness());
         business.setState(StateBusiness.REJECTED);
-        businessRepository.save(business);
+        HistoryReview history= new HistoryReview(
+                reviewDTO.description(),
+                StateBusiness.REJECTED,
+                LocalDateTime.now(),
+                reviewDTO.idModerator(),
+                reviewDTO.idBusiness()
+        );
+        business.setState(StateBusiness.REJECTED);
+        moderator.getHistoryReview().add(history);
+        businessRepo.save(business);
+        moderatorRepo.save(moderator);
         return business.getState().toString();
     }
 
     @Override
     public String deactivateUserAccount(String moderatorId, String userId) {
-        Client client= verifyModeratorClient(moderatorId, userId);
+        existModerator(moderatorId);
+        Client client= existClient(userId);
         client.setState(StateRecord.INACTIVE);
-        clientRepository.save(client);
+        clientRepo.save(client);
         return client.getState().toString();
     }
 
     @Override
     public String activateUserAccount(String moderatorId, String userId) {
-        Client client=verifyModeratorClient(moderatorId, userId);
+        Client client=existClient(userId);
         client.setState(StateRecord.ACTIVE);
-        clientRepository.save(client);
+        clientRepo.save(client);
         return client.getState().toString();
     }
 
-    private Client verifyModeratorClient(String moderatorId, String userId) {
-        Optional<Moderator> moderatorOptional = moderatorRepository.findById(moderatorId);
-        if (moderatorOptional.isEmpty())
-            throw new IllegalArgumentException(
-                    "{message:"+ "\"No se encontró el cliente con el id= "+moderatorId+"\","+ "statusCode: Error }");
-
-        Optional<Client> clientOptional = clientRepository.findById(userId);
+    private Client existClient(String userId) {
+        Optional<Client> clientOptional = clientRepo.findById(userId);
         if (clientOptional.isEmpty())
-                throw new IllegalArgumentException(
-                        "{message:"+ "\"No se encontró el moderator con el id= "+userId+"\","+ "statusCode: Error }");
-
+            throw new IllegalArgumentException(
+                "{message:"+ "\"No se encontró el cliente con el id= "+userId+"\","+ "statusCode: Error }");
        return clientOptional.get();
     }
 
-    private Business verifyModeratorBusiness(String moderatorId, String placeId) {
-        Optional<Moderator> moderatorOptional = moderatorRepository.findById(moderatorId);
-        if (moderatorOptional.isPresent())
+    private Business existBusiness(String placeId) {
+        Optional<Business> place = businessRepo.findById(placeId);
+        if (place.isEmpty())
             throw new IllegalArgumentException(
                     "{message:"+ "\"No se encontró el negocio con el id= "+placeId+"\","+ "statusCode: Error }");
 
-
-        Optional<Business> place = businessRepository.findById(placeId);
-        if (place.isEmpty())
-            throw new IllegalArgumentException(
-                    "{message:"+ "\"No se encontró el moderator con el id= "+moderatorId+"\","+ "statusCode: Error }");
-
         return place.get();
+    }
+
+    private Moderator existModerator(String moderatorId) {
+        Optional<Moderator> moderatorOptional = moderatorRepo.findById(moderatorId);
+        if (moderatorOptional.isEmpty())
+            throw new IllegalArgumentException(
+                "{message:"+ "\"No se encontró el moderator con el id= "+moderatorId+"\","+ "statusCode: Error }");
+
+        return moderatorOptional.get();
     }
 
     @Override

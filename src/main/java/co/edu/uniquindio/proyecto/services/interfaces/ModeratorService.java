@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.services.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.AccountDetailDTO;
+import co.edu.uniquindio.proyecto.dto.HistoryReviewDTO;
 
 public interface ModeratorService extends AccountService {
     AccountDetailDTO getModeratorById(String moderator) throws Exception;
@@ -8,22 +9,22 @@ public interface ModeratorService extends AccountService {
     /**
      * Verificar y aprobar un nuevo lugar creado por un usuario.
      *
-     * @param moderatorId El ID único del moderador que realiza la verificación.
-     * @param placeId     El ID único del lugar que se está verificando y aprobando.
+     * @param reviewDTO El ID único del moderador que realiza la verificación,y
+     *                   El ID único del lugar que se está verificando y aprobando.
      * @return Un mensaje de confirmación de la acción.
      * @throws Exception Sí ocurre un error durante el proceso de verificación y aprobación del lugar.
      */
-    String verifyAndApproveBusiness(String moderatorId, String placeId) throws Exception;
+    String verifyAndApproveBusiness(HistoryReviewDTO reviewDTO) throws Exception;
 
     /**
      * Rechazar un nuevo lugar creado por un usuario.
      *
-     * @param moderatorId El ID único del moderador que realiza el rechazo.
-     * @param placeId     El ID único del lugar que se está rechazando.
+     * @param reviewDTO El ID único del moderador que realiza el rechazo y
+     *                    El ID único del lugar que se está rechazando.
      * @return Un mensaje de confirmación de la acción.
      * @throws Exception Sí ocurre un error durante el proceso de rechazo del lugar.
      */
-    String rejectBusiness(String moderatorId, String placeId) throws Exception;
+    String rejectBusiness(HistoryReviewDTO reviewDTO) throws Exception;
 
     /**
      * Desactivar la cuenta de un usuario.

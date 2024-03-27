@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.services;
 
 import co.edu.uniquindio.proyecto.dto.AccountDetailDTO;
+import co.edu.uniquindio.proyecto.dto.HistoryReviewDTO;
 import co.edu.uniquindio.proyecto.dto.LoginDTO;
 import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
@@ -33,7 +34,7 @@ class ModeratorServiceTest {
     }
 
     @Test
-    public void logInTest() throws Exception {
+    public void logInSuccessTest() throws Exception {
         LoginDTO login= new LoginDTO("moderator@email.com","password");
         String stage=moderatorService.logInUser(login);
 
@@ -45,6 +46,16 @@ class ModeratorServiceTest {
     }
 
     @Test
+    public void logInFailTest() {
+        LoginDTO login= new LoginDTO("moderator@email.com","passwordw");
+        try {
+            String stage = moderatorService.logInUser(login);
+            Assertions.fail("Error inicio indebido");
+        } catch (Exception ignored) {
+
+        }
+    }
+    @Test
     public void logOutTest() throws Exception {
         moderatorService.logOutUser("Moderator1");
 
@@ -55,16 +66,23 @@ class ModeratorServiceTest {
         Assertions.assertEquals("INACTIVE",moderator.login().toString());
     }
 
-
     @Test
     public void testVerifyAndApproveBusiness_Success() throws Exception {
-        String result = moderatorService.verifyAndApproveBusiness("Moderator1", "Negocio1");
+        HistoryReviewDTO reviewDTO= new HistoryReviewDTO(
+                "El negocio cumple con los requerimientos",
+                "Moderator1", "Negocio1"
+        );
+        String result = moderatorService.verifyAndApproveBusiness(reviewDTO);
         Assertions.assertEquals(StateBusiness.APPROVED.toString(), result);
     }
 
     @Test
     public void testRejectBusiness_Success() throws Exception {
-        String result = moderatorService.rejectBusiness("Moderator1", "Negocio1");
+        HistoryReviewDTO reviewDTO= new HistoryReviewDTO(
+                "El negocio NO cumple con los requerimientos",
+                "Moderator1", "Negocio1"
+        );
+        String result = moderatorService.rejectBusiness(reviewDTO);
         Assertions.assertEquals(StateBusiness.REJECTED.toString(), result);
     }
 
