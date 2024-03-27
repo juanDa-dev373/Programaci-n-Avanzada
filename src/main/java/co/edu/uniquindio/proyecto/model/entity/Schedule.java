@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Schedule extends HistoryReview {
-    private LocalTime start;
+    private String start;
     private String day;
-    private LocalTime end;
+    private String end;
 }

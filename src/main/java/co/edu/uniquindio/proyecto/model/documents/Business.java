@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.model.documents;
 
+import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 import co.edu.uniquindio.proyecto.model.entity.Location;
 import co.edu.uniquindio.proyecto.model.entity.HistoryReview;
@@ -33,4 +34,5 @@ public class Business {
     private List<String> phone;
     private HistoryReview review;
     private StateBusiness state;
+    private StateRecord open;
 }

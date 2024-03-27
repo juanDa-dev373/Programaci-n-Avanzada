@@ -1,6 +1,6 @@
 package co.edu.uniquindio.proyecto.services.implementation;
 
-import co.edu.uniquindio.proyecto.dto.AddBusinessDTO;
+import co.edu.uniquindio.proyecto.dto.BusinessToListDTO;
 import co.edu.uniquindio.proyecto.dto.ListBusinessOwnerDTO;
 import co.edu.uniquindio.proyecto.dto.UpdateBusinessDTO;
 import co.edu.uniquindio.proyecto.model.documents.Business;
@@ -14,7 +14,7 @@ public class BusinessServiceImpl implements BusinessService {
 
 
     @Override
-    public void addBusiness(AddBusinessDTO addBusinessDto) throws Exception {
+    public void addBusiness(BusinessToListDTO addBusinessDto) throws Exception {
 
     }
 
