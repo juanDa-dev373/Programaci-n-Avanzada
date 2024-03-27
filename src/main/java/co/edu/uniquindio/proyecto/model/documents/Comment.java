@@ -21,5 +21,5 @@ public class Comment {
     private String idClient;
     private String idBusiness;
     private String message;
-    private String answer;
+    private Comment answer;
 }

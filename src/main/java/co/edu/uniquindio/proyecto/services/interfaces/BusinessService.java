@@ -1,11 +1,9 @@
 package co.edu.uniquindio.proyecto.services.interfaces;
 
-import co.edu.uniquindio.proyecto.dto.AddBusinessDTO;
-import co.edu.uniquindio.proyecto.dto.ListBusinessOwnerDTO;
-import co.edu.uniquindio.proyecto.dto.LocationDTO;
-import co.edu.uniquindio.proyecto.dto.UpdateBusinessDTO;
+import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.entity.Location;
+import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
 import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 
 import java.util.List;
@@ -17,9 +15,8 @@ public interface BusinessService {
     List<Business> searchBusinessLocation(LocationDTO locationDTO) throws Exception;
     List<Business> searchBusiness(TypeBusiness type) throws Exception;
     List<Business> searchName(String name) throws Exception;
-    void listBusinessOwner(ListBusinessOwnerDTO listBusinessOwner) throws Exception;
-    void changeState() throws Exception;
-    void registrerReview() throws Exception;
+    List<Business> listBusinessOwner(String idClient) throws Exception;
+    void registrerReview(RegistrerReviewDTO registrerReviewDTO) throws Exception;
     Business search(String id);
-
+    List<Business> listBusinessModerator(String idModerator) throws Exception;
 }

@@ -1,9 +1,6 @@
 package co.edu.uniquindio.proyecto.services.implementation;
 
-import co.edu.uniquindio.proyecto.dto.AddBusinessDTO;
-import co.edu.uniquindio.proyecto.dto.ListBusinessOwnerDTO;
-import co.edu.uniquindio.proyecto.dto.LocationDTO;
-import co.edu.uniquindio.proyecto.dto.UpdateBusinessDTO;
+import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
@@ -11,9 +8,11 @@ import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 import co.edu.uniquindio.proyecto.repositories.BusinessRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import org.springframework.data.geo.Point;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,9 +79,9 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public List<Business> searchBusinessLocation(LocationDTO locationDTO) throws Exception {
-        Point point = new Point(locationDTO.location().getLatitude(), locationDTO.location().getLongitude());
 
-        List<Business> businessList = businessRepo.findByLocation(point, locationDTO.maxDistance());
+        Point point = new Point(locationDTO.location().getLatitude(), locationDTO.location().getLongitude());
+        List<Business> businessList = businessRepo.findByLocationNear(point, locationDTO.maxDistance());
         if(businessList.isEmpty()){
             throw new Exception("No se encontraron Negocios cerca");
         }
@@ -109,17 +108,28 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public void listBusinessOwner(ListBusinessOwnerDTO listBusinessOwner) throws Exception {
-
+    public List<Business> listBusinessOwner(String idClient) throws Exception {
+        List<Business> businessList = businessRepo.findBusinessByIdClient(idClient);
+        if(businessList.isEmpty()){
+            throw new Exception("No hay Negocios con ese dueño");
+        }
+        return businessList;
     }
     @Override
-    public void changeState() {
-
-    }
-
-    @Override
-    public void registrerReview() throws Exception {
-
+    public void registrerReview(RegistrerReviewDTO registrerReviewDTO) throws Exception {
+        Optional<Business> businessOptional = businessRepo.findBusinessByState(registrerReviewDTO.id(), StateBusiness.PENDING);
+        if(existBusiness(registrerReviewDTO.id()) && businessOptional.get().getStateBusiness()== StateRecord.INACTIVE){
+            throw new Exception("El negocio no existe");
+        }
+        Business business = businessOptional.get();
+        if(registrerReviewDTO.review().getStateBusiness() == StateBusiness.APPROVED){
+            business.setState(StateBusiness.APPROVED);
+        }
+        if(registrerReviewDTO.review().getStateBusiness() == StateBusiness.REJECT){
+            business.setState(StateBusiness.REJECT);
+        }
+        business.setReview(registrerReviewDTO.review());
+        businessRepo.save(business);
     }
 
     @Override
@@ -129,6 +139,15 @@ public class BusinessServiceImpl implements BusinessService {
             return business.get();
         }
         return null;
+    }
+
+    @Override
+    public List<Business> listBusinessModerator(String idModerator) throws Exception {
+        List<Business> businesses = businessRepo.findBusinessByModerator(idModerator);
+        if(businesses.isEmpty()){
+            throw new Exception("No hay negocios asosciados a el moderador");
+        }
+        return businesses;
     }
 
     public boolean existBusiness(String id){

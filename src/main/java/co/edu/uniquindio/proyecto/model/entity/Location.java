@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
+import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 
 @Getter
 @Setter
@@ -12,4 +14,5 @@ import lombok.Setter;
 public class Location {
     private double longitude;
     private double latitude;
+
 }
