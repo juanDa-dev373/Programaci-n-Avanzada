@@ -9,6 +9,7 @@ import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.data.annotation.Id;
 
 import java.util.List;
 
@@ -22,6 +23,6 @@ public record AddBusinessDTO(
         @NotBlank TypeBusiness typeBusiness,
         @NotBlank List<Schedule> timeSchedules,
         @NotBlank List<String> phone,
-        @NotBlank HistoryReview review
+        HistoryReview review
 ) {
 }
