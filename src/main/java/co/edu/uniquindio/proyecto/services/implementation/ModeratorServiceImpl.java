@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.services.implementation;
 
 import co.edu.uniquindio.proyecto.dto.AccountDetailDTO;
 import co.edu.uniquindio.proyecto.dto.HistoryReviewDTO;
+import co.edu.uniquindio.proyecto.dto.ReviewDTO;
 import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.documents.Moderator;
@@ -15,6 +16,8 @@ import co.edu.uniquindio.proyecto.services.interfaces.ModeratorService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -135,6 +138,17 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
                 "{message:"+ "\"No se encontró el moderator con el id= "+moderatorId+"\","+ "statusCode: Error }");
 
         return moderatorOptional.get();
+    }
+
+    @Override
+    public List<ReviewDTO> getListHistoryReviews(String moderatorId) throws Exception{
+        Moderator moderator= existModerator(moderatorId);
+        List<ReviewDTO> list=new ArrayList<>();
+        for(HistoryReview review: moderator.getHistoryReview()){
+            ReviewDTO history= new ReviewDTO(review.getStateBusiness(),moderatorId,review.getIdBusiness());
+            list.add(history);
+        }
+        return list;
     }
 
     @Override

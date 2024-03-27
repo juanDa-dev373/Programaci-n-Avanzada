@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.services;
 import co.edu.uniquindio.proyecto.dto.AccountDetailDTO;
 import co.edu.uniquindio.proyecto.dto.HistoryReviewDTO;
 import co.edu.uniquindio.proyecto.dto.LoginDTO;
+import co.edu.uniquindio.proyecto.dto.ReviewDTO;
 import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.services.interfaces.ModeratorService;
@@ -10,6 +11,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
 
 @SpringBootTest
 class ModeratorServiceTest {
@@ -86,4 +89,9 @@ class ModeratorServiceTest {
         Assertions.assertEquals(StateBusiness.REJECTED.toString(), result);
     }
 
+    @Test
+    public void getListHistoryReviews_Success() throws Exception{
+        List <ReviewDTO> list= moderatorService.getListHistoryReviews("Moderator1");
+        Assertions.assertEquals(2,list.size());
+    }
 }

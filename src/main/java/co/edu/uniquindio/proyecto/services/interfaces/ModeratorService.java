@@ -2,6 +2,9 @@ package co.edu.uniquindio.proyecto.services.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.AccountDetailDTO;
 import co.edu.uniquindio.proyecto.dto.HistoryReviewDTO;
+import co.edu.uniquindio.proyecto.dto.ReviewDTO;
+
+import java.util.List;
 
 public interface ModeratorService extends AccountService {
     AccountDetailDTO getModeratorById(String moderator) throws Exception;
@@ -56,5 +59,14 @@ public interface ModeratorService extends AccountService {
      * @throws Exception Sí ocurre un error durante el proceso de marcado del comentario.
      */
     String markCommentAsInappropriate(String moderatorId, String commentId) throws Exception;
+
+    /**
+     * Devuelve la lista de reviews.
+     *
+     * @param moderatorId El ID único del moderador que marca el comentario.
+     * @return Una lista del historial de revisiones.
+     * @throws Exception Sí ocurre un error durante el proceso de marcado del comentario.
+     */
+    List<ReviewDTO> getListHistoryReviews(String moderatorId) throws Exception;
 
 }
