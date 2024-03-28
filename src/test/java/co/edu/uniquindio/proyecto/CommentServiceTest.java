@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto;
 
+import co.edu.uniquindio.proyecto.dto.CalificationDTO;
 import co.edu.uniquindio.proyecto.dto.CreateCommentDTO;
 import co.edu.uniquindio.proyecto.dto.ResponseCommentDTO;
 import co.edu.uniquindio.proyecto.model.documents.Comment;
@@ -46,12 +47,21 @@ public class CommentServiceTest {
 
     }
     @Test
-    public void listComment() throws Exception{
-
+    public void listCommentTest() throws Exception{
+        List<Comment> commentList = commentService.listComentary("negocio3");
+        Assertions.assertEquals(1, commentList.size());
     }
     @Test
     public void calificationTest() throws Exception{
-
+        CalificationDTO calificationDTO = new CalificationDTO(
+          "comment1",
+          "client2",
+          "negocio3",
+          4
+        );
+        commentService.calification(calificationDTO);
+        Comment comment = commentService.getComment(calificationDTO.id(), calificationDTO.idBusiness());
+        Assertions.assertEquals(4, comment.getRating());
     }
 
 }

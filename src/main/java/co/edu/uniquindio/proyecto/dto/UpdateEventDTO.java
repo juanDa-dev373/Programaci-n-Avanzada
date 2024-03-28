@@ -2,8 +2,7 @@ package co.edu.uniquindio.proyecto.dto;
 
 import java.time.LocalDateTime;
 
-public record EventDTO(
-
+public record UpdateEventDTO(
         String id,
         String description,
         LocalDateTime date,
