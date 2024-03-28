@@ -14,8 +14,9 @@ public class Account {
 
     private String name;
     private String password;
+    private String nickname;
     private String email;
     private StateRecord state;
-    private String nickname;
+    private StateRecord login;
 
 }

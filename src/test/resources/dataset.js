@@ -7,9 +7,11 @@ db.client.insertMany([
         city: 'Armenia',
         profilePhoto: 'mi foto',
         email: 'juan@email.com',
-        password: 'mipassword',
+        password: 'password',
         name: 'Juan',
         state: 'ACTIVE',
+        login: 'INACTIVE',
+        listClient:[{"_id": "01", "listName": "Favorites", "idBusiness": []}],
         _class: 'co.edu.uniquindio.proyecto.model.documents.Client'
     },
     {
@@ -18,9 +20,11 @@ db.client.insertMany([
         city: 'Armenia',
         profilePhoto: 'mi foto',
         email: 'maria@email.com',
-        password: 'mipassword',
+        password: 'password',
         name: 'Maria',
         state: 'ACTIVE',
+        login: 'INACTIVE',
+        listClient:[{"_id": "01", "listName": "Favorites", "idBusiness": []}],
         _class: 'co.edu.uniquindio.proyecto.model.documents.Client'    },
     {
         _id: 'Cliente3',
@@ -28,14 +32,28 @@ db.client.insertMany([
         city: 'Armenia',
         profilePhoto: 'mi foto',
         email: 'pedro@email.com',
-        password: 'mipassword',
+        password: 'password',
         name: 'Pedro',
         state: 'ACTIVE',
+        login: 'INACTIVE',
+        listClient:[{"_id": "01", "listName": "Favorites", "idBusiness": []}],
         _class: 'co.edu.uniquindio.proyecto.model.documents.Client'
     }
 
 ]);
-
+db.moderator.insertMany([
+    {
+        _id: 'Moderator1',
+        name: 'David',
+        password: 'password',
+        nickname: 'david',
+        email: 'moderator@email.com',
+        state: 'ACTIVE',
+        login: 'INACTIVE',
+        historyReview: [],
+        _class: 'co.edu.uniquindio.proyecto.model.documents.Moderator'
+    }
+]);
 db.business.insertMany([
     {
         _id: 'Negocio1',
@@ -57,6 +75,7 @@ db.business.insertMany([
         ],
         phone: ['1234567', '7654321'],
         state: 'ACTIVE',
+        open: 'INACTIVE',
         _class: 'co.edu.uniquindio.proyecto.model.documents.Business'
     }
 ]);

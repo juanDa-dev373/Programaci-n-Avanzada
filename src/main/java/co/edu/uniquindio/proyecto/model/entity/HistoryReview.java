@@ -16,5 +16,6 @@ public class HistoryReview {
     private String description;
     private StateBusiness stateBusiness;
     private LocalDateTime date;
-    private String codeModerator;
+    private String idModerator;
+    private String idBusiness;
 }

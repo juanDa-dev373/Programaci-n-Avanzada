@@ -1,14 +1,17 @@
 package co.edu.uniquindio.proyecto.services.implementation;
 
-import co.edu.uniquindio.proyecto.dto.EditProfileDTO;
+import co.edu.uniquindio.proyecto.dto.ProfileDTO;
 import co.edu.uniquindio.proyecto.dto.LoginDTO;
+import co.edu.uniquindio.proyecto.dto.SignUpDTO;
 import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.documents.Moderator;
 import co.edu.uniquindio.proyecto.model.entity.Account;
+import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.repositories.ClientRepo;
 import co.edu.uniquindio.proyecto.repositories.ModeratorRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.AccountService;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,46 +19,126 @@ import java.util.Optional;
 @Service
 public class AccountServiceImpl implements AccountService{
 
-    private final ClientRepo clientRepo;
-    private final ModeratorRepo moderatorRepo;
+    protected final ClientRepo clientRepo;
 
-    public AccountServiceImpl(ClientRepo clientRepo) {
-        this.clientRepo = clientRepo;
-        moderatorRepo=null;
-    }
-    public AccountServiceImpl(ModeratorRepo moderatorRepo) {
-        this.moderatorRepo = moderatorRepo;
-        clientRepo=null;
-    }
+    protected final ModeratorRepo moderatorRepo;
 
     public AccountServiceImpl() {
-        moderatorRepo = null;
-        clientRepo=null;
+        this.clientRepo = null;
+        this.moderatorRepo = null;
     }
-
-
-
-
-    @Override
-    public String editProfile(EditProfileDTO edit) {
-        if(clientRepo!=null){
-            Optional<Client> acount=clientRepo.findById(edit.id());
-
-        }else{
-            Optional<Moderator> acount=moderatorRepo.findById(edit.id());
-        }
-
-
-        return "si";
+    public AccountServiceImpl(ClientRepo clientRepo) {
+        this.clientRepo = clientRepo;
+        this.moderatorRepo = null;
+    }
+    public AccountServiceImpl(ModeratorRepo moderatorRepo) {
+        this.clientRepo = null;
+        this.moderatorRepo = moderatorRepo;
     }
 
     @Override
-    public String login(LoginDTO login) {
-        return "";
+    public void updateProfile(ProfileDTO profileDTO) throws Exception{
     }
 
     @Override
     public void passwordRecovery() {
 
+    }
+
+    @Override
+    public String signUpUser(SignUpDTO signUpDTO) throws Exception {
+        return null;
+    }
+
+    @Override
+    public String logInUser(LoginDTO loginDTO) throws Exception {
+
+        //Se obtiene la cuenta con el email
+        Optional<?> optionalAccount = (clientRepo!=null) ?
+                clientRepo.findByEmail(loginDTO.email()) : moderatorRepo.findByEmail(loginDTO.email());
+
+        //Si no se encontró el cliente, lanzamos una excepción
+        if(optionalAccount.isEmpty()){
+            throw new Exception(
+                    "{message:"+ "\"No se encuentra una cuenta con el email= "+loginDTO.email()+" \"\n ,"+ "statusCode: Error }"
+            );
+        }
+
+        Account account = (Account) optionalAccount.get();
+        if(!account.getPassword().equals(loginDTO.password())) {
+            throw new Exception(
+                    "{message:"+ "\"La contraseña o el email son incorrectos = \","+ "statusCode: Error }"
+            );
+        }
+
+        account.setLogin(StateRecord.ACTIVE);
+
+        if(clientRepo!=null){
+            Client client = (Client) account;
+            clientRepo.save(client);
+        }else{
+            Moderator moderator = (Moderator) account;
+            moderatorRepo.save(moderator);
+        }
+        return account.getLogin().toString();
+    }
+
+    @Override
+    public String forgotPassword(String email) throws Exception {
+
+        return null;
+    }
+
+    @Override
+    public String deactivateAccount(String userId) throws Exception {
+
+        //Obtenemos la cuenta que se quiere eliminar y le asignamos el estado inactivo
+        Account account = verifyAccount(userId);
+        account.setState(StateRecord.INACTIVE);
+
+
+        //Como el objeto cliente ya tiene un id, el save() no crea un nuevo registro sino que
+        // actualiza el que ya existe
+        if(clientRepo!=null){
+            Client client = (Client) account;
+            clientRepo.save(client);
+        }else{
+            Moderator moderator = (Moderator) account;
+            moderatorRepo.save(moderator);
+        }
+
+        return account.getState().toString();
+    }
+
+    @Override
+    public void logOutUser(String userId) throws Exception {
+        //Buscamos el cliente
+        Account account = verifyAccount(userId);
+        account.setLogin(StateRecord.INACTIVE);
+
+        if(clientRepo!=null){
+            Client client = (Client) account;
+            clientRepo.save(client);
+        }else{
+            Moderator moderator = (Moderator) account;
+            moderatorRepo.save(moderator);
+        }
+    }
+    /**
+     * Verificar si una cuenta existe .
+     * @param accountId El nickname único del cliente que desea buscar.
+     * @return La cuenta encontrada.
+     */
+    private Account verifyAccount(String accountId) throws Exception {
+        Optional<?> optionalAccount = (clientRepo!=null) ?
+                clientRepo.findById(accountId) : moderatorRepo.findById(accountId);
+
+        //Si no se encontró el cliente o moderator, lanzamos una excepción
+        if(optionalAccount.isEmpty())
+            throw new Exception(
+                    "{message:"+ "\"No se encuentra una cuenta con el id= "+accountId+"\n ,"+ "statusCode: Error }");
+
+        //retornamos la cuenta
+        return (Account) optionalAccount.get();
     }
 }
