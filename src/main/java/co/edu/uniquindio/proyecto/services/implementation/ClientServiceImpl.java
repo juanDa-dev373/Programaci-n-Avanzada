@@ -6,6 +6,7 @@ import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.repositories.ClientRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
      if( existNickname(sing.nickname()) )
       throw new Exception("El nickname ya se encuentra registrado por otro usuario");
 
+     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+     String password = passwordEncoder.encode(sing.password());
+
+
      //Se crea el objeto Cliente
      Client cliente = new Client();
 
@@ -40,7 +45,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
      cliente.setProfilePhoto( sing.photo() );
 
      cliente.setEmail( sing.email() );
-     cliente.setPassword( sing.password() );
+     cliente.setPassword(password);
      cliente.setState(StateRecord.ACTIVE);
      cliente.setLogin(StateRecord.ACTIVE);
      cliente.setListClient(new ArrayList<>());

@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.model.entity;
 
 import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
+import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

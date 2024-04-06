@@ -20,8 +20,8 @@ public interface BusinessRepo  extends MongoRepository<Business, String> {
     List<Business> findByName(String name);
     @Query("{ 'typeBusiness': ?0, 'stateBusiness': 'ACTIVE' }")
     List<Business> findByTypeBusiness(TypeBusiness type);
-    @Query("{ 'location' : { $near : { $geometry : { type : 'Point', coordinates: ?0 }, $maxDistance : ?1 } }, 'stateBusiness': 'ACTIVATE' }")
-    List<Business> findByLocationNear(Point point, double maxDistance);
+    @Query("{location : { $near : { $geometry : { type : 'Point', coordinates:[?0,?1] }, $maxDistance : ?2 }}, stateBusiness: 'ACTIVE'}")
+    List<Business> findByLocationNear(double longitude, double latitude, double maxDistance);
     Optional<Business> findBusinessById(String id);
     @Query("{'_id':?0, 'state': ?1 }")
     Optional<Business> findBusinessByState(String id, StateBusiness stateBusiness);

@@ -79,9 +79,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public List<Business> searchBusinessLocation(LocationDTO locationDTO) throws Exception {
-
-        Point point = new Point(locationDTO.location().getLatitude(), locationDTO.location().getLongitude());
-        List<Business> businessList = businessRepo.findByLocationNear(point, locationDTO.maxDistance());
+        List<Business> businessList = businessRepo.findByLocationNear(locationDTO.location().getLongituded(), locationDTO.location().getLatitude(), locationDTO.maxDistance());
         if(businessList.isEmpty()){
             throw new Exception("No se encontraron Negocios cerca");
         }
@@ -125,8 +123,8 @@ public class BusinessServiceImpl implements BusinessService {
         if(registrerReviewDTO.review().getStateBusiness() == StateBusiness.APPROVED){
             business.setState(StateBusiness.APPROVED);
         }
-        if(registrerReviewDTO.review().getStateBusiness() == StateBusiness.REJECT){
-            business.setState(StateBusiness.REJECT);
+        if(registrerReviewDTO.review().getStateBusiness() == StateBusiness.REJECTED){
+            business.setState(StateBusiness.REJECTED);
         }
         business.setReview(registrerReviewDTO.review());
         businessRepo.save(business);

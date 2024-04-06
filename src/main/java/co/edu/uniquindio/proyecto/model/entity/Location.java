@@ -12,7 +12,6 @@ import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Location {
-    private double longitude;
+    private double longituded;
     private double latitude;
-
 }
