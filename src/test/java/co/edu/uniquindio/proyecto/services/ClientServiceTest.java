@@ -21,8 +21,8 @@ public class ClientServiceTest {
 
         SignUpDTO sing= new SignUpDTO(
                 "Juan",
-                "juan24",
-                "juancortes@email.com",
+                "juan2410",
+                "juanda@email.com",
                 "1234",
                 "My photo",
                 "Armenia"
