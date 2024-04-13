@@ -83,5 +83,14 @@ public class FiltroToken extends OncePerRequestFilter {
             }
         }
     }
+
+    private String getToken(HttpServletRequest req) {
+        String header = req.getHeader("Authorization");
+        if(header != null && header.startsWith("Bearer "))
+            return header.replace("Bearer ", "");
+        return null;
+    }
+
+
 }
 
