@@ -3,7 +3,7 @@ package co.edu.uniquindio.proyecto.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public record ListDTO(
-        @NotBlank String id,
-        @NotBlank String name
+        @NotBlank(message = "Es necesario que ingrese el id") String id,
+        @NotBlank(message = "Es necesario que ingrese el nombre") String name
 ) {
 }
