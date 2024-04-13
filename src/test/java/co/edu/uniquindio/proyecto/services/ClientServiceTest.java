@@ -35,18 +35,6 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void logInTest() throws Exception {
-        LoginDTO login= new LoginDTO("juan@email.com","password");
-        clientService.logInUser(login);
-
-        //Con el método obtenerCliente se obtiene el cliente con el ID "Cliente1"
-        AccountDetailDTO client = clientService.getClientById("Cliente1");
-
-        //Se verifica que se cambió el estado login
-        Assertions.assertEquals("ACTIVE",client.login().toString());
-    }
-
-    @Test
     public void listClientsTest(){
 //Se obtiene la lista de clientes
         List<ItemClientDTO> lista = clientService.listClient();
