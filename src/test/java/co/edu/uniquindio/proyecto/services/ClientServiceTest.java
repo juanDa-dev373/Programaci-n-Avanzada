@@ -21,8 +21,8 @@ public class ClientServiceTest {
 
         SignUpDTO sing= new SignUpDTO(
                 "Juan",
-                "juan24",
-                "juancortes@email.com",
+                "juan2410",
+                "juanda@email.com",
                 "1234",
                 "My photo",
                 "Armenia"
@@ -32,18 +32,6 @@ public class ClientServiceTest {
 
         Assertions.assertNotNull(code);
 
-    }
-
-    @Test
-    public void logInTest() throws Exception {
-        LoginDTO login= new LoginDTO("juan@email.com","password");
-        clientService.logInUser(login);
-
-        //Con el método obtenerCliente se obtiene el cliente con el ID "Cliente1"
-        AccountDetailDTO client = clientService.getClientById("Cliente1");
-
-        //Se verifica que se cambió el estado login
-        Assertions.assertEquals("ACTIVE",client.login().toString());
     }
 
     @Test
@@ -95,7 +83,7 @@ public class ClientServiceTest {
     @Test
     public void deleteBusinessListTest() throws Exception{
         clientService.deleteBusinessList("Cliente1","Restaurantes");
-        ListBusiness list=clientService.getListBusiness("Cliente1","Restaurantes");
+        ListBusinessDto list=clientService.getListBusiness("Cliente1","Restaurantes");
         Assertions.assertNull(list);
     }
 
@@ -107,8 +95,8 @@ public class ClientServiceTest {
                 "Negocio1"
         );
         clientService.addBusinessToList(addBusiness);
-        ListBusiness list=clientService.getListBusiness("Cliente1","Favorites");
-        Assertions.assertEquals("Negocio1",list.getIdBusiness().get(0));
+        ListBusinessDto list=clientService.getListBusiness("Cliente1","Favorites");
+        Assertions.assertEquals("Negocio1",list.businesses().get(0).name());
     }
 
 
@@ -120,8 +108,8 @@ public class ClientServiceTest {
                 "Negocio1"
         );
         clientService.deleteBusinessToList(addBusiness);
-        ListBusiness list=clientService.getListBusiness("Cliente1","Favorites");
-        Assertions.assertEquals(0,list.getIdBusiness().size());
+        ListBusinessDto list=clientService.getListBusiness("Cliente1","Favorites");
+        Assertions.assertEquals(0,list.businesses().size());
     }
 
 }

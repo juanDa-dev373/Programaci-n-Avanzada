@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto;
+package co.edu.uniquindio.proyecto.services;
 
 import co.edu.uniquindio.proyecto.dto.CalificationDTO;
 import co.edu.uniquindio.proyecto.dto.CreateCommentDTO;

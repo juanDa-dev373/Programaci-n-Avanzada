@@ -19,10 +19,10 @@ public interface ClientService extends AccountService {
      *
      * @return Una lista con los clientes.
      */
-    ListBusiness getListBusiness(String idClient, String nameList) throws Exception;
+    ListBusinessDto getListBusiness(String idClient, String nameList) throws Exception;
 
     /**
-     * Obtener las listas de negocios.
+     * Obtener las listas de negocios del cliente.
      *
      * @return Las listas con los clientes.
      */
