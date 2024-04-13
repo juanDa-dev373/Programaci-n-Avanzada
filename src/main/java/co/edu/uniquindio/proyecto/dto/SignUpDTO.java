@@ -7,15 +7,15 @@ import org.hibernate.validator.constraints.Length;
 
 public record SignUpDTO(
         @NotBlank @Length(max = 100)  String name,
-        @NotBlank String nickname,
+        @NotBlank(message = "Es necesario que ingrese el nickname") String nickname,
 
-        @NotBlank @Email String email,
+        @NotBlank(message = "Es necesario que ingrese el email") @Email String email,
 
         @NotBlank @Length(max = 20, min = 8)
         @Pattern( regexp = "^(?!.*\\s)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–\\[{}\\]:;',?/*~$^+=<>]).{8,20}$")
         String password,
-        @NotBlank String photo,
-        @NotBlank String city
+        @NotBlank(message = "Es necesario que ingrese la foto") String photo,
+        @NotBlank(message = "Es necesario que ingrese la ciudad") String city
 
 
         ) {
