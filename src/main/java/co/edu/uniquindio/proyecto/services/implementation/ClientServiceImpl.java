@@ -1,11 +1,14 @@
 package co.edu.uniquindio.proyecto.services.implementation;
 
 import co.edu.uniquindio.proyecto.dto.*;
+import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.repositories.ClientRepo;
+import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +20,12 @@ import java.util.Optional;
 public class ClientServiceImpl extends AccountServiceImpl implements ClientService {
 
     private final ClientRepo clientRepo;
+    private final BusinessService businessService;
 
-    public ClientServiceImpl(ClientRepo clientRepo) {
+    @Autowired
+    public ClientServiceImpl(ClientRepo clientRepo, BusinessService businessService) {
         this.clientRepo = clientRepo;
+        this.businessService = businessService;
     }
 
     @Override
@@ -80,7 +86,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public ListBusiness getListBusiness(String idClient, String nameList) throws Exception {
+    public ListBusinessDto getListBusiness(String idClient, String nameList) throws Exception {
         Optional<Client> optionalClient = clientRepo.findById( idClient );
 
         //Si no se encontró el cliente, lanzamos una excepción
@@ -89,11 +95,29 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         }
 
         Client client = optionalClient.get();
-
+        List<BusinessDto> business= new ArrayList<>();
+        ListBusinessDto listBusinessDto=null;
         for(ListBusiness list: client.getListClient()){
-            if(list.getListName().equals(nameList)) return list;
+            if(list.getListName().equals(nameList)){
+
+                for (String idBusiness: list.getIdBusiness()){
+                    Business b= businessService.search(idBusiness);
+                    business.add(new BusinessDto(
+                            b.getId(),
+                            b.getName(),
+                            b.getDescription(),
+                            b.getLocation(),
+                            b.getImages(),
+                            b.getTypeBusiness()
+                    ));
+                }
+                listBusinessDto=new ListBusinessDto(list.getId(),list.getListName(),business);
+            }
         }
-        return  null;
+        if (listBusinessDto==null){
+            throw new Exception("La lista de negocios no existe");
+        }
+        return listBusinessDto;
     }
     @Override
     public List<ListBusiness> getListsBusinesses(String idClient) throws Exception {

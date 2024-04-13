@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto;
+package co.edu.uniquindio.proyecto.services;
 
 import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
 import org.junit.jupiter.api.Test;

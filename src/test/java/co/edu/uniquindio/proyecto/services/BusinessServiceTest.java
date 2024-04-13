@@ -1,4 +1,4 @@
-package co.edu.uniquindio.proyecto;
+package co.edu.uniquindio.proyecto.services;
 
 import co.edu.uniquindio.proyecto.dto.AddBusinessDTO;
 import co.edu.uniquindio.proyecto.dto.LocationDTO;

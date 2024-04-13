@@ -95,7 +95,7 @@ public class ClientServiceTest {
     @Test
     public void deleteBusinessListTest() throws Exception{
         clientService.deleteBusinessList("Cliente1","Restaurantes");
-        ListBusiness list=clientService.getListBusiness("Cliente1","Restaurantes");
+        ListBusinessDto list=clientService.getListBusiness("Cliente1","Restaurantes");
         Assertions.assertNull(list);
     }
 
@@ -107,8 +107,8 @@ public class ClientServiceTest {
                 "Negocio1"
         );
         clientService.addBusinessToList(addBusiness);
-        ListBusiness list=clientService.getListBusiness("Cliente1","Favorites");
-        Assertions.assertEquals("Negocio1",list.getIdBusiness().get(0));
+        ListBusinessDto list=clientService.getListBusiness("Cliente1","Favorites");
+        Assertions.assertEquals("Negocio1",list.businesses().get(0).name());
     }
 
 
@@ -120,8 +120,8 @@ public class ClientServiceTest {
                 "Negocio1"
         );
         clientService.deleteBusinessToList(addBusiness);
-        ListBusiness list=clientService.getListBusiness("Cliente1","Favorites");
-        Assertions.assertEquals(0,list.getIdBusiness().size());
+        ListBusinessDto list=clientService.getListBusiness("Cliente1","Favorites");
+        Assertions.assertEquals(0,list.businesses().size());
     }
 
 }
