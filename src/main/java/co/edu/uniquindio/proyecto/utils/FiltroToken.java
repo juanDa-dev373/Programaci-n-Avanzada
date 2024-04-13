@@ -90,6 +90,15 @@ public class FiltroToken extends OncePerRequestFilter {
             return header.replace("Bearer ", "");
         return null;
     }
+    private void crearRespuestaError(String mensaje, int codigoError, HttpServletResponse
+            response) throws IOException {
+        MensajeDTO<String> dto = new MensajeDTO<>(true, mensaje);
+        response.setContentType("application/json");
+        response.setStatus(codigoError);
+        response.getWriter().write(new ObjectMapper().writeValueAsString(dto));
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
 
 
 }
