@@ -17,6 +17,6 @@ public interface BusinessService {
     List<Business> searchName(String name) throws Exception;
     List<Business> listBusinessOwner(String idClient) throws Exception;
     void registrerReview(RegistrerReviewDTO registrerReviewDTO) throws Exception;
-    Business search(String id);
+    Business search(String id) throws Exception;
     List<Business> listBusinessModerator(String idModerator) throws Exception;
 }

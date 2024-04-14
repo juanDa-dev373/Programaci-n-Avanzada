@@ -13,6 +13,15 @@ build/
 *.ipr
 out/
 !**/src/main/**/out/
+/.idea/
+*.class
+/.gradle/
+/*/bin/
+/*/build/
+/build/
+src/test/resources/application.properties
+src/main/resources/application.properties
+
 
 ### Eclipse ###
 .apt_generated

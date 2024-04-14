@@ -20,9 +20,9 @@ public class ClientServiceTest {
     void SignUpTest() throws Exception {
 
         SignUpDTO sing= new SignUpDTO(
-                "Juan",
-                "juan2410",
-                "juanda@email.com",
+                "Juan David",
+                "juan10F",
+                "juand.riosf1@uqvirtual.edu.co",
                 "1234",
                 "My photo",
                 "Armenia"

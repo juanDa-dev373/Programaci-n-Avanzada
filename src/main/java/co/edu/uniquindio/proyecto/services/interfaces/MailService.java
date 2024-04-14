@@ -1,7 +1,7 @@
 package co.edu.uniquindio.proyecto.services.interfaces;
 
-import co.edu.uniquindio.proyecto.dto.MailDTO;
+import co.edu.uniquindio.proyecto.dto.EmailDTO;
 
 public interface MailService {
-    void sendMail (MailDTO mail);
+    void sendMail (EmailDTO mail) throws Exception;
 }

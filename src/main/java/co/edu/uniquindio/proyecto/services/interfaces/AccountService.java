@@ -10,15 +10,6 @@ public interface AccountService {
     void passwordRecovery();
 
     /**
-     * Registra un nuevo usuario en la plataforma.
-     *
-     * @param signUpDTO Los datos de registro del usuario.
-     * @return Un mensaje de confirmación del registro.
-     * @throws Exception Sí ocurre un error durante el proceso de registro.
-     */
-    String signUpUser(SignUpDTO signUpDTO) throws Exception;
-
-    /**
      * Permite a un usuario recuperar su contraseña en caso de olvido.
      *
      * @param email El correo electrónico asociado a la cuenta del usuario.
