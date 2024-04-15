@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.controllers;
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
+import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService clientService;
+    private final BusinessService businessService;
 
     @GetMapping("/{idClient}")
     public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@Valid @PathVariable String idClient) throws Exception {
@@ -57,4 +59,10 @@ public class ClientController {
         clientService.deleteBusinessToList(removeBusiness);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio eliminado de la lista correctamente"));
     }
+    @PostMapping("/addBusinessClient")
+    public ResponseEntity<MensajeDTO<String>> addBusiness(@Valid @RequestBody AddBusinessDTO addBusinessDTO) throws Exception {
+        businessService.addBusiness(addBusinessDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Creado Exitosamente"));
+    }
+
 }
