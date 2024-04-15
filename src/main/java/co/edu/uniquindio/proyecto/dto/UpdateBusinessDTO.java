@@ -11,13 +11,12 @@ import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
 public record UpdateBusinessDTO(
-        @NotBlank String id,
-        @NotBlank String idCliente,
-        String name,
-        String description,
-        Location location,
+        @NotBlank(message = "Es necesario que ingrese el id") String id,
+        @NotBlank(message = "Es necesario que ingrese el nombre") String name,
+        @NotBlank(message = "Es necesario que ingrese la descripcion") String description,
+        @NotBlank(message = "Es necesario que ingrese la ubicacion") Location location,
         List<String>images,
-        TypeBusiness typeBusiness,
+        @NotBlank(message = "Es necesario que ingrese el tipo de negocio") TypeBusiness typeBusiness,
         List<Schedule> timeSchedules,
         List<String> phone,
         HistoryReview review

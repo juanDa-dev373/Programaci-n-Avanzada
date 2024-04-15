@@ -17,10 +17,10 @@ public record AddBusinessDTO(
         @NotBlank String id,
         @NotBlank @Min(1) @Max(50) String name,
         @NotBlank @Max(400) @Min(20) String description,
-        @NotBlank String idClient,
-        @NotBlank Location location,
+        @NotBlank(message = "Es necesario que ingrese el id del cliente ") String idClient,
+        @NotBlank(message = "Es necesario que ingrese la ubicación ") Location location,
         @NotBlank List<String>images,
-        @NotBlank TypeBusiness typeBusiness,
+        @NotBlank(message = "Es necesario que se ingrese el tipo de negocios ") TypeBusiness typeBusiness,
         @NotBlank List<Schedule> timeSchedules,
         @NotBlank List<String> phone,
         HistoryReview review
