@@ -37,28 +37,6 @@ class ModeratorServiceTest {
     }
 
     @Test
-    public void logInSuccessTest() throws Exception {
-        LoginDTO login= new LoginDTO("moderator@email.com","password");
-        String stage=moderatorService.logInUser(login);
-
-        //Con el método getModeratorById se obtiene el moderator con el ID "Moderator1"
-        AccountDetailDTO moderator = moderatorService.getModeratorById("Moderator1");
-
-        //Se verifica que se cambió el estado login a "ACTIVE"
-        Assertions.assertEquals(stage, moderator.login().toString());
-    }
-
-    @Test
-    public void logInFailTest() {
-        LoginDTO login= new LoginDTO("moderator@email.com","passwordw");
-        try {
-            String stage = moderatorService.logInUser(login);
-            Assertions.fail("Error inicio indebido");
-        } catch (Exception ignored) {
-
-        }
-    }
-    @Test
     public void logOutTest() throws Exception {
         moderatorService.logOutUser("Moderator1");
 

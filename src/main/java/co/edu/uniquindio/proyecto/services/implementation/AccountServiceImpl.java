@@ -46,44 +46,6 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public String signUpUser(SignUpDTO signUpDTO) throws Exception {
-        return null;
-    }
-
-    @Override
-    public String logInUser(LoginDTO loginDTO) throws Exception {
-
-        //Se obtiene la cuenta con el email
-        Optional<?> optionalAccount = (clientRepo!=null) ?
-                clientRepo.findByEmail(loginDTO.email()) : moderatorRepo.findByEmail(loginDTO.email());
-
-        //Si no se encontró el cliente, lanzamos una excepción
-        if(optionalAccount.isEmpty()){
-            throw new Exception(
-                    "{message:"+ "\"No se encuentra una cuenta con el email= "+loginDTO.email()+" \"\n ,"+ "statusCode: Error }"
-            );
-        }
-
-        Account account = (Account) optionalAccount.get();
-        if(!account.getPassword().equals(loginDTO.password())) {
-            throw new Exception(
-                    "{message:"+ "\"La contraseña o el email son incorrectos = \","+ "statusCode: Error }"
-            );
-        }
-
-        account.setLogin(StateRecord.ACTIVE);
-
-        if(clientRepo!=null){
-            Client client = (Client) account;
-            clientRepo.save(client);
-        }else{
-            Moderator moderator = (Moderator) account;
-            moderatorRepo.save(moderator);
-        }
-        return account.getLogin().toString();
-    }
-
-    @Override
     public String forgotPassword(String email) throws Exception {
 
         return null;

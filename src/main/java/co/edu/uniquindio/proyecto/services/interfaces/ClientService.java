@@ -7,6 +7,17 @@ import java.util.List;
 
 public interface ClientService extends AccountService {
 
+
+
+    /**
+     * Registra un nuevo usuario en la plataforma.
+     *
+     * @param signUpDTO Los datos de registro del usuario.
+     * @return Un mensaje de confirmación del registro.
+     * @throws Exception Sí ocurre un error durante el proceso de registro.
+     */
+    String signUpUser(SignUpDTO signUpDTO) throws Exception;
+
     /**
      * Obtener la ruta y dirección para llegar a un lugar deseado.
      * @param idClient El ID único del cliente.
@@ -19,10 +30,10 @@ public interface ClientService extends AccountService {
      *
      * @return Una lista con los clientes.
      */
-    ListBusiness getListBusiness(String idClient, String nameList) throws Exception;
+    ListBusinessDto getListBusiness(String idClient, String nameList) throws Exception;
 
     /**
-     * Obtener las listas de negocios.
+     * Obtener las listas de negocios del cliente.
      *
      * @return Las listas con los clientes.
      */

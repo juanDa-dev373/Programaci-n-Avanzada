@@ -131,12 +131,12 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public Business search(String id) {
+    public Business search(String id) throws Exception {
         Optional<Business> business = businessRepo.findBusinessById(id);
-        if(business.isPresent()){
-            return business.get();
+        if(business.isEmpty()){
+            throw new Exception("El negocio no existe");
         }
-        return null;
+        return business.get();
     }
 
     @Override

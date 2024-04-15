@@ -1,8 +1,5 @@
 package co.edu.uniquindio.proyecto.controllers;
-import co.edu.uniquindio.proyecto.dto.AccountDetailDTO;
-import co.edu.uniquindio.proyecto.dto.BusinessToListDTO;
-import co.edu.uniquindio.proyecto.dto.ItemClientDTO;
-import co.edu.uniquindio.proyecto.dto.MensajeDTO;
+import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import jakarta.validation.Valid;
@@ -24,7 +21,7 @@ public class ClientController {
     }
 
     @GetMapping("/{idClient}/listBusiness")
-    public ResponseEntity<MensajeDTO<ListBusiness>> getListBusiness(@Valid @PathVariable String idClient,@Valid @RequestParam("nameList") String nameList) throws Exception {
+    public ResponseEntity<MensajeDTO<ListBusinessDto>> getListBusiness(@Valid @PathVariable String idClient, @Valid @RequestParam("nameList") String nameList) throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.getListBusiness(idClient, nameList)));
     }
 
