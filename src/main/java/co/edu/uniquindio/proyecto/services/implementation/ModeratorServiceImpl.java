@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.services.implementation;
 
 import co.edu.uniquindio.proyecto.dto.AccountDetailDTO;
+import co.edu.uniquindio.proyecto.dto.EmailDTO;
 import co.edu.uniquindio.proyecto.dto.HistoryReviewDTO;
 import co.edu.uniquindio.proyecto.dto.ReviewDTO;
 import co.edu.uniquindio.proyecto.model.documents.Business;
@@ -10,32 +11,29 @@ import co.edu.uniquindio.proyecto.model.entity.HistoryReview;
 import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.repositories.BusinessRepo;
-import co.edu.uniquindio.proyecto.repositories.ClientRepo;
 import co.edu.uniquindio.proyecto.repositories.ModeratorRepo;
+import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
+import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
+import co.edu.uniquindio.proyecto.services.interfaces.MailService;
 import co.edu.uniquindio.proyecto.services.interfaces.ModeratorService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import co.edu.uniquindio.proyecto.utils.JWTUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
+
 public class ModeratorServiceImpl extends AccountServiceImpl implements ModeratorService {
 
     private final ModeratorRepo moderatorRepo;
-
     private final BusinessRepo businessRepo;
-
-    private final ClientRepo clientRepo;
-
-    public ModeratorServiceImpl(ModeratorRepo moderatorRepository, BusinessRepo businessRepository, ClientRepo clientRepository) {
-        super(moderatorRepository);
-        this.moderatorRepo = moderatorRepository;
-        this.businessRepo = businessRepository;
-        this.clientRepo = clientRepository;
-    }
+    private final BusinessService businessService;
+    private final ClientService clientService;
+    private final JWTUtils jwtUtils;
+    private final MailService mailService;
 
     @Override
     public AccountDetailDTO getModeratorById(String idModerator) throws Exception {
@@ -79,6 +77,26 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
     }
 
     @Override
+    public void forgotPassword(String email) throws Exception {
+        Optional<Moderator> optionalModerator = moderatorRepo.findByEmail(email);
+
+        if (optionalModerator.isEmpty()) {
+            throw new Exception("El correo no se encuentra registrado");
+        }
+        Moderator client = optionalModerator.get();
+        Map<String, Object> map = new HashMap<>();
+        map.put("rol", "MODERATOR");
+        map.put("nombre", client.getName());
+        map.put("id", client.getId());
+
+        String token= jwtUtils.generateToken(client.getEmail(), map);
+        mailService.sendMail(new EmailDTO(
+                "",
+                "",
+                ""
+        ));
+    }
+    @Override
     public String rejectBusiness(HistoryReviewDTO reviewDTO) {
         Moderator moderator= existModerator(reviewDTO.idModerator());
         Business business= existBusiness(reviewDTO.idBusiness());
@@ -98,28 +116,10 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
     }
 
     @Override
-    public String deactivateUserAccount(String moderatorId, String userId) {
-        existModerator(moderatorId);
-        Client client= existClient(userId);
-        client.setState(StateRecord.INACTIVE);
-        clientRepo.save(client);
-        return client.getState().toString();
-    }
+    public String deactivateUserAccount(String moderatorId, String userId) throws  Exception {
 
-    @Override
-    public String activateUserAccount(String moderatorId, String userId) {
-        Client client=existClient(userId);
-        client.setState(StateRecord.ACTIVE);
-        clientRepo.save(client);
-        return client.getState().toString();
-    }
+        return clientService.deactivateAccount(userId);
 
-    private Client existClient(String userId) {
-        Optional<Client> clientOptional = clientRepo.findById(userId);
-        if (clientOptional.isEmpty())
-            throw new IllegalArgumentException(
-                "{message:"+ "\"No se encontró el cliente con el id= "+userId+"\","+ "statusCode: Error }");
-       return clientOptional.get();
     }
 
     private Business existBusiness(String placeId) {

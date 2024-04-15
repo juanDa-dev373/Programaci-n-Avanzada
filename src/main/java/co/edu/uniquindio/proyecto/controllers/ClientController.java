@@ -1,21 +1,27 @@
 package co.edu.uniquindio.proyecto.controllers;
 import co.edu.uniquindio.proyecto.dto.*;
+import co.edu.uniquindio.proyecto.model.documents.Business;
+import co.edu.uniquindio.proyecto.model.documents.Comment;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
+import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
+import co.edu.uniquindio.proyecto.services.interfaces.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.repository.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/api/clients")
 @RequiredArgsConstructor
 public class ClientController {
 
     private final ClientService clientService;
     private final BusinessService businessService;
+    private final CommentService commentService;
 
     @GetMapping("/{idClient}")
     public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@Valid @PathVariable String idClient) throws Exception {
@@ -66,9 +72,60 @@ public class ClientController {
     }
 
     @PostMapping("/deleteBusinessClient")
-    ResponseEntity<MensajeDTO<String>> deleteBusiness(@Valid @RequestBody DeleteBusinessDTO deleteBusinessDTO){
-
-        return null;
+    ResponseEntity<MensajeDTO<String>> deleteBusiness(@Valid @RequestBody DeleteBusinessDTO deleteBusinessDTO) throws Exception {
+        businessService.deleteBusiness(deleteBusinessDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Eliminado Correctamente"));
     }
-
+    @PostMapping("/updateBusiness")
+    ResponseEntity<MensajeDTO<String>> updateBusiness(@Valid @RequestBody UpdateBusinessDTO updateBusinessDTO) throws Exception {
+        businessService.updateBusiness(updateBusinessDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "El Negocio Fue Actualizado"));
+    }
+    @GetMapping("/getAllBusiness")
+    ResponseEntity<MensajeDTO<List<Business>>> getAllBusiness() throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.allBusiness()));
+    }
+    @GetMapping("/listBusinessLocation")
+    ResponseEntity<MensajeDTO<List<Business>>> listBusinessLocation(@Valid @RequestBody LocationDTO locationDTO) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.searchBusinessLocation(locationDTO)));
+    }
+    @GetMapping("/listBusinessName/{name}")
+    ResponseEntity<MensajeDTO<List<Business>>> listBusinessName(@Valid @PathVariable String name) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.searchName(name)));
+    }
+    @GetMapping("/listBusinessType/{type}")
+    ResponseEntity<MensajeDTO<List<Business>>> listBusinessType(@Valid @PathVariable TypeBusiness type) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.searchBusiness(type)));
+    }
+    @GetMapping("/listBusinessOwner/{idClient}")
+    ResponseEntity<MensajeDTO<List<Business>>> listBusinessOwner(@Valid @PathVariable String idClient) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.listBusinessOwner(idClient)));
+    }
+    @GetMapping("/getBusiness/{idBusiness}")
+    ResponseEntity<MensajeDTO<Business>> getBusiness(@Valid @PathVariable String idBusiness) throws Exception{
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.search(idBusiness)));
+    }
+    @PostMapping("/createComment")
+    ResponseEntity<MensajeDTO<String>> createComment(@Valid @RequestBody CreateCommentDTO createCommentDTO) throws Exception {
+        commentService.createComentary(createCommentDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Comentario Registrado"));
+    }
+    @PostMapping("/responseComment")
+    ResponseEntity<MensajeDTO<String>> responseComment(@Valid @RequestBody ResponseCommentDTO responseCommentDTO) throws Exception{
+        commentService.ResponseComentary(responseCommentDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Se ha registrado la respuesta"));
+    }
+    @GetMapping("/{idBusiness}/listComment")
+    ResponseEntity<MensajeDTO<List<Comment>>> listComment(@Valid @PathVariable String idBusiness) throws Exception{
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, commentService.listComentary(idBusiness)));
+    }
+    @PostMapping("/calification")
+    ResponseEntity<MensajeDTO<String>> calification(@Valid @RequestBody CalificationDTO calificationDTO) throws Exception{
+        commentService.calification(calificationDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "se registro la calificacion"));
+    }
+    @GetMapping("/getComment")
+    ResponseEntity<MensajeDTO<Comment>> getComment(@Valid @RequestParam("idComment") String idComment, @Valid @RequestParam("idBusiness") String idBusiness) throws Exception{
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, commentService.getComment(idComment, idBusiness)));
+    }
 }

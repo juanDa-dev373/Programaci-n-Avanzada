@@ -1,8 +1,8 @@
 package co.edu.uniquindio.proyecto.services.implementation;
 
+import co.edu.uniquindio.proyecto.dto.EmailDTO;
 import co.edu.uniquindio.proyecto.dto.ProfileDTO;
-import co.edu.uniquindio.proyecto.dto.LoginDTO;
-import co.edu.uniquindio.proyecto.dto.SignUpDTO;
+import co.edu.uniquindio.proyecto.dto.TokenDTO;
 import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.documents.Moderator;
 import co.edu.uniquindio.proyecto.model.entity.Account;
@@ -10,14 +10,14 @@ import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.repositories.ClientRepo;
 import co.edu.uniquindio.proyecto.repositories.ModeratorRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.AccountService;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class AccountServiceImpl implements AccountService{
+public class AccountServiceImpl implements AccountService {
 
     protected final ClientRepo clientRepo;
 
@@ -41,21 +41,15 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
-    public void passwordRecovery() {
+    public void passwordRecovery(String email) {
 
-    }
-
-    @Override
-    public String forgotPassword(String email) throws Exception {
-
-        return null;
     }
 
     @Override
     public String deactivateAccount(String userId) throws Exception {
 
         //Obtenemos la cuenta que se quiere eliminar y le asignamos el estado inactivo
-        Account account = verifyAccount(userId);
+        Account account = verifyAccountById(userId);
         account.setState(StateRecord.INACTIVE);
 
 
@@ -75,7 +69,7 @@ public class AccountServiceImpl implements AccountService{
     @Override
     public void logOutUser(String userId) throws Exception {
         //Buscamos el cliente
-        Account account = verifyAccount(userId);
+        Account account = verifyAccountById(userId);
         account.setLogin(StateRecord.INACTIVE);
 
         if(clientRepo!=null){
@@ -91,7 +85,7 @@ public class AccountServiceImpl implements AccountService{
      * @param accountId El nickname único del cliente que desea buscar.
      * @return La cuenta encontrada.
      */
-    private Account verifyAccount(String accountId) throws Exception {
+    private Account verifyAccountById(String accountId) throws Exception {
         Optional<?> optionalAccount = (clientRepo!=null) ?
                 clientRepo.findById(accountId) : moderatorRepo.findById(accountId);
 
@@ -103,4 +97,9 @@ public class AccountServiceImpl implements AccountService{
         //retornamos la cuenta
         return (Account) optionalAccount.get();
     }
+
+    @Override
+    public void forgotPassword(String email) throws Exception {
+    }
+
 }

@@ -171,6 +171,15 @@ public class BusinessServiceImpl implements BusinessService {
         return businesses;
     }
 
+    @Override
+    public List<Business> allBusiness() throws Exception {
+        List<Business> busines = businessRepo.allBusiness();
+        if(busines.isEmpty()){
+            throw new Exception("No hay negocios");
+        }
+        return busines;
+    }
+
     public boolean existBusiness(String id){
         return businessRepo.findBusinessById(id).isPresent();
     }

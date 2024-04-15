@@ -7,6 +7,7 @@ import co.edu.uniquindio.proyecto.dto.ReviewDTO;
 import java.util.List;
 
 public interface ModeratorService extends AccountService {
+
     AccountDetailDTO getModeratorById(String moderator) throws Exception;
 
     /**
@@ -38,17 +39,6 @@ public interface ModeratorService extends AccountService {
      * @throws Exception Sí ocurre un error durante el proceso de desactivación de la cuenta.
      */
     String deactivateUserAccount(String moderatorId, String userId) throws Exception;
-
-    /**
-     * Activar la cuenta de un usuario previamente desactivada.
-     *
-     * @param moderatorId El ID único del moderador que activa la cuenta.
-     * @param userId      El ID único del usuario cuya cuenta se va a activar.
-     * @return Un mensaje de confirmación de la acción.
-     * @throws Exception Sí ocurre un error durante el proceso de activación de la cuenta.
-     */
-    String activateUserAccount(String moderatorId, String userId) throws Exception;
-
 
     /**
      * Marcar un comentario de usuario como inapropiado.

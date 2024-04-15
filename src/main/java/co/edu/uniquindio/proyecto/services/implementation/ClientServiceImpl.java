@@ -10,13 +10,12 @@ import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
 import co.edu.uniquindio.proyecto.services.interfaces.MailService;
+import co.edu.uniquindio.proyecto.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +25,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     private final BusinessService businessService;
     private final MailService mailService;
     private final ImageService imageService;
+    private final JWTUtils jwtUtils;
 
     @Override
     public String signUpUser(SignUpDTO sing) throws Exception {
@@ -176,6 +176,26 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         );
     }
 
+    @Override
+    public void forgotPassword(String email) throws Exception {
+        Optional<Client> clienteOptional = clientRepo.findByEmail(email);
+
+        if (clienteOptional.isEmpty()) {
+            throw new Exception("El correo no se encuentra registrado");
+        }
+        Client client = clienteOptional.get();
+        Map<String, Object> map = new HashMap<>();
+        map.put("rol", "CLIENTE");
+        map.put("nombre", client.getName());
+        map.put("id", client.getId());
+
+        String token= jwtUtils.generatePasswordToken(client.getEmail(), map);
+        mailService.sendMail(new EmailDTO(
+                "",
+                "",
+                ""
+        ));
+    }
 
     @Override
     public List<ItemClientDTO> listClient() {

@@ -44,7 +44,7 @@ public class FiltroToken extends OncePerRequestFilter {
 //Se obtiene el token de la petición del encabezado del mensaje HTTP
             String token = getToken(request);
             boolean error = true;
-            try {if (requestURI.startsWith("/api/clientes")) {
+            try {if (requestURI.startsWith("/api/clients")) {
                 if (token != null) {
                     Jws<Claims> jws = jwtUtils.parseJwt(token);
                     if (!jws.getPayload().get("rol").equals("CLIENTE")) {

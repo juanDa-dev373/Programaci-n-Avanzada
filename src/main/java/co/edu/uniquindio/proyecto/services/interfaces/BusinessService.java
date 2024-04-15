@@ -19,4 +19,5 @@ public interface BusinessService {
     void registrerReview(RegistrerReviewDTO registrerReviewDTO) throws Exception;
     Business search(String id) throws Exception;
     List<Business> listBusinessModerator(String idModerator) throws Exception;
+    List<Business> allBusiness() throws Exception;
 }

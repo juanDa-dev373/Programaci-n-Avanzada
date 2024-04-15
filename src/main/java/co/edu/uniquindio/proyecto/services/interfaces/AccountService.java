@@ -1,13 +1,13 @@
 package co.edu.uniquindio.proyecto.services.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.ProfileDTO;
-import co.edu.uniquindio.proyecto.dto.SignUpDTO;
+import co.edu.uniquindio.proyecto.dto.TokenDTO;
 
 public interface AccountService {
     /**
      * Recuperar la contraseña de un cliente.
      */
-    void passwordRecovery();
+    void passwordRecovery(String email);
 
     /**
      * Permite a un usuario recuperar su contraseña en caso de olvido.
@@ -16,7 +16,7 @@ public interface AccountService {
      * @return Un mensaje de confirmación del proceso de recuperación de contraseña.
      * @throws Exception Si el correo electrónico no está asociado a ninguna cuenta registrada o si ocurre un error durante el proceso de recuperación.
      */
-    String forgotPassword(String email) throws Exception;
+    void forgotPassword(String email) throws Exception;
 
     /**
      * Permite a un usuario ver y editar su información de perfil.
