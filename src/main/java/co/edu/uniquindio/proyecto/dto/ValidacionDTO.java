@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.dto;
+
 public record ValidacionDTO(
-    String campo,
-    String error
+        String campo,
+        String error
 ) {
 }

@@ -13,6 +13,7 @@ import co.edu.uniquindio.proyecto.repositories.BusinessRepo;
 import co.edu.uniquindio.proyecto.repositories.ClientRepo;
 import co.edu.uniquindio.proyecto.repositories.ModeratorRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.ModeratorService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -47,7 +48,6 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
                     "{message:"+ "\"No se encontró el moderator con el id= "+idModerator+"\","+ "statusCode: Error }");
 
         Moderator moderator = optionalModerator.get();
-
         //Obtenemos el cliente que se quiere actualizar y le asignamos los
         // nuevos valores (el nickname no se puede cambiar)
         return new AccountDetailDTO(
