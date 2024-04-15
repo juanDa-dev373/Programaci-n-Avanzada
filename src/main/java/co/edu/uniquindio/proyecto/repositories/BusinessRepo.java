@@ -22,9 +22,11 @@ public interface BusinessRepo  extends MongoRepository<Business, String> {
     List<Business> findByTypeBusiness(TypeBusiness type);
     @Query("{location : { $near : { $geometry : { type : 'Point', coordinates:[?0,?1] }, $maxDistance : ?2 }}, stateBusiness: 'ACTIVE'}")
     List<Business> findByLocationNear(double longitude, double latitude, double maxDistance);
+    @Query("{'_id':?0 ,'stateBusiness':'ACTIVE' }")
     Optional<Business> findBusinessById(String id);
     @Query("{'_id':?0, 'state': ?1 }")
     Optional<Business> findBusinessByState(String id, StateBusiness stateBusiness);
+    @Query("{'idClient': ?0, 'stateBusiness':'ACTIVE'}")
     List<Business> findBusinessByIdClient(String idClient);
     @Query("{ 'review.codeModerator': ?0}")
     List<Business> findBusinessByModerator(String id);

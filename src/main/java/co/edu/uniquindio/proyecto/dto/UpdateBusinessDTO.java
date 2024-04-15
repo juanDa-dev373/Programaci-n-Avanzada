@@ -12,6 +12,7 @@ import java.util.List;
 
 public record UpdateBusinessDTO(
         @NotBlank String id,
+        @NotBlank String idCliente,
         String name,
         String description,
         Location location,

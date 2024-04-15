@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.controllers;
 
+import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 public class ModeratorController {
 
     private final ModeratorService moderatorService;
+    private final BusinessService businessService;
 
     @GetMapping("/{moderatorId}")
     public ResponseEntity<MensajeDTO<AccountDetailDTO>> getModeratorById(@Valid @PathVariable String moderatorId) throws Exception {
@@ -56,5 +58,10 @@ public class ModeratorController {
     public ResponseEntity<MensajeDTO<List<ReviewDTO>>> getListHistoryReviews(@Valid @RequestParam("moderatorId") String moderatorId) throws Exception {
         List<ReviewDTO> reviewDTOList = moderatorService.getListHistoryReviews(moderatorId);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,  reviewDTOList));
+    }
+    @PostMapping("/registerReview")
+    public ResponseEntity<MensajeDTO<String>> addHistroyReview(@Valid @RequestBody RegistrerReviewDTO registrerReviewDTO) throws Exception {
+        businessService.registrerReview(registrerReviewDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Se Registro la Revición"));
     }
 }
