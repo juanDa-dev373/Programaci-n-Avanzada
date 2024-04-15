@@ -65,4 +65,10 @@ public class ClientController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Creado Exitosamente"));
     }
 
+    @PostMapping("/deleteBusinessClient")
+    ResponseEntity<MensajeDTO<String>> deleteBusiness(@Valid @RequestBody DeleteBusinessDTO deleteBusinessDTO){
+
+        return null;
+    }
+
 }
