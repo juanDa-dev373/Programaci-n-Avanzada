@@ -12,6 +12,7 @@ import java.util.List;
 
 public record UpdateBusinessDTO(
         @NotBlank(message = "Es necesario que ingrese el id") String id,
+        @NotBlank String idCliente,
         @NotBlank(message = "Es necesario que ingrese el nombre") String name,
         @NotBlank(message = "Es necesario que ingrese la descripcion") String description,
         @NotBlank(message = "Es necesario que ingrese la ubicacion") Location location,
