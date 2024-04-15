@@ -21,7 +21,7 @@ public class ClientController {
     }
 
     @GetMapping("/{idClient}/listBusiness")
-    public ResponseEntity<MensajeDTO<ListBusinessDto>> getListBusiness(@Valid @PathVariable String idClient, @Valid @RequestParam("nameList") String nameList) throws Exception {
+    public ResponseEntity<MensajeDTO<ListBusinessDTO>> getListBusiness(@Valid @PathVariable String idClient, @Valid @RequestParam("nameList") String nameList) throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.getListBusiness(idClient, nameList)));
     }
 

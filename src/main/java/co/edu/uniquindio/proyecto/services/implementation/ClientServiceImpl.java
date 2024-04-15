@@ -9,9 +9,7 @@ import co.edu.uniquindio.proyecto.repositories.ClientRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import co.edu.uniquindio.proyecto.services.interfaces.MailService;
-import co.edu.uniquindio.proyecto.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -134,7 +132,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public ListBusinessDto getListBusiness(String idClient, String nameList) throws Exception {
+    public ListBusinessDTO getListBusiness(String idClient, String nameList) throws Exception {
         Optional<Client> optionalClient = clientRepo.findById( idClient );
 
         //Si no se encontró el cliente, lanzamos una excepción
@@ -144,7 +142,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
 
         Client client = optionalClient.get();
         List<BusinessDto> business= new ArrayList<>();
-        ListBusinessDto listBusinessDto=null;
+        ListBusinessDTO listBusinessDto=null;
         for(ListBusiness list: client.getListClient()){
             if(list.getListName().equals(nameList)){
 
@@ -159,7 +157,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
                             b.getTypeBusiness()
                     ));
                 }
-                listBusinessDto=new ListBusinessDto(list.getId(),list.getListName(),business);
+                listBusinessDto=new ListBusinessDTO(list.getId(),list.getListName(),business);
             }
         }
         if (listBusinessDto==null){

@@ -1,10 +1,8 @@
 package co.edu.uniquindio.proyecto.dto;
 
-import co.edu.uniquindio.proyecto.model.documents.Business;
-
 import java.util.List;
 
-public record ListBusinessDto(
+public record ListBusinessDTO(
 
     String id,
     String listName,
