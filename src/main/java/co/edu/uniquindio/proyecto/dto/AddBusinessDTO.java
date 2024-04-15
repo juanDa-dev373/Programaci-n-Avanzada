@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,7 +20,7 @@ public record AddBusinessDTO(
         @NotBlank @Max(400) @Min(20) String description,
         @NotBlank(message = "Es necesario que ingrese el id del cliente ") String idClient,
         @NotBlank(message = "Es necesario que ingrese la ubicación ") Location location,
-        @NotBlank List<String>images,
+        @NotBlank List<MultipartFile>images,
         @NotBlank(message = "Es necesario que se ingrese el tipo de negocios ") TypeBusiness typeBusiness,
         @NotBlank List<Schedule> timeSchedules,
         @NotBlank List<String> phone,

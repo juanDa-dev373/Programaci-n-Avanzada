@@ -7,6 +7,9 @@ import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 import co.edu.uniquindio.proyecto.repositories.BusinessRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
+import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.stereotype.Service;
@@ -17,25 +20,30 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class BusinessServiceImpl implements BusinessService {
 
     private final BusinessRepo businessRepo;
-
-    public BusinessServiceImpl(BusinessRepo businessRepo) {
-        this.businessRepo = businessRepo;
-    }
+    private final ImageService imageService;
 
     @Override
     public void addBusiness(AddBusinessDTO addBusinessDto) throws Exception {
         if(existBusiness(addBusinessDto.id())){
             throw new Exception("El Negocio ya existe");
         }
+        //se agregan las imagenes en forma de array
+        ArrayList <String>images = new ArrayList<>();
+        for(int i = 0; i<addBusinessDto.images().size(); i++){
+            String imageUrl =(String)imageService.saveImage(addBusinessDto.images().get(i)).get("url");
+            images.add(i, imageUrl);
+        }
+        //-----------------------------------------
         Business business = new Business();
         business.setId(addBusinessDto.id());
         business.setStateBusiness(StateRecord.ACTIVE);
         business.setState(StateBusiness.PENDING);
         business.setTypeBusiness(addBusinessDto.typeBusiness());
-        business.setImages(addBusinessDto.images());
+        business.setImages(images);
         business.setDescription(addBusinessDto.description());
         business.setName(addBusinessDto.name());
         business.setLocation(addBusinessDto.location());
@@ -53,10 +61,17 @@ public class BusinessServiceImpl implements BusinessService {
         if(bus.isPresent() && bus.get().getStateBusiness()==StateRecord.INACTIVE){
             throw new Exception("the Business don't exist");
         }
+        //se agregan las imagenes en forma de array
+        ArrayList <String>images = new ArrayList<>();
+        for(int i = 0; i<updateBusinessDTO.images().size(); i++){
+            String imageUrl =(String)imageService.saveImage(updateBusinessDTO.images().get(i)).get("url");
+            images.add(i, imageUrl);
+        }
+        //-----------------------------------------
         Business business = bus.get();
         if(updateBusinessDTO.idCliente().equals(business.getIdClient())) {
             business.setTypeBusiness(updateBusinessDTO.typeBusiness());
-            business.setImages(updateBusinessDTO.images());
+            business.setImages(images);
             business.setPhone(updateBusinessDTO.phone());
             business.setLocation(updateBusinessDTO.location());
             business.setName(updateBusinessDTO.name());

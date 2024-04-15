@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 public record SignUpDTO(
         @NotBlank @Length(max = 100)  String name,
@@ -14,7 +15,7 @@ public record SignUpDTO(
         @NotBlank @Length(max = 20, min = 8)
         @Pattern( regexp = "^(?!.*\\s)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–\\[{}\\]:;',?/*~$^+=<>]).{8,20}$")
         String password,
-        @NotBlank(message = "Es necesario que ingrese la foto") String photo,
+        @NotBlank(message = "Es necesario que ingrese la foto") MultipartFile photo,
         @NotBlank(message = "Es necesario que ingrese la ciudad") String city
 
 

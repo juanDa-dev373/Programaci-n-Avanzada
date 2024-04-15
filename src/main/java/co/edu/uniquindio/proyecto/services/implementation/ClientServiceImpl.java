@@ -8,6 +8,7 @@ import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.repositories.ClientRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
+import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
 import co.edu.uniquindio.proyecto.services.interfaces.MailService;
 import co.edu.uniquindio.proyecto.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     private final ClientRepo clientRepo;
     private final BusinessService businessService;
     private final MailService mailService;
+    private final ImageService imageService;
 
     @Override
     public String signUpUser(SignUpDTO sing) throws Exception {
@@ -47,7 +49,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
      cliente.setName(sing.name() );
      cliente.setNickname( sing.nickname() );
      cliente.setCity( sing.city() );
-     cliente.setProfilePhoto( sing.photo() );
+     cliente.setProfilePhoto((String)imageService.saveImage(sing.photo()).get("url"));
 
      cliente.setEmail( sing.email() );
      cliente.setPassword(password);
@@ -128,7 +130,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         Client client = optionalClient.get();
         client.setName(profileDTO.name());
         client.setCity(profileDTO.city());
-        client.setProfilePhoto(profileDTO.profilePhoto());
+        client.setProfilePhoto((String)imageService.saveImage(profileDTO.profilePhoto()).get("url"));
 
         clientRepo.save(client);
     }

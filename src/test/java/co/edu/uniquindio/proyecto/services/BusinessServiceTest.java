@@ -1,9 +1,6 @@
 package co.edu.uniquindio.proyecto.services;
 
-import co.edu.uniquindio.proyecto.dto.AddBusinessDTO;
-import co.edu.uniquindio.proyecto.dto.LocationDTO;
-import co.edu.uniquindio.proyecto.dto.RegistrerReviewDTO;
-import co.edu.uniquindio.proyecto.dto.UpdateBusinessDTO;
+import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.entity.HistoryReview;
 import co.edu.uniquindio.proyecto.model.entity.Location;
@@ -18,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.geo.GeoJsonPoint;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
@@ -33,7 +32,7 @@ public class BusinessServiceTest {
         AddBusinessDTO addBusinessDTO = new AddBusinessDTO("negocio8", "helados"
                 , "este heladeria sirve helados muy rico",
                 "cliente2", new Location( 4.53389, -75.68111),
-                new ArrayList<>(Arrays.asList("foto1","foto2")),
+                new ArrayList<>(Arrays.asList()),
                 TypeBusiness.HELADERIA,
                 new ArrayList<>(Arrays.asList(new Schedule("2:59:00", "Martes", "7:30:59")))
                 , new ArrayList<>(Arrays.asList("43123")),
@@ -44,7 +43,10 @@ public class BusinessServiceTest {
     }
     @Test
     public void deleteTest() throws Exception{
-        businessService.deleteBusiness("negocio3");
+        businessService.deleteBusiness(new DeleteBusinessDTO(
+                "negocio3",
+                "cliente2"
+        ));
         Business business = businessService.search("negocio3");
         Assertions.assertEquals(StateRecord.INACTIVE, business.getStateBusiness());
     }
@@ -53,10 +55,11 @@ public class BusinessServiceTest {
         Business business = businessService.search("negocio5");
         UpdateBusinessDTO updateBusinessDTO = new UpdateBusinessDTO(
                 "negocio5",
+                "cliente2",
                 "helado pelambre",
                 "esto es una heladeria muy sabrosa",
                 business.getLocation(),
-                business.getImages(),
+                new ArrayList<>(),
                 TypeBusiness.HELADERIA,
                 business.getTimeSchedules(),
                 business.getPhone(),

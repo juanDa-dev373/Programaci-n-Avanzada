@@ -1,4 +1,5 @@
 package co.edu.uniquindio.proyecto.controllers.excepciones;
+import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.dto.ValidacionDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,7 +20,7 @@ public class GlobalException {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<MensajeDTO<List<ValidacionDTO>>> validationException(
             MethodArgumentNotValidException ex ) {
-        List<ValidacionDTO> errores = new ArrayLists<>();
+        List<ValidacionDTO> errores = new ArrayList<>();
         BindingResult results = ex.getBindingResult();
         for (FieldError e: results.getFieldErrors()) {
             errores.add( new ValidacionDTO(e.getField(), e.getDefaultMessage()) );
