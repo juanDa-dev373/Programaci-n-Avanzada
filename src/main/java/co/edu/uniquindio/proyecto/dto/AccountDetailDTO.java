@@ -5,10 +5,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public record AccountDetailDTO(
-        @NotBlank String id,
+        @NotBlank(message = "Es necesario que ingrese el id") String id,
         @NotBlank String name,
-        @NotBlank String nickname,
-        @NotBlank @Email String email,
+        @NotBlank(message = "Es necesario que ingrese el nickname") String nickname,
+        @NotBlank @Email(message = "Es necesario que ingrese el email") String email,
         @NotBlank StateRecord login
         ) {
 

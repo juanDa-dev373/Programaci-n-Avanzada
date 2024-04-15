@@ -6,6 +6,6 @@ import jakarta.validation.constraints.Pattern;
 public record ChangePasswordDTO(
         @NotBlank
         @Pattern( regexp = "^(?!.*\\s)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–\\[{}\\]:;',?/*~$^+=<>]).{8,20}$")
-        String password
+        @NotBlank(message = "Es necesario que ingrese la contraseña") String password
 ) {
 }

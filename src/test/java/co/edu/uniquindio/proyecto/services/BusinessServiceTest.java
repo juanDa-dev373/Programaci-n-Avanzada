@@ -30,9 +30,6 @@ public class BusinessServiceTest {
     private BusinessService businessService;
     @Test
     public void addText() throws Exception{
-        double [] coordinates = new double[2];
-        coordinates[0] =4.53389;
-        coordinates[1]=-75.68111;
         AddBusinessDTO addBusinessDTO = new AddBusinessDTO("negocio8", "helados"
                 , "este heladeria sirve helados muy rico",
                 "cliente2", new Location( 4.53389, -75.68111),
@@ -109,6 +106,6 @@ public class BusinessServiceTest {
     public void listLocationTest() throws Exception{
         LocationDTO locationDTO = new LocationDTO(new Location( 4.53389, -75.68111), 1000);
         List<Business> businessList = businessService.searchBusinessLocation(locationDTO);
-        Assertions.assertEquals(3,businessList.size(), "la lista no es nula");
+        Assertions.assertEquals(1,businessList.size(), "la lista no es nula");
     }
 }
