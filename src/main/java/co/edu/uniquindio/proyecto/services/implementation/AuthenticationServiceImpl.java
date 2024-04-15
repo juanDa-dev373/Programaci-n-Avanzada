@@ -65,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         Map<String, Object> map = new HashMap<>();
-        map.put("rol", "CLIENTE");
+        map.put("rol", "MODERATOR");
         map.put("nombre", moderator.getName());
         map.put("id", moderator.getId());
 

@@ -22,4 +22,11 @@ public class AuthenticationServiceTest {
         //Se verifica que se cambió el estado login a "ACTIVE"
         Assertions.assertNotNull(tokenDTO);
     }
+    @Test
+    public void loginClienteSuccessTest() throws Exception {
+        LoginDTO login= new LoginDTO("davidcort24@gmail.com","1234");
+        TokenDTO tokenDTO=authenticationService.loginClient(login);
+        //Se verifica que se cambió el estado login a "ACTIVE"
+        Assertions.assertNotNull(tokenDTO);
+    }
 }

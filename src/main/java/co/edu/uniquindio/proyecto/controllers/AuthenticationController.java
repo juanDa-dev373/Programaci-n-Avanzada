@@ -2,11 +2,10 @@ package co.edu.uniquindio.proyecto.controllers;
 
 import co.edu.uniquindio.proyecto.dto.LoginDTO;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
+import co.edu.uniquindio.proyecto.dto.SignUpDTO;
 import co.edu.uniquindio.proyecto.dto.TokenDTO;
-import co.edu.uniquindio.proyecto.services.implementation.AuthenticationServiceImpl;
 import co.edu.uniquindio.proyecto.services.interfaces.AuthenticationService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
-import co.edu.uniquindio.proyecto.services.interfaces.ModeratorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     AuthenticationService authenticationService;
-
+    ClientService clientService;
 
     @PostMapping("/login-client")
     public ResponseEntity<MensajeDTO<TokenDTO>> loginClient(@Valid @RequestBody
@@ -35,6 +34,12 @@ public class AuthenticationController {
                                                       LoginDTO loginDTO) throws Exception {
         TokenDTO tokenDTO = authenticationService.loginModerator(loginDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, tokenDTO));
+    }
+
+    @PostMapping("/singUp-client")
+    public ResponseEntity<MensajeDTO<String>> signUpClient(@Valid @RequestBody
+                                                               SignUpDTO signUpDTO) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.signUpUser(signUpDTO)));
     }
 
 }
