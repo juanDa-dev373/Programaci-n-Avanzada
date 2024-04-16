@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.services.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.CalificationDTO;
 import co.edu.uniquindio.proyecto.dto.CreateCommentDTO;
+import co.edu.uniquindio.proyecto.dto.DeleteCommentDTO;
 import co.edu.uniquindio.proyecto.dto.ResponseCommentDTO;
 import co.edu.uniquindio.proyecto.model.documents.Comment;
 
@@ -14,4 +15,5 @@ public interface CommentService {
     List<Comment> listComentary(String idBusiness) throws Exception;
     void calification(CalificationDTO calificationDTO) throws Exception;
     Comment getComment(String id, String idBusiness) throws Exception;
+    void deleteComment(DeleteCommentDTO deleteCommentDTO) throws Exception;
 }
