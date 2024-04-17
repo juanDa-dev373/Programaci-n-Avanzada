@@ -7,7 +7,7 @@ import co.edu.uniquindio.proyecto.dto.TokenDTO;
 import co.edu.uniquindio.proyecto.services.interfaces.AuthenticationService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,11 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthenticationController {
 
-    AuthenticationService authenticationService;
-    ClientService clientService;
+    private final AuthenticationService authenticationService;
+
+    private final ClientService clientService;
+
+    @Autowired
+    public AuthenticationController(AuthenticationService authenticationService, ClientService clientService) {
+        this.authenticationService = authenticationService;
+        this.clientService = clientService;
+    }
+
 
     @PostMapping("/login-client")
     public ResponseEntity<MensajeDTO<TokenDTO>> loginClient(@Valid @RequestBody

@@ -42,12 +42,6 @@ public class ModeratorController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, message));
     }
 
-    @PostMapping("/activateUserAccount")
-    public ResponseEntity<MensajeDTO<String>> activateUserAccount(@Valid @RequestParam("moderatorId") String moderatorId,@Valid  @RequestParam("userId") String userId) throws Exception {
-        String message = moderatorService.activateUserAccount(moderatorId, userId);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, message));
-    }
-
     @PostMapping("/markCommentAsInappropriate")
     public ResponseEntity<MensajeDTO<String>> markCommentAsInappropriate(@Valid @RequestParam("moderatorId") String moderatorId, @Valid @RequestParam("commentId") String commentId) throws Exception {
         String message = moderatorService.markCommentAsInappropriate(moderatorId, commentId);

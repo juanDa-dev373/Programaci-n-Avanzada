@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.services.interfaces;
 
+import co.edu.uniquindio.proyecto.dto.ChangePasswordDTO;
 import co.edu.uniquindio.proyecto.dto.ProfileDTO;
 import co.edu.uniquindio.proyecto.dto.TokenDTO;
 
@@ -7,7 +8,7 @@ public interface AccountService {
     /**
      * Recuperar la contraseña de un cliente.
      */
-    void passwordRecovery(String email);
+    void passwordRecovery(ChangePasswordDTO changePasswordDTO) throws Exception;
 
     /**
      * Permite a un usuario recuperar su contraseña en caso de olvido.

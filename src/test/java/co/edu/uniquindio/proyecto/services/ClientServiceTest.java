@@ -8,7 +8,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @SpringBootTest
@@ -24,7 +28,47 @@ public class ClientServiceTest {
                 "juan10F",
                 "juand.riosf1@uqvirtual.edu.co",
                 "1234",
-                "My photo",
+                new MultipartFile() {
+                    @Override
+                    public String getName() {
+                        return null;
+                    }
+
+                    @Override
+                    public String getOriginalFilename() {
+                        return null;
+                    }
+
+                    @Override
+                    public String getContentType() {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean isEmpty() {
+                        return false;
+                    }
+
+                    @Override
+                    public long getSize() {
+                        return 0;
+                    }
+
+                    @Override
+                    public byte[] getBytes() throws IOException {
+                        return new byte[0];
+                    }
+
+                    @Override
+                    public InputStream getInputStream() throws IOException {
+                        return null;
+                    }
+
+                    @Override
+                    public void transferTo(File dest) throws IOException, IllegalStateException {
+
+                    }
+                },
                 "Armenia"
         );
 
@@ -62,7 +106,47 @@ public class ClientServiceTest {
         ProfileDTO update=new ProfileDTO(
                 "Cliente1",
                 "David",
-                "My photo",
+                new MultipartFile() {
+                    @Override
+                    public String getName() {
+                        return null;
+                    }
+
+                    @Override
+                    public String getOriginalFilename() {
+                        return null;
+                    }
+
+                    @Override
+                    public String getContentType() {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean isEmpty() {
+                        return false;
+                    }
+
+                    @Override
+                    public long getSize() {
+                        return 0;
+                    }
+
+                    @Override
+                    public byte[] getBytes() throws IOException {
+                        return new byte[0];
+                    }
+
+                    @Override
+                    public InputStream getInputStream() throws IOException {
+                        return null;
+                    }
+
+                    @Override
+                    public void transferTo(File dest) throws IOException, IllegalStateException {
+
+                    }
+                },
                 "Armenia"
         );
         clientService.updateProfile(update);
