@@ -5,13 +5,11 @@ import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
-import co.edu.uniquindio.proyecto.repositories.ClientRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
-import co.edu.uniquindio.proyecto.services.interfaces.MailService;
-import co.edu.uniquindio.proyecto.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +19,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class ClientServiceImpl extends AccountServiceImpl implements ClientService {
 
-    private final ClientRepo clientRepo;
     private final BusinessService businessService;
-    private final MailService mailService;
     private final ImageService imageService;
-    private final JWTUtils jwtUtils;
 
     @Override
     public String signUpUser(SignUpDTO sing) throws Exception {
@@ -91,6 +86,16 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         client.setProfilePhoto((String)imageService.saveImage(profileDTO.profilePhoto()).get("url"));
 
         clientRepo.save(client);
+
+        mailService.sendMail(new EmailDTO(
+                        "Cuenta Actualizada Exitosamente",
+                        "      <h1>Felicitaciones por Crear su Cuenta Exitosamente</h1>\n" +
+                                "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
+                                "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
+                        client.getEmail()
+                )
+
+        );
     }
 
     @Override
@@ -178,23 +183,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
 
     @Override
     public void forgotPassword(String email) throws Exception {
-        Optional<Client> clienteOptional = clientRepo.findByEmail(email);
 
-        if (clienteOptional.isEmpty()) {
-            throw new Exception("El correo no se encuentra registrado");
-        }
-        Client client = clienteOptional.get();
-        Map<String, Object> map = new HashMap<>();
-        map.put("rol", "CLIENTE");
-        map.put("nombre", client.getName());
-        map.put("id", client.getId());
-
-        String token= jwtUtils.generatePasswordToken(client.getEmail(), map);
-        mailService.sendMail(new EmailDTO(
-                "",
-                "",
-                ""
-        ));
     }
 
     @Override

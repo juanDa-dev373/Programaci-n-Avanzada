@@ -44,26 +44,40 @@ public class FiltroToken extends OncePerRequestFilter {
 //Se obtiene el token de la petición del encabezado del mensaje HTTP
             String token = getToken(request);
             boolean error = true;
-            try {if (requestURI.startsWith("/api/clients")) {
-                if (token != null) {
-                    Jws<Claims> jws = jwtUtils.parseJwt(token);
-                    if (!jws.getPayload().get("rol").equals("CLIENTE")) {
+            try {
+                if (requestURI.startsWith("/api/clients")) {
+                    if (token != null) {
+                        Jws<Claims> jws = jwtUtils.parseJwt(token);
+                        if (!jws.getPayload().get("rol").equals("CLIENTE")) {
+                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+                                HttpServletResponse.SC_FORBIDDEN, response);
+                        } else {
+                            error = false;
+                        }
+                    } else {
+                        crearRespuestaError("No tiene permisos para acceder a este recurso",
+
+                            HttpServletResponse.SC_FORBIDDEN, response);
+
+                    }
+                } else if (requestURI.startsWith("/api/moderator")) {
+                    if (token != null) {
+                        Jws<Claims> jws = jwtUtils.parseJwt(token);
+                        if (!jws.getPayload().get("rol").equals("MODERATOR")) {
+                            crearRespuestaError("No tiene permisos para acceder a este recurso",
+                                    HttpServletResponse.SC_FORBIDDEN, response);
+                        } else {
+                            error = false;
+                        }
+                    } else {
                         crearRespuestaError("No tiene permisos para acceder a este recurso",
 
                                 HttpServletResponse.SC_FORBIDDEN, response);
 
-                    } else {
-                        error = false;
                     }
                 } else {
-                    crearRespuestaError("No tiene permisos para acceder a este recurso",
-
-                            HttpServletResponse.SC_FORBIDDEN, response);
-
+                    error = false;
                 }
-            } else {
-                error = false;
-            }
 //Agregar más validaciones para otros roles y recursos (rutas de la API) aquí
             } catch (MalformedJwtException | SignatureException e) {
                 crearRespuestaError("El token es incorrecto",

@@ -25,15 +25,10 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-
 public class ModeratorServiceImpl extends AccountServiceImpl implements ModeratorService {
 
-    private final ModeratorRepo moderatorRepo;
     private final BusinessRepo businessRepo;
-    private final BusinessService businessService;
     private final ClientService clientService;
-    private final JWTUtils jwtUtils;
-    private final MailService mailService;
 
     @Override
     public AccountDetailDTO getModeratorById(String idModerator) throws Exception {
@@ -43,7 +38,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
         //Si no se encontró el cliente, lanzamos una excepción
         if(optionalModerator.isEmpty())
             throw new Exception(
-                    "{message:"+ "\"No se encontró el moderator con el id= "+idModerator+"\","+ "statusCode: Error }");
+                    "No se encontró el moderator con el id= "+idModerator);
 
         Moderator moderator = optionalModerator.get();
         //Obtenemos el cliente que se quiere actualizar y le asignamos los
