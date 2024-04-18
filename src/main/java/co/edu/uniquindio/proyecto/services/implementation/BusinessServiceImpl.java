@@ -33,11 +33,7 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public void addBusiness(AddBusinessDTO addBusinessDto , String token) throws Exception {
 
-        if(existBusiness(addBusinessDto.id())) {
-            throw new Exception("El Negocio ya existe");
-        }
         Business business = new Business();
-        business.setId(addBusinessDto.id());
         business.setState(StateRecord.ACTIVE);
         business.setStateBusiness(StateBusiness.PENDING);
         business.setTypeBusiness(addBusinessDto.typeBusiness());
