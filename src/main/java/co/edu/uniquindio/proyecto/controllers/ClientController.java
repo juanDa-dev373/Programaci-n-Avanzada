@@ -59,14 +59,14 @@ public class ClientController {
     }
 
     @PostMapping("/addBusinessToList")
-    public ResponseEntity<MensajeDTO<String>> addBusinessToList(@Valid @RequestBody BusinessToListDTO addBusiness) throws Exception {
-        clientService.addBusinessToList(addBusiness);
+    public ResponseEntity<MensajeDTO<String>> addBusinessToList(@Valid @RequestBody BusinessToListDTO addBusiness, @RequestHeader("Authorization") String token) throws Exception {
+        clientService.addBusinessToList(addBusiness,token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio añadido a la lista correctamente"));
     }
 
     @DeleteMapping("/deleteBusinessToList")
-    public ResponseEntity<MensajeDTO<String>> deleteBusinessToList(@Valid @RequestBody BusinessToListDTO removeBusiness) throws Exception {
-        clientService.deleteBusinessToList(removeBusiness);
+    public ResponseEntity<MensajeDTO<String>> deleteBusinessToList(@Valid @RequestBody BusinessToListDTO removeBusiness, @RequestHeader("Authorization") String token) throws Exception {
+        clientService.deleteBusinessToList(removeBusiness,token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio eliminado de la lista correctamente"));
     }
     @PostMapping("/addBusinessClient")

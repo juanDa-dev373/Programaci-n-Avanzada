@@ -52,9 +52,9 @@ public class BusinessServiceTest {
     }
     @Test
     public void UpdateTest() throws Exception{
-        Business business = businessService.search("negocio5");
+        Business business = businessService.search("negocio8");
         UpdateBusinessDTO updateBusinessDTO = new UpdateBusinessDTO(
-                "negocio5",
+                "negocio8",
                 "cliente2",
                 "helado pelambre",
                 "esto es una heladeria muy sabrosa",

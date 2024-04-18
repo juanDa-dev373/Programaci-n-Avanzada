@@ -31,6 +31,6 @@ public interface BusinessRepo  extends MongoRepository<Business, String> {
     @Query("{'state': 'ACTIVE', 'stateBusiness': 'APPROVED'}")
     List<Business> allBusiness();
 
-    @Query(" { 'id' : ?0 ,stateBusiness: 'APPROVED'} ")
+    @Query(" { 'id' : ?0 , stateBusiness: 'APPROVED', 'state': 'ACTIVE'} ")
     Optional<Business> findBusiness(String idBusiness);
 }

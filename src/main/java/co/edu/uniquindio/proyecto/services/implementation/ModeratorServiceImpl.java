@@ -56,7 +56,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
 
         Moderator moderator= existModerator(reviewDTO.idModerator());
         Business business= existBusiness(reviewDTO.idBusiness());
-        business.setState(StateBusiness.APPROVED);
+        business.setStateBusiness(StateBusiness.APPROVED);
         HistoryReview history= new HistoryReview(
                     reviewDTO.description(),
                     StateBusiness.APPROVED,
@@ -64,7 +64,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
                     reviewDTO.idModerator(),
                     reviewDTO.idBusiness()
         );
-        business.setState(StateBusiness.APPROVED);
+        business.setStateBusiness(StateBusiness.APPROVED);
         moderator.getHistoryReview().add(history);
         businessRepo.save(business);
         moderatorRepo.save(moderator);
@@ -95,7 +95,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
     public String rejectBusiness(HistoryReviewDTO reviewDTO) {
         Moderator moderator= existModerator(reviewDTO.idModerator());
         Business business= existBusiness(reviewDTO.idBusiness());
-        business.setState(StateBusiness.REJECTED);
+        business.setStateBusiness(StateBusiness.REJECTED);
         HistoryReview history= new HistoryReview(
                 reviewDTO.description(),
                 StateBusiness.REJECTED,
@@ -103,7 +103,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
                 reviewDTO.idModerator(),
                 reviewDTO.idBusiness()
         );
-        business.setState(StateBusiness.REJECTED);
+        business.setStateBusiness(StateBusiness.REJECTED);
         moderator.getHistoryReview().add(history);
         businessRepo.save(business);
         moderatorRepo.save(moderator);

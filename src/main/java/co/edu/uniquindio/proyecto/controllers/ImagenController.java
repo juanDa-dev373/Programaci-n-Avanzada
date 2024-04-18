@@ -18,7 +18,7 @@ public class ImagenController {
     @PostMapping("/update")
     public ResponseEntity<MensajeDTO<Map>> update(@RequestParam("file") MultipartFile imagen)
             throws Exception{
-        Map respuesta = imagenesServicio.saveImage(imagen);
+        Map  respuesta = imagenesServicio.saveImage(imagen);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, respuesta ));
     }
 
