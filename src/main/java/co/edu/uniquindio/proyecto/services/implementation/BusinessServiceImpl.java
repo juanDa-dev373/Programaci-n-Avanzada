@@ -8,8 +8,12 @@ import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 import co.edu.uniquindio.proyecto.repositories.BusinessRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
+import co.edu.uniquindio.proyecto.utils.JWTUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.geo.Point;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.stereotype.Service;
@@ -24,10 +28,11 @@ import java.util.Optional;
 public class BusinessServiceImpl implements BusinessService {
 
     private final BusinessRepo businessRepo;
-    private final ImageService imageService;
+    private final JWTUtils jwtUtils;
 
     @Override
-    public void addBusiness(AddBusinessDTO addBusinessDto) throws Exception {
+    public void addBusiness(AddBusinessDTO addBusinessDto , String token) throws Exception {
+
         if(existBusiness(addBusinessDto.id())) {
             throw new Exception("El Negocio ya existe");
         }
@@ -49,13 +54,14 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public void updateBusiness(UpdateBusinessDTO updateBusinessDTO) throws Exception {
+    public void updateBusiness(UpdateBusinessDTO updateBusinessDTO,String token) throws Exception {
         Optional<Business> bus= businessRepo.findBusiness(updateBusinessDTO.id());
         if(bus.isPresent() && bus.get().getState()==StateRecord.INACTIVE){
             throw new Exception("the Business don't exist");
         }
         Business business = bus.get();
-        if(updateBusinessDTO.idCliente().equals(business.getIdClient())) {
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        if((jws.getPayload().get("id")).equals(business.getIdClient())) {
             business.setTypeBusiness(updateBusinessDTO.typeBusiness());
             business.setImages(updateBusinessDTO.images());
             business.setPhone(updateBusinessDTO.phone());
@@ -72,13 +78,14 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public void deleteBusiness(DeleteBusinessDTO deleteBusinessDTO) throws Exception {
+    public void deleteBusiness(DeleteBusinessDTO deleteBusinessDTO, String token) throws Exception {
         Optional<Business> business = businessRepo.findBusiness(deleteBusinessDTO.idBusiness());
         if(existBusiness(deleteBusinessDTO.idBusiness()) && business.get().getState() == StateRecord.INACTIVE){
             throw new Exception("The Business don't exist");
         }
         Business business1 = business.get();
-        if(business1.getIdClient().equals(deleteBusinessDTO.idClient())){
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        if((jws.getPayload().get("id")).equals(business1.getIdClient())){
             business1.setState(StateRecord.INACTIVE);
             businessRepo.save(business1);
         }else{
@@ -115,7 +122,9 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public List<Business> listBusinessOwner(String idClient) throws Exception {
+    public List<Business> listBusinessOwner(String token) throws Exception {
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        String idClient= (String)jws.getPayload().get("id");
         List<Business> businessList = businessRepo.findBusinessByIdClient(idClient);
         if(businessList.isEmpty()){
             throw new Exception("No hay Negocios con ese dueño");

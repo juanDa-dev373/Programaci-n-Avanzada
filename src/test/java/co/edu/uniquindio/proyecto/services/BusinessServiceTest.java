@@ -37,7 +37,7 @@ public class BusinessServiceTest {
                 new ArrayList<>(Arrays.asList(new Schedule("2:59:00", "Martes", "7:30:59")))
                 , new ArrayList<>(Arrays.asList("43123")),
                 null);
-        businessService.addBusiness(addBusinessDTO);
+        businessService.addBusiness(addBusinessDTO,"test");
         Business bus = businessService.search(addBusinessDTO.id());
         Assertions.assertEquals(bus.getId(),"negocio8", "El Negocio se registro");
     }
@@ -46,7 +46,7 @@ public class BusinessServiceTest {
         businessService.deleteBusiness(new DeleteBusinessDTO(
                 "negocio3",
                 "cliente2"
-        ));
+        ),"test");
         Business business = businessService.search("negocio3");
         Assertions.assertEquals(StateRecord.INACTIVE, business.getStateBusiness());
     }
@@ -66,7 +66,7 @@ public class BusinessServiceTest {
                 business.getReview()
         );
         Assertions.assertNotEquals(business.getName(),updateBusinessDTO.name(),"Se debe cambiar el nombre");
-        businessService.updateBusiness(updateBusinessDTO);
+        businessService.updateBusiness(updateBusinessDTO,"test");
     }
     @Test
     public void listTypeTest() throws Exception{
