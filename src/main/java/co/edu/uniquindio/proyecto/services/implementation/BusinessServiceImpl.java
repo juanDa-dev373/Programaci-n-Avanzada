@@ -2,12 +2,15 @@ package co.edu.uniquindio.proyecto.services.implementation;
 
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Business;
+import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 import co.edu.uniquindio.proyecto.repositories.BusinessRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
+import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
+import co.edu.uniquindio.proyecto.services.interfaces.MailService;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.geo.Point;
@@ -24,13 +27,19 @@ import java.util.Optional;
 public class BusinessServiceImpl implements BusinessService {
 
     private final BusinessRepo businessRepo;
-    private final ImageService imageService;
+    private final MailService mailService;
+    private final ClientService clientService;
 
     @Override
     public void addBusiness(AddBusinessDTO addBusinessDto) throws Exception {
         if(existBusiness(addBusinessDto.id())) {
             throw new Exception("El Negocio ya existe");
         }
+        AccountDetailDTO clientDetail = clientService.getClientById(addBusinessDto.idClient());
+        if(!clientService.existEmail(clientDetail.email())){
+            throw new Exception("el cliente no existe");
+        }
+        Client client = clientService.getClient(clientDetail.email());
         Business business = new Business();
         business.setStateBusiness(StateRecord.ACTIVE);
         business.setState(StateBusiness.PENDING);
@@ -43,8 +52,16 @@ public class BusinessServiceImpl implements BusinessService {
         business.setReview(addBusinessDto.review());
         business.setTimeSchedules(addBusinessDto.timeSchedules());
         business.setPhone(addBusinessDto.phone());
-
         businessRepo.save(business);
+        mailService.sendMail(new EmailDTO(
+                "Creacion de negocio",
+                "<h1>Hola " + client.getNickname() + "</h1>\n" +
+                        "        <p>Su negocio fue creado correctamente</p>\n" +
+                        "<p> con el nombre de "+addBusinessDto.name()+"</p>",
+                client.getEmail()
+
+        ));
+
     }
 
     @Override

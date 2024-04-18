@@ -1,24 +1,29 @@
 package co.edu.uniquindio.proyecto.services.implementation;
 
-import co.edu.uniquindio.proyecto.dto.DeleteEventDTO;
-import co.edu.uniquindio.proyecto.dto.EventDTO;
-import co.edu.uniquindio.proyecto.dto.GetEventDTO;
-import co.edu.uniquindio.proyecto.dto.UpdateEventDTO;
+import co.edu.uniquindio.proyecto.dto.*;
+import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.documents.Event;
 import co.edu.uniquindio.proyecto.repositories.EventRepo;
+import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
+import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import co.edu.uniquindio.proyecto.services.interfaces.EventService;
+import co.edu.uniquindio.proyecto.services.interfaces.MailService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class EventServiceImpl implements EventService {
-    private EventRepo eventRepo;
 
-    public EventServiceImpl(EventRepo eventRepo) {
-        this.eventRepo = eventRepo;
-    }
+    private final EventRepo eventRepo;
+    private final ClientService clientService;
+    private final BusinessService businessService;
+    private final MailService mailService;
+
 
     @Override
     public void createEvent(EventDTO eventDTO) throws Exception {
@@ -26,6 +31,10 @@ public class EventServiceImpl implements EventService {
         if(eventOptional.isPresent()){
             throw new Exception("El evento ya existe");
         }
+        //_______________________________
+        AccountDetailDTO client = clientService.getClientById(eventDTO.client());
+        Business business = businessService.search(eventDTO.business());
+        //_______________________________
         Event event = new Event();
         event.setId(eventDTO.id());
         event.setDate(eventDTO.date());
@@ -34,6 +43,13 @@ public class EventServiceImpl implements EventService {
         event.setTitle(eventDTO.title());
         event.setDescription(eventDTO.description());
         eventRepo.save(event);
+        mailService.sendMail(new EmailDTO(
+                "Creacion de evento",
+                "<h1>Creacion correcta del evento</h1>"+
+                        "<p> se creo el evento exitosamente al negocio"+business.getName()+
+                        "<p>que esta asosiado al cliente "+client.nickname()+"</p´>",
+                client.email()
+        ));
     }
 
     @Override
