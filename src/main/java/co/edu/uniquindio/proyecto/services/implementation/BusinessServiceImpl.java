@@ -33,8 +33,8 @@ public class BusinessServiceImpl implements BusinessService {
         }
         Business business = new Business();
         business.setId(addBusinessDto.id());
-        business.setStateBusiness(StateRecord.ACTIVE);
-        business.setState(StateBusiness.PENDING);
+        business.setState(StateRecord.ACTIVE);
+        business.setStateBusiness(StateBusiness.PENDING);
         business.setTypeBusiness(addBusinessDto.typeBusiness());
         business.setImages(addBusinessDto.images());
         business.setDescription(addBusinessDto.description());
@@ -50,8 +50,8 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public void updateBusiness(UpdateBusinessDTO updateBusinessDTO) throws Exception {
-        Optional<Business> bus= businessRepo.findBusinessById(updateBusinessDTO.id());
-        if(bus.isPresent() && bus.get().getStateBusiness()==StateRecord.INACTIVE){
+        Optional<Business> bus= businessRepo.findBusiness(updateBusinessDTO.id());
+        if(bus.isPresent() && bus.get().getState()==StateRecord.INACTIVE){
             throw new Exception("the Business don't exist");
         }
         Business business = bus.get();
@@ -73,13 +73,13 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public void deleteBusiness(DeleteBusinessDTO deleteBusinessDTO) throws Exception {
-        Optional<Business> business = businessRepo.findBusinessById(deleteBusinessDTO.idBusiness());
-        if(existBusiness(deleteBusinessDTO.idBusiness()) && business.get().getStateBusiness() == StateRecord.INACTIVE){
+        Optional<Business> business = businessRepo.findBusiness(deleteBusinessDTO.idBusiness());
+        if(existBusiness(deleteBusinessDTO.idBusiness()) && business.get().getState() == StateRecord.INACTIVE){
             throw new Exception("The Business don't exist");
         }
         Business business1 = business.get();
         if(business1.getIdClient().equals(deleteBusinessDTO.idClient())){
-            business1.setStateBusiness(StateRecord.INACTIVE);
+            business1.setState(StateRecord.INACTIVE);
             businessRepo.save(business1);
         }else{
             throw new Exception("the client is not owner");
@@ -141,7 +141,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public Business search(String id) throws Exception {
-        Optional<Business> business = businessRepo.findBusinessById(id);
+        Optional<Business> business = businessRepo.findBusiness(id);
         if(business.isEmpty()){
             throw new Exception("El negocio no existe");
         }
@@ -167,7 +167,7 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     public boolean existBusiness(String id){
-        return businessRepo.findBusinessById(id).isPresent();
+        return businessRepo.findBusiness(id).isPresent();
     }
 
 }
