@@ -8,6 +8,8 @@ import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -98,8 +100,9 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public ListBusinessDTO getListBusiness(String idClient, String nameList) throws Exception {
-        Optional<Client> optionalClient = clientRepo.findById( idClient );
+    public ListBusinessDTO getListBusiness(String token, String nameList) throws Exception {
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        Optional<Client> optionalClient = clientRepo.findById((String)jws.getPayload().get("id"));
 
         //Si no se encontró el cliente, lanzamos una excepción
         if(optionalClient.isEmpty()){
@@ -132,8 +135,9 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         return listBusinessDto;
     }
     @Override
-    public List<ListBusiness> getListsBusinesses(String idClient) throws Exception {
-        Optional<Client> optionalClient = clientRepo.findById( idClient );
+    public List<ListBusiness> getListsBusinesses(String token) throws Exception {
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        Optional<Client> optionalClient = clientRepo.findById((String)jws.getPayload().get("id"));
 
         //Si no se encontró el cliente, lanzamos una excepción
         if(optionalClient.isEmpty()){
@@ -162,9 +166,10 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
  }
 
     @Override
-    public AccountDetailDTO getClientById(String idClient) throws Exception {
+    public AccountDetailDTO getClientById(String token) throws Exception {
         //Buscamos el cliente que se quiere actualizar
-        Optional<Client> optionalClient = clientRepo.findById( idClient );
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        Optional<Client> optionalClient = clientRepo.findById((String)jws.getPayload().get("id"));
 
         //Si no se encontró el cliente, lanzamos una excepción
         if(optionalClient.isEmpty()){
@@ -186,11 +191,6 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public void forgotPassword(String email) throws Exception {
-
-    }
-
-    @Override
     public List<ItemClientDTO> listClient() {
         //Obtenemos todos los clientes de la base de datos
         List<Client> clients = clientRepo.findAll();
@@ -208,16 +208,18 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public ListBusiness createBusinessList(String clientId, String listName)throws Exception {
-        Client client = clientRepo.findById(clientId)
+    public ListBusiness createBusinessList(String token, String listName)throws Exception {
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+
+        Client client =clientRepo.findById((String)jws.getPayload().get("id"))
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "{message:"+ "\"No se encuentra una cuenta con el id= "+clientId+"\"\n ,"+ "statusCode: Error }"));
+                        "{message:"+ "\"No se encuentra una cuenta con el id= "+ token +"\"\n ,"+ "statusCode: Error }"));
 
         ListBusiness listBusiness = new ListBusiness();
         listBusiness.setListName(listName);
         listBusiness.setId((listClient().size()+1)+"");
         listBusiness.setIdBusiness(new ArrayList<>());
-        if(listBusinessExist(clientId,listName))
+        if(listBusinessExist(token,listName))
             throw new Exception( "{message:"+ "\"El cliente ya tiene una lista con este nombre= "+listName+"\"\n ,"+ "statusCode: Error }");
 
         client.getListClient().add(listBusiness);
@@ -246,10 +248,11 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public void deleteBusinessList(String clientId, String listName) throws IllegalArgumentException{
-        Client client = clientRepo.findById(clientId)
+    public void deleteBusinessList(String token, String listName) throws IllegalArgumentException{
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        Client client =clientRepo.findById((String)jws.getPayload().get("id"))
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "{message:"+ "\"No se encuentra una cuenta con el id= "+clientId+"\"\n ,"+ "statusCode: Error }"));
+                        "{message:"+ "\"No se encuentra una cuenta con el id= "+ token +"\"\n ,"+ "statusCode: Error }"));
 
         ListBusiness listToRemove = null;
         for (ListBusiness listBusiness : client.getListClient()) {
@@ -268,8 +271,9 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public void addBusinessToList(BusinessToListDTO addBusiness) throws IllegalArgumentException {
-        Client client = clientRepo.findById(addBusiness.clientId())
+    public void addBusinessToList(BusinessToListDTO addBusiness ,String token) throws IllegalArgumentException {
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        Client client =clientRepo.findById((String)jws.getPayload().get("id"))
                 .orElseThrow(() -> new IllegalArgumentException(
                 "{message:"+ "\"No se encuentra una cuenta con el id= "+addBusiness.clientId()+"\"\n ,"+ "statusCode: Error }"));
 
@@ -282,7 +286,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         }
 
         if (listBusiness == null) throw new IllegalArgumentException(
-                "{message:"+ "\"No se encuentra una lista con el id= "+addBusiness.listId()+"\"\n ,"+ "statusCode: Error }");
+                "No se encuentra una lista con el id= "+addBusiness.listId());
 
         listBusiness.getIdBusiness().add(addBusiness.businessId());
         clientRepo.save(client);
@@ -290,10 +294,11 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public void deleteBusinessToList(BusinessToListDTO removeBusiness) throws IllegalArgumentException {
-        Client client = clientRepo.findById(removeBusiness.clientId())
+    public void deleteBusinessToList(BusinessToListDTO removeBusiness, String token) throws IllegalArgumentException {
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        Client client =clientRepo.findById((String)jws.getPayload().get("id"))
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "{message:"+ "\"No se encuentra una cuenta con el id= "+removeBusiness.clientId()+"\"\n ,"+ "statusCode: Error }"));
+                        "No se encuentra una cuenta con el id= "+removeBusiness.clientId()));
 
 
         ListBusiness listBusiness = null;
@@ -306,7 +311,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         }
 
         if (listBusiness == null) throw new IllegalArgumentException(
-                "{message:"+ "\"No se encuentra una lista con el id= "+removeBusiness.listId()+"\"\n ,"+ "statusCode: Error }");
+                "No se encuentra una lista con el id= "+removeBusiness.listId());
 
         listBusiness.getIdBusiness().remove(removeBusiness.businessId());
         clientRepo.save(client);

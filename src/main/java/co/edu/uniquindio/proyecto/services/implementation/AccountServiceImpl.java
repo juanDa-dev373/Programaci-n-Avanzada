@@ -62,6 +62,7 @@ public class AccountServiceImpl implements AccountService {
 
         Map<String, Object> map = new HashMap<>();
         map.put("rol", "PASSWORD");
+        map.put("rolAccount", type.tipo());
         map.put("nickname", type.account().getNickname());
         map.put("id", type.account().getId());
 
@@ -83,14 +84,16 @@ public class AccountServiceImpl implements AccountService {
     public void passwordRecovery(ChangePasswordDTO changePasswordDTO,@NotBlank(message = "Nesecita un token de autorización") String token) throws Exception {
         Jws<Claims> jws = jwtUtils.parseJwt(token);
         TypeAccountDto type = verifyAccountById((String)jws.getPayload().get("id"));
-
+        if(!jws.getPayload().get("rol").equals("PASSWORD"))
+            throw new Exception(
+                    "Token no valido");
         if (changePasswordDTO.password().equals(changePasswordDTO.passwordConfirmation())){
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String password = passwordEncoder.encode(changePasswordDTO.password());
             type.account().setPassword(password);
         }
 
-        if(type.tipo().equals("CLIENTE")){
+        if(jws.getPayload().get("rolAccount").equals("CLIENTE")){
             Client client = (Client) type.account();
             clientRepo.save(client);
         }else{

@@ -57,7 +57,7 @@ public class ClientServiceTest {
     @Test
     public void getListsBusinessTest() throws Exception {
         List<ListBusiness> list= clientService.getListsBusinesses("Cliente1");
-        Assertions.assertEquals(1,list.size());
+        Assertions.assertEquals(3,list.size());
     }
 
     @Test
@@ -103,7 +103,7 @@ public class ClientServiceTest {
                 "Favorites",
                 "Negocio1"
         );
-        clientService.addBusinessToList(addBusiness);
+        clientService.addBusinessToList(addBusiness,"test");
         ListBusinessDTO list=clientService.getListBusiness("Cliente1","Favorites");
         Assertions.assertEquals("Negocio1",list.businesses().get(0).name());
     }
@@ -116,7 +116,7 @@ public class ClientServiceTest {
                 "Favorites",
                 "Negocio1"
         );
-        clientService.deleteBusinessToList(addBusiness);
+        clientService.deleteBusinessToList(addBusiness,"test");
         ListBusinessDTO list=clientService.getListBusiness("Cliente1","Favorites");
         Assertions.assertEquals(0,list.businesses().size());
     }

@@ -29,7 +29,7 @@ public class BusinessServiceTest {
     private BusinessService businessService;
     @Test
     public void addText() throws Exception{
-        AddBusinessDTO addBusinessDTO = new AddBusinessDTO( "helados"
+        AddBusinessDTO addBusinessDTO = new AddBusinessDTO("negocio8", "helados"
                 , "este heladeria sirve helados muy rico",
                 "cliente2", new Location( 4.53389, -75.68111),
                 new ArrayList<>(Arrays.asList()),
@@ -37,24 +37,24 @@ public class BusinessServiceTest {
                 new ArrayList<>(Arrays.asList(new Schedule("2:59:00", "Martes", "7:30:59")))
                 , new ArrayList<>(Arrays.asList("43123")),
                 null);
-        businessService.addBusiness(addBusinessDTO);
-
-        Assertions.assertEquals(addBusinessDTO.name(),"helados", "El Negocio se registro");
+        businessService.addBusiness(addBusinessDTO,"test");
+        Business bus = businessService.search(addBusinessDTO.id());
+        Assertions.assertEquals(bus.getId(),"negocio8", "El Negocio se registro");
     }
     @Test
     public void deleteTest() throws Exception{
         businessService.deleteBusiness(new DeleteBusinessDTO(
                 "negocio3",
                 "cliente2"
-        ));
+        ),"test");
         Business business = businessService.search("negocio3");
         Assertions.assertEquals(StateRecord.INACTIVE, business.getStateBusiness());
     }
     @Test
     public void UpdateTest() throws Exception{
-        Business business = businessService.search("negocio5");
+        Business business = businessService.search("negocio8");
         UpdateBusinessDTO updateBusinessDTO = new UpdateBusinessDTO(
-                "negocio5",
+                "negocio8",
                 "cliente2",
                 "helado pelambre",
                 "esto es una heladeria muy sabrosa",
@@ -66,7 +66,7 @@ public class BusinessServiceTest {
                 business.getReview()
         );
         Assertions.assertNotEquals(business.getName(),updateBusinessDTO.name(),"Se debe cambiar el nombre");
-        businessService.updateBusiness(updateBusinessDTO);
+        businessService.updateBusiness(updateBusinessDTO,"test");
     }
     @Test
     public void listTypeTest() throws Exception{

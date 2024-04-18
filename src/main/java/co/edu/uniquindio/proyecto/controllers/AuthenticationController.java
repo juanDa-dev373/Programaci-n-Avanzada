@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.controllers;
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.services.interfaces.AuthenticationService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

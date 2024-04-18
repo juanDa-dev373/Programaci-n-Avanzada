@@ -59,30 +59,30 @@ public class ClientController {
     }
 
     @PostMapping("/addBusinessToList")
-    public ResponseEntity<MensajeDTO<String>> addBusinessToList(@Valid @RequestBody BusinessToListDTO addBusiness) throws Exception {
-        clientService.addBusinessToList(addBusiness);
+    public ResponseEntity<MensajeDTO<String>> addBusinessToList(@Valid @RequestBody BusinessToListDTO addBusiness, @RequestHeader("Authorization") String token) throws Exception {
+        clientService.addBusinessToList(addBusiness,token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio añadido a la lista correctamente"));
     }
 
     @DeleteMapping("/deleteBusinessToList")
-    public ResponseEntity<MensajeDTO<String>> deleteBusinessToList(@Valid @RequestBody BusinessToListDTO removeBusiness) throws Exception {
-        clientService.deleteBusinessToList(removeBusiness);
+    public ResponseEntity<MensajeDTO<String>> deleteBusinessToList(@Valid @RequestBody BusinessToListDTO removeBusiness, @RequestHeader("Authorization") String token) throws Exception {
+        clientService.deleteBusinessToList(removeBusiness,token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio eliminado de la lista correctamente"));
     }
     @PostMapping("/addBusinessClient")
-    public ResponseEntity<MensajeDTO<String>> addBusiness(@Valid @RequestBody AddBusinessDTO addBusinessDTO) throws Exception {
-        businessService.addBusiness(addBusinessDTO);
+    public ResponseEntity<MensajeDTO<String>> addBusiness(@Valid @RequestBody AddBusinessDTO addBusinessDTO , @RequestHeader("Authorization") String token) throws Exception {
+        businessService.addBusiness(addBusinessDTO,token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Creado Exitosamente"));
     }
 
     @PostMapping("/deleteBusinessClient")
-    ResponseEntity<MensajeDTO<String>> deleteBusiness(@Valid @RequestBody DeleteBusinessDTO deleteBusinessDTO) throws Exception {
-        businessService.deleteBusiness(deleteBusinessDTO);
+    ResponseEntity<MensajeDTO<String>> deleteBusiness(@Valid @RequestBody DeleteBusinessDTO deleteBusinessDTO, @RequestHeader("Authorization") String token) throws Exception {
+        businessService.deleteBusiness(deleteBusinessDTO,token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Eliminado Correctamente"));
     }
     @PostMapping("/updateBusiness")
-    ResponseEntity<MensajeDTO<String>> updateBusiness(@Valid @RequestBody UpdateBusinessDTO updateBusinessDTO) throws Exception {
-        businessService.updateBusiness(updateBusinessDTO);
+    ResponseEntity<MensajeDTO<String>> updateBusiness(@Valid @RequestBody UpdateBusinessDTO updateBusinessDTO, @RequestHeader("Authorization") String token) throws Exception {
+        businessService.updateBusiness(updateBusinessDTO, token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "El Negocio Fue Actualizado"));
     }
     @GetMapping("/getAllBusiness")
