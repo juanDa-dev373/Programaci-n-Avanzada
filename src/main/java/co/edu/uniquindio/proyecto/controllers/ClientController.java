@@ -5,28 +5,26 @@ import co.edu.uniquindio.proyecto.model.documents.Comment;
 import co.edu.uniquindio.proyecto.model.documents.Event;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
-import co.edu.uniquindio.proyecto.services.interfaces.*;
+import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
+import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
+import co.edu.uniquindio.proyecto.services.interfaces.CommentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.data.mongodb.repository.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/clients")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "bearerAuth")
 public class ClientController {
 
     private final ClientService clientService;
     private final BusinessService businessService;
     private final CommentService commentService;
-    private final EventService eventService;
-    private final ImageService imageService;
 
     @GetMapping("/{idClient}")
     public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@Valid @PathVariable String idClient) throws Exception {
@@ -132,33 +130,5 @@ public class ClientController {
     @GetMapping("/getComment")
     ResponseEntity<MensajeDTO<Comment>> getComment(@Valid @RequestParam("idComment") String idComment, @Valid @RequestParam("idBusiness") String idBusiness) throws Exception{
         return ResponseEntity.ok().body(new MensajeDTO<>(false, commentService.getComment(idComment, idBusiness)));
-    }
-    @DeleteMapping("/deleteComment")
-    ResponseEntity<MensajeDTO<String>> deleteComment(@Valid @RequestBody DeleteCommentDTO deleteCommentDTO) throws Exception {
-        commentService.deleteComment(deleteCommentDTO);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Comentario eliminado correctamente"));
-    }
-    @PostMapping("/createEvent")
-    ResponseEntity<MensajeDTO<String>> createEvent(@Valid @RequestBody EventDTO eventDTO) throws Exception {
-        eventService.createEvent(eventDTO);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Se creo el evento correctamente"));
-    }
-    @GetMapping("{idBusiness}/listEventBusiness")
-    ResponseEntity<MensajeDTO<List<Event>>> listEventBusiness(@Valid @PathVariable String idBusiness) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, eventService.listEvent(idBusiness)));
-    }
-    @PostMapping("/updateEvent")
-    ResponseEntity<MensajeDTO<String>> updateEvent(@Valid @RequestBody UpdateEventDTO updateEventDTO) throws Exception {
-        eventService.updateEvent(updateEventDTO);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Se actualizo el evento correctamente"));
-    }
-    @GetMapping("/getEvent")
-    ResponseEntity<MensajeDTO<Event>> getEvent(@Valid @RequestBody GetEventDTO getEventDTO) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, eventService.getEvent(getEventDTO)));
-    }
-    @DeleteMapping("/deleteEvent")
-    ResponseEntity<MensajeDTO<String>> deleteEvent(@Valid @RequestBody DeleteEventDTO deleteEventDTO) throws Exception {
-        eventService.deleteEvent(deleteEventDTO);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, "se elimino correctamente el evento"));
     }
 }

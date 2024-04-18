@@ -1,25 +1,20 @@
 package co.edu.uniquindio.proyecto.controllers;
 
-import co.edu.uniquindio.proyecto.dto.LoginDTO;
-import co.edu.uniquindio.proyecto.dto.MensajeDTO;
-import co.edu.uniquindio.proyecto.dto.SignUpDTO;
-import co.edu.uniquindio.proyecto.dto.TokenDTO;
+import co.edu.uniquindio.proyecto.dto.*;
+import co.edu.uniquindio.proyecto.services.interfaces.AccountService;
 import co.edu.uniquindio.proyecto.services.interfaces.AuthenticationService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-
     private final ClientService clientService;
 
     @Autowired
@@ -46,7 +41,19 @@ public class AuthenticationController {
     @PostMapping("/singUp-client")
     public ResponseEntity<MensajeDTO<String>> signUpClient(@Valid @RequestBody
                                                                SignUpDTO signUpDTO) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.signUpUser(signUpDTO)));
+        clientService.signUpUser(signUpDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Cliente registrado correctamente"));
+    }
+
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<MensajeDTO<String>> forgotPassword(@RequestParam("email") String email) throws Exception {
+        clientService.forgotPassword(email);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Solicitud de recuperación de contraseña enviada"));
+    }
+    @PostMapping("/passwordRecovery")
+    public ResponseEntity<MensajeDTO<String>> passwordRecovery(@RequestBody ChangePasswordDTO changePasswordDTO) throws Exception {
+        clientService.passwordRecovery(changePasswordDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Recuperación de contraseña exitosa"));
     }
 
 }
