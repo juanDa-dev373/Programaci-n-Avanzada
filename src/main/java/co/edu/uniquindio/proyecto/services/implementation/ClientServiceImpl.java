@@ -42,7 +42,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
      cliente.setName(sing.name() );
      cliente.setNickname( sing.nickname() );
      cliente.setCity( sing.city() );
-     cliente.setProfilePhoto((String)imageService.saveImage(sing.photo()).get("url"));
+     cliente.setProfilePhoto(sing.urlPhoto());
 
      cliente.setEmail( sing.email() );
      cliente.setPassword(password);
@@ -83,7 +83,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         Client client = optionalClient.get();
         client.setName(profileDTO.name());
         client.setCity(profileDTO.city());
-        client.setProfilePhoto((String)imageService.saveImage(profileDTO.profilePhoto()).get("url"));
+        client.setProfilePhoto(profileDTO.profilePhoto());
 
         clientRepo.save(client);
 

@@ -28,22 +28,14 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public void addBusiness(AddBusinessDTO addBusinessDto) throws Exception {
-        if(existBusiness(addBusinessDto.id())){
+        if(existBusiness(addBusinessDto.id())) {
             throw new Exception("El Negocio ya existe");
         }
-        //se agregan las imagenes en forma de array
-        ArrayList <String>images = new ArrayList<>();
-        for(int i = 0; i<addBusinessDto.images().size(); i++){
-            String imageUrl =(String)imageService.saveImage(addBusinessDto.images().get(i)).get("url");
-            images.add(i, imageUrl);
-        }
-        //-----------------------------------------
         Business business = new Business();
-        business.setId(addBusinessDto.id());
         business.setStateBusiness(StateRecord.ACTIVE);
         business.setState(StateBusiness.PENDING);
         business.setTypeBusiness(addBusinessDto.typeBusiness());
-        business.setImages(images);
+        business.setImages(addBusinessDto.images());
         business.setDescription(addBusinessDto.description());
         business.setName(addBusinessDto.name());
         business.setLocation(addBusinessDto.location());
@@ -61,17 +53,10 @@ public class BusinessServiceImpl implements BusinessService {
         if(bus.isPresent() && bus.get().getStateBusiness()==StateRecord.INACTIVE){
             throw new Exception("the Business don't exist");
         }
-        //se agregan las imagenes en forma de array
-        ArrayList <String>images = new ArrayList<>();
-        for(int i = 0; i<updateBusinessDTO.images().size(); i++){
-            String imageUrl =(String)imageService.saveImage(updateBusinessDTO.images().get(i)).get("url");
-            images.add(i, imageUrl);
-        }
-        //-----------------------------------------
         Business business = bus.get();
         if(updateBusinessDTO.idCliente().equals(business.getIdClient())) {
             business.setTypeBusiness(updateBusinessDTO.typeBusiness());
-            business.setImages(images);
+            business.setImages(updateBusinessDTO.images());
             business.setPhone(updateBusinessDTO.phone());
             business.setLocation(updateBusinessDTO.location());
             business.setName(updateBusinessDTO.name());
@@ -183,4 +168,5 @@ public class BusinessServiceImpl implements BusinessService {
     public boolean existBusiness(String id){
         return businessRepo.findBusinessById(id).isPresent();
     }
+
 }

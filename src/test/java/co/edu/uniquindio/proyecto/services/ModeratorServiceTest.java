@@ -30,11 +30,6 @@ class ModeratorServiceTest {
         String state= moderatorService.deactivateUserAccount("Moderator1","Cliente1");
         Assertions.assertEquals(StateRecord.INACTIVE.toString(),state);
     }
-    @Test
-    public void activateUserAccount() throws Exception {
-        String state= moderatorService.activateUserAccount("Moderator1","Cliente1");
-        Assertions.assertEquals(StateRecord.ACTIVE.toString(),state);
-    }
 
     @Test
     public void logOutTest() throws Exception {

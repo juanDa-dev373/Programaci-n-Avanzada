@@ -17,7 +17,7 @@ public record UpdateBusinessDTO(
         @NotBlank(message = "Es necesario que ingrese el nombre") String name,
         @NotBlank(message = "Es necesario que ingrese la descripcion") String description,
         @NotBlank(message = "Es necesario que ingrese la ubicacion") Location location,
-        List<MultipartFile>images,
+        List<String>images,
         @NotBlank(message = "Es necesario que ingrese el tipo de negocio") TypeBusiness typeBusiness,
         List<Schedule> timeSchedules,
         List<String> phone,

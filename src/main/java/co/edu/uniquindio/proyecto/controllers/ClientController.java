@@ -5,27 +5,28 @@ import co.edu.uniquindio.proyecto.model.documents.Comment;
 import co.edu.uniquindio.proyecto.model.documents.Event;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
-import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
-import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
-import co.edu.uniquindio.proyecto.services.interfaces.CommentService;
-import co.edu.uniquindio.proyecto.services.interfaces.EventService;
+import co.edu.uniquindio.proyecto.services.interfaces.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.data.mongodb.repository.Update;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/clients")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class ClientController {
 
     private final ClientService clientService;
     private final BusinessService businessService;
     private final CommentService commentService;
     private final EventService eventService;
+    private final ImageService imageService;
 
     @GetMapping("/{idClient}")
     public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@Valid @PathVariable String idClient) throws Exception {
@@ -160,5 +161,4 @@ public class ClientController {
         eventService.deleteEvent(deleteEventDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "se elimino correctamente el evento"));
     }
-
 }
