@@ -7,6 +7,7 @@ import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,9 +17,9 @@ public record UpdateBusinessDTO(
         @NotBlank String idCliente,
         @NotBlank(message = "Es necesario que ingrese el nombre") String name,
         @NotBlank(message = "Es necesario que ingrese la descripcion") String description,
-        @NotBlank(message = "Es necesario que ingrese la ubicacion") Location location,
-        List<String>images,
-        @NotBlank(message = "Es necesario que ingrese el tipo de negocio") TypeBusiness typeBusiness,
+        @NotNull Location location,
+        @NotNull List<String>images,
+        @NotNull TypeBusiness typeBusiness,
         List<Schedule> timeSchedules,
         List<String> phone,
         HistoryReview review

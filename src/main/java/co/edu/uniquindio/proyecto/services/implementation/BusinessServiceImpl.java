@@ -28,16 +28,12 @@ public class BusinessServiceImpl implements BusinessService {
 
     private final BusinessRepo businessRepo;
     private final MailService mailService;
-    private final ClientService clientService;
+    //private final ClientService clientService;
 
     @Override
     public void addBusiness(AddBusinessDTO addBusinessDto) throws Exception {
-        if(existBusiness(addBusinessDto.id())) {
-            throw new Exception("El Negocio ya existe");
-        }
-        AccountDetailDTO clientDetail = clientService.getClientById(addBusinessDto.idClient());
+        //AccountDetailDTO clientDetail = clientService.getClientById(addBusinessDto.idClient());
         Business business = new Business();
-        business.setId(addBusinessDto.id());
         business.setState(StateRecord.ACTIVE);
         business.setStateBusiness(StateBusiness.PENDING);
         business.setTypeBusiness(addBusinessDto.typeBusiness());
@@ -50,14 +46,13 @@ public class BusinessServiceImpl implements BusinessService {
         business.setTimeSchedules(addBusinessDto.timeSchedules());
         business.setPhone(addBusinessDto.phone());
         businessRepo.save(business);
-        mailService.sendMail(new EmailDTO(
+        /**mailService.sendMail(new EmailDTO(
                 "Creacion de negocio",
                 "<h1>Hola " + clientDetail.nickname() + "</h1>\n" +
                         "        <p>Su negocio fue creado correctamente</p>\n" +
                         "<p> con el nombre de "+addBusinessDto.name()+"</p>",
                 clientDetail.email()
-
-        ));
+        ));**/
 
     }
 
@@ -87,10 +82,15 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public void deleteBusiness(DeleteBusinessDTO deleteBusinessDTO) throws Exception {
         Optional<Business> business = businessRepo.findBusiness(deleteBusinessDTO.idBusiness());
-        if(existBusiness(deleteBusinessDTO.idBusiness()) && business.get().getState() == StateRecord.INACTIVE){
+        if(business.isEmpty()){
+            System.out.print("esta vacio");
             throw new Exception("The Business don't exist");
+
         }
         Business business1 = business.get();
+        if(business1.getState() == StateRecord.INACTIVE){
+            throw new Exception("The Business don't exist");
+        }
         if(business1.getIdClient().equals(deleteBusinessDTO.idClient())){
             business1.setState(StateRecord.INACTIVE);
             businessRepo.save(business1);
