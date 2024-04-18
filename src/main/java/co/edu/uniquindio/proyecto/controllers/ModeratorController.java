@@ -7,13 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.services.interfaces.ModeratorService;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/moderadores")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "bearerAuth")
 public class ModeratorController {
 
     private final ModeratorService moderatorService;

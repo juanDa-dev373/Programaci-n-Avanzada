@@ -28,47 +28,7 @@ public class ClientServiceTest {
                 "juan10F",
                 "juand.riosf1@uqvirtual.edu.co",
                 "1234",
-                new MultipartFile() {
-                    @Override
-                    public String getName() {
-                        return null;
-                    }
-
-                    @Override
-                    public String getOriginalFilename() {
-                        return null;
-                    }
-
-                    @Override
-                    public String getContentType() {
-                        return null;
-                    }
-
-                    @Override
-                    public boolean isEmpty() {
-                        return false;
-                    }
-
-                    @Override
-                    public long getSize() {
-                        return 0;
-                    }
-
-                    @Override
-                    public byte[] getBytes() throws IOException {
-                        return new byte[0];
-                    }
-
-                    @Override
-                    public InputStream getInputStream() throws IOException {
-                        return null;
-                    }
-
-                    @Override
-                    public void transferTo(File dest) throws IOException, IllegalStateException {
-
-                    }
-                },
+                "foto.png",
                 "Armenia"
         );
 
@@ -95,58 +55,23 @@ public class ClientServiceTest {
     }
 
     @Test
-    public void getListBusinessTest() throws Exception {
+    public void getListsBusinessTest() throws Exception {
         List<ListBusiness> list= clientService.getListsBusinesses("Cliente1");
         Assertions.assertEquals(1,list.size());
     }
 
+    @Test
+    public void getListBusinessTest() throws Exception {
+        ListBusinessDTO list= clientService.getListBusiness("Cliente1","Favorites");
+        Assertions.assertEquals(1,list.businesses().size());
+    }
 
     @Test
     public void updateProfileTest() throws Exception {
         ProfileDTO update=new ProfileDTO(
                 "Cliente1",
                 "David",
-                new MultipartFile() {
-                    @Override
-                    public String getName() {
-                        return null;
-                    }
-
-                    @Override
-                    public String getOriginalFilename() {
-                        return null;
-                    }
-
-                    @Override
-                    public String getContentType() {
-                        return null;
-                    }
-
-                    @Override
-                    public boolean isEmpty() {
-                        return false;
-                    }
-
-                    @Override
-                    public long getSize() {
-                        return 0;
-                    }
-
-                    @Override
-                    public byte[] getBytes() throws IOException {
-                        return new byte[0];
-                    }
-
-                    @Override
-                    public InputStream getInputStream() throws IOException {
-                        return null;
-                    }
-
-                    @Override
-                    public void transferTo(File dest) throws IOException, IllegalStateException {
-
-                    }
-                },
+                "foto.png",
                 "Armenia"
         );
         clientService.updateProfile(update);
@@ -160,7 +85,7 @@ public class ClientServiceTest {
 
     @Test
     public void createBusinessListTest()throws Exception {
-        ListBusiness list=clientService.createBusinessList("Cliente1","Restaurantes");
+        ListBusiness list=clientService.createBusinessList("Cliente1","Heladerias");
         Assertions.assertNotNull(list);
     }
 

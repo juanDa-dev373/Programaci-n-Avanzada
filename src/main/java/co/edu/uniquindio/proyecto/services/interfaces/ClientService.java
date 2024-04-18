@@ -20,7 +20,7 @@ public interface ClientService extends AccountService {
     String signUpUser(SignUpDTO signUpDTO) throws Exception;
 
     /**
-     * Obtener la ruta y dirección para llegar a un lugar deseado.
+     * Permite acceder a todos los atributos del cliente dado su código
      * @param idClient El ID único del cliente.
      * @return Los detalles del cliente.
      */

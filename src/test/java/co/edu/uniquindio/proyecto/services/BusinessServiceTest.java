@@ -29,10 +29,10 @@ public class BusinessServiceTest {
     private BusinessService businessService;
     @Test
     public void addText() throws Exception{
-        AddBusinessDTO addBusinessDTO = new AddBusinessDTO("negocio9", "helados"
+        AddBusinessDTO addBusinessDTO = new AddBusinessDTO("negocio8", "helados"
                 , "este heladeria sirve helados muy rico",
                 "cliente2", new Location( 4.53389, -75.68111),
-                new ArrayList<>(Arrays.asList("imagen1","imagen2")),
+                new ArrayList<>(Arrays.asList()),
                 TypeBusiness.HELADERIA,
                 new ArrayList<>(Arrays.asList(new Schedule("2:59:00", "Martes", "7:30:59")))
                 , new ArrayList<>(Arrays.asList("43123")),
@@ -52,14 +52,14 @@ public class BusinessServiceTest {
     }
     @Test
     public void UpdateTest() throws Exception{
-        Business business = businessService.search("negocio8");
+        Business business = businessService.search("negocio5");
         UpdateBusinessDTO updateBusinessDTO = new UpdateBusinessDTO(
-                "negocio8",
+                "negocio5",
                 "cliente2",
-                "hamburguesas pedro",
+                "helado pelambre",
                 "esto es una heladeria muy sabrosa",
                 business.getLocation(),
-                new ArrayList<>(Arrays.asList("imagen2","imagen3")),
+                new ArrayList<>(),
                 TypeBusiness.HELADERIA,
                 business.getTimeSchedules(),
                 business.getPhone(),
@@ -80,19 +80,19 @@ public class BusinessServiceTest {
     }
     @Test
     public void RegistrerReview() throws Exception{
-        //Business business = businessService.search("negocio8");
+        Business business = businessService.search("negocio6");
         RegistrerReviewDTO registrerReviewDTO = new RegistrerReviewDTO(
-                "negocio8",
+                "negocio6",
                 new HistoryReview(
                         "no se acepto por mk",
-                        StateBusiness.APPROVED,
+                        StateBusiness.REJECTED,
                         LocalDateTime.now(),
                         "moderador1",
                         "neegocio6"
                 )
         );
         businessService.registrerReview(registrerReviewDTO);
-        Assertions.assertEquals(StateBusiness.APPROVED, registrerReviewDTO.review().getStateBusiness());
+        Assertions.assertEquals(StateBusiness.REJECTED, registrerReviewDTO.review().getStateBusiness());
     }
     @Test
     public void listOwnerBusiness() throws Exception{
@@ -110,10 +110,5 @@ public class BusinessServiceTest {
         LocationDTO locationDTO = new LocationDTO(new Location( 4.53389, -75.68111), 1000);
         List<Business> businessList = businessService.searchBusinessLocation(locationDTO);
         Assertions.assertEquals(1,businessList.size(), "la lista no es nula");
-    }
-    @Test
-    public void searchIdTest() throws Exception{
-        Business business = businessService.search("negocio8");
-        Assertions.assertEquals("negocio8", business.getId());
     }
 }

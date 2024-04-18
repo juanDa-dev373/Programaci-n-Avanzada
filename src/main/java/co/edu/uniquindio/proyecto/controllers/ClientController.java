@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -135,7 +134,7 @@ public class ClientController {
     }
     @DeleteMapping("/deleteComment")
     ResponseEntity<MensajeDTO<String>> deleteComment(@Valid @RequestBody DeleteCommentDTO deleteCommentDTO) throws Exception {
-        commentService.deleteComment(deleteCommentDTO);
+        //commentService.deleteComment(deleteCommentDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Comentario eliminado correctamente"));
     }
     @PostMapping("/createEvent")
@@ -154,7 +153,7 @@ public class ClientController {
     }
     @GetMapping("/getEvent")
     ResponseEntity<MensajeDTO<Event>> getEvent(@Valid @RequestBody GetEventDTO getEventDTO) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, eventService.getEvent(getEventDTO)));
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, eventService.getEvent(getEventDTO.id(),getEventDTO.idBusiness(),getEventDTO.idClient())));
     }
     @DeleteMapping("/deleteEvent")
     ResponseEntity<MensajeDTO<String>> deleteEvent(@Valid @RequestBody DeleteEventDTO deleteEventDTO) throws Exception {

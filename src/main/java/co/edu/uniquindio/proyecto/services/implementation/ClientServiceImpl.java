@@ -41,7 +41,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
      cliente.setName(sing.name() );
      cliente.setNickname( sing.nickname() );
      cliente.setCity( sing.city() );
-     cliente.setProfilePhoto(sing.urlPhoto());
+     cliente.setProfilePhoto( sing.photo() );
 
      cliente.setEmail( sing.email() );
      cliente.setPassword(password);
@@ -76,7 +76,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         //Si no se encontró la cuenta, lanzamos una excepción
         if(optionalClient.isEmpty())
             throw new Exception(
-                    "{message:"+ "\"No se encuentra una cuenta con el id= "+profileDTO.id()+"\n ,"+ "statusCode: Error }"
+                    "No se encuentra una cuenta con el id= "+profileDTO.id()
             );
 
         Client client = optionalClient.get();

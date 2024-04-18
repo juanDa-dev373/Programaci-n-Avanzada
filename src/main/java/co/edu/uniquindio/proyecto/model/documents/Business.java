@@ -33,6 +33,6 @@ public class Business {
     private List<Schedule> timeSchedules;
     private List<String> phone;
     private HistoryReview review;
-    private StateBusiness state;
-    private StateRecord stateBusiness;
+    private StateBusiness stateBusiness;
+    private StateRecord state;
 }
