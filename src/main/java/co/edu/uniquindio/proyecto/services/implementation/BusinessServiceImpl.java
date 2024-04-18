@@ -36,10 +36,6 @@ public class BusinessServiceImpl implements BusinessService {
             throw new Exception("El Negocio ya existe");
         }
         AccountDetailDTO clientDetail = clientService.getClientById(addBusinessDto.idClient());
-        if(!clientService.existEmail(clientDetail.email())){
-            throw new Exception("el cliente no existe");
-        }
-        Client client = clientService.getClient(clientDetail.email());
         Business business = new Business();
         business.setStateBusiness(StateRecord.ACTIVE);
         business.setState(StateBusiness.PENDING);
@@ -55,10 +51,10 @@ public class BusinessServiceImpl implements BusinessService {
         businessRepo.save(business);
         mailService.sendMail(new EmailDTO(
                 "Creacion de negocio",
-                "<h1>Hola " + client.getNickname() + "</h1>\n" +
+                "<h1>Hola " + clientDetail.nickname() + "</h1>\n" +
                         "        <p>Su negocio fue creado correctamente</p>\n" +
                         "<p> con el nombre de "+addBusinessDto.name()+"</p>",
-                client.getEmail()
+                clientDetail.email()
 
         ));
 

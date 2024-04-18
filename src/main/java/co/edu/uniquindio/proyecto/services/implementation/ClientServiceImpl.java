@@ -20,7 +20,6 @@ import java.util.*;
 public class ClientServiceImpl extends AccountServiceImpl implements ClientService {
 
     private final BusinessService businessService;
-    private final ImageService imageService;
 
     @Override
     public String signUpUser(SignUpDTO sing) throws Exception {
