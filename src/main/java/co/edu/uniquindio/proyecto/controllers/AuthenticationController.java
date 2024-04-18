@@ -5,6 +5,7 @@ import co.edu.uniquindio.proyecto.services.interfaces.AuthenticationService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
-
     private final ClientService clientService;
 
     @Autowired
@@ -40,7 +40,8 @@ public class AuthenticationController {
     @PostMapping("/singUp-client")
     public ResponseEntity<MensajeDTO<String>> signUpClient(@Valid @RequestBody
                                                                SignUpDTO signUpDTO) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.signUpUser(signUpDTO)));
+        clientService.signUpUser(signUpDTO);
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Cliente registrado correctamente"));
     }
 
 

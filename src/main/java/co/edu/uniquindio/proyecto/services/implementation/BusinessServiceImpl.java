@@ -125,15 +125,15 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public void registrerReview(RegistrerReviewDTO registrerReviewDTO) throws Exception {
         Optional<Business> businessOptional = businessRepo.findBusinessByState(registrerReviewDTO.id(), StateBusiness.PENDING);
-        if(existBusiness(registrerReviewDTO.id()) && businessOptional.get().getStateBusiness()== StateRecord.INACTIVE){
+        if(existBusiness(registrerReviewDTO.id()) && businessOptional.get().getState()== StateRecord.INACTIVE){
             throw new Exception("El negocio no existe");
         }
         Business business = businessOptional.get();
         if(registrerReviewDTO.review().getStateBusiness() == StateBusiness.APPROVED){
-            business.setState(StateBusiness.APPROVED);
+            business.setStateBusiness(StateBusiness.APPROVED);
         }
         if(registrerReviewDTO.review().getStateBusiness() == StateBusiness.REJECTED){
-            business.setState(StateBusiness.REJECTED);
+            business.setStateBusiness(StateBusiness.REJECTED);
         }
         business.setReview(registrerReviewDTO.review());
         businessRepo.save(business);
@@ -169,4 +169,5 @@ public class BusinessServiceImpl implements BusinessService {
     public boolean existBusiness(String id){
         return businessRepo.findBusinessById(id).isPresent();
     }
+
 }
