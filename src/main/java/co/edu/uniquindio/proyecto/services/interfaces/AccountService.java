@@ -8,7 +8,7 @@ public interface AccountService {
     /**
      * Recuperar la contraseña de un cliente.
      */
-    void passwordRecovery(ChangePasswordDTO changePasswordDTO) throws Exception;
+    void passwordRecovery(ChangePasswordDTO changePasswordDTO, String token) throws Exception;
 
     /**
      * Permite a un usuario recuperar su contraseña en caso de olvido.

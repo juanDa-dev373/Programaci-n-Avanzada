@@ -2,7 +2,6 @@ package co.edu.uniquindio.proyecto.services;
 
 import co.edu.uniquindio.proyecto.dto.DeleteEventDTO;
 import co.edu.uniquindio.proyecto.dto.EventDTO;
-import co.edu.uniquindio.proyecto.dto.GetEventDTO;
 import co.edu.uniquindio.proyecto.dto.UpdateEventDTO;
 import co.edu.uniquindio.proyecto.model.documents.Event;
 import co.edu.uniquindio.proyecto.services.interfaces.EventService;
@@ -30,7 +29,7 @@ public class EventServiceTest {
                 "negocio4"
         );
         eventService.createEvent(eventDTO);
-        Event event = eventService.getEvent(new GetEventDTO("event6","client3","negocio4"));
+        Event event = eventService.getEvent(eventDTO.id(), eventDTO.business(), eventDTO.client());
         Assertions.assertEquals(eventDTO.id(), event.getId());
     }
     @Test
@@ -40,13 +39,9 @@ public class EventServiceTest {
                 "negocio3",
                 "client2"
         );
-        GetEventDTO getEventDTO = new GetEventDTO(
-                "event1",
-                "negocio3",
-                "client2");
         eventService.deleteEvent(deleteEventDTO);
         Assertions.assertThrows(Exception.class,()->{
-           Event event = eventService.getEvent(getEventDTO);
+           Event event = eventService.getEvent(deleteEventDTO.id(), deleteEventDTO.idBusiness(), deleteEventDTO.idClient());
         });
     }
     @Test
@@ -56,8 +51,7 @@ public class EventServiceTest {
     }
     @Test
     public void updateEventTest() throws Exception{
-
-        Event event = eventService.getEvent(new GetEventDTO("event6","negocio4","client3"));
+        Event event = eventService.getEvent("event6","negocio4","client3");
         UpdateEventDTO updateEventDTO = new UpdateEventDTO(
                 "event6",
                 "este evento se creo con el fin de poder celebrar " +

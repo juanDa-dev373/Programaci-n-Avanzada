@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -70,6 +69,26 @@ public class ClientController {
         clientService.deleteBusinessToList(removeBusiness);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio eliminado de la lista correctamente"));
     }
+
+    @PostMapping("/updateProfile")
+    public ResponseEntity<MensajeDTO<String>> updateProfile(@RequestBody ProfileDTO profileDTO) throws Exception {
+        clientService.updateProfile(profileDTO);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Perfil actualizado exitosamente"));
+    }
+
+    @PostMapping("/deactivateAccount")
+    public ResponseEntity<MensajeDTO<String>> deactivateAccount(@RequestParam("idClient") String userId) throws Exception {
+        String message = clientService.deactivateAccount(userId);
+        MensajeDTO<String> mensaje = new MensajeDTO<>(false, message);
+        return ResponseEntity.ok().body(mensaje);
+    }
+
+    @PostMapping("/logOutUser")
+    public ResponseEntity<MensajeDTO<String>> logOutUser(@RequestParam("idClient") String userId) throws Exception {
+        clientService.logOutUser(userId);
+        return ResponseEntity.ok().body( new MensajeDTO<>(false, "Sesión cerrada exitosamente"));
+    }
+
     @PostMapping("/addBusinessClient")
     public ResponseEntity<MensajeDTO<String>> addBusiness(@Valid @RequestBody AddBusinessDTO addBusinessDTO) throws Exception {
         businessService.addBusiness(addBusinessDTO);
@@ -135,7 +154,7 @@ public class ClientController {
     }
     @DeleteMapping("/deleteComment")
     ResponseEntity<MensajeDTO<String>> deleteComment(@Valid @RequestBody DeleteCommentDTO deleteCommentDTO) throws Exception {
-        commentService.deleteComment(deleteCommentDTO);
+        //commentService.deleteComment(deleteCommentDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Comentario eliminado correctamente"));
     }
     @PostMapping("/createEvent")
@@ -154,7 +173,7 @@ public class ClientController {
     }
     @GetMapping("/getEvent")
     ResponseEntity<MensajeDTO<Event>> getEvent(@Valid @RequestBody GetEventDTO getEventDTO) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, eventService.getEvent(getEventDTO)));
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, eventService.getEvent(getEventDTO.id(),getEventDTO.idBusiness(),getEventDTO.idClient())));
     }
     @DeleteMapping("/deleteEvent")
     ResponseEntity<MensajeDTO<String>> deleteEvent(@Valid @RequestBody DeleteEventDTO deleteEventDTO) throws Exception {

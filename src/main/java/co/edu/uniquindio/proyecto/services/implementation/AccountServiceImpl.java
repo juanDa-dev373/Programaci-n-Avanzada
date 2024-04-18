@@ -13,6 +13,11 @@ import co.edu.uniquindio.proyecto.repositories.ModeratorRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.AccountService;
 import co.edu.uniquindio.proyecto.services.interfaces.MailService;
 import co.edu.uniquindio.proyecto.utils.JWTUtils;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +79,9 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void passwordRecovery(ChangePasswordDTO changePasswordDTO) throws Exception {
-        TypeAccountDto type = verifyAccountByEmail(changePasswordDTO.email());
+    public void passwordRecovery(ChangePasswordDTO changePasswordDTO,@NotBlank(message = "Nesecita un token de autorización") String token) throws Exception {
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        TypeAccountDto type = verifyAccountById((String)jws.getPayload().get("id"));
 
         if (changePasswordDTO.password().equals(changePasswordDTO.passwordConfirmation())){
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

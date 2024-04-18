@@ -2,7 +2,6 @@ package co.edu.uniquindio.proyecto.services.implementation;
 
 import co.edu.uniquindio.proyecto.dto.DeleteEventDTO;
 import co.edu.uniquindio.proyecto.dto.EventDTO;
-import co.edu.uniquindio.proyecto.dto.GetEventDTO;
 import co.edu.uniquindio.proyecto.dto.UpdateEventDTO;
 import co.edu.uniquindio.proyecto.model.documents.Event;
 import co.edu.uniquindio.proyecto.repositories.EventRepo;
@@ -45,9 +44,9 @@ public class EventServiceImpl implements EventService {
         eventRepo.deleteEventByIdAndBusinessAndClient(deleteEventDTO.id(), deleteEventDTO.idBusiness(), deleteEventDTO.idClient());
     }
     @Override
-    public Event getEvent(GetEventDTO getEventDTO) throws Exception{
-        Optional<Event> eventOptional = eventRepo.findEventByIdAndBusinessAndClient(getEventDTO.id(), getEventDTO.idBusiness(),getEventDTO.idClient());
-        if(!eventOptional.isPresent()){
+    public Event getEvent(String id, String idBusiness, String idClient) throws Exception{
+        Optional<Event> eventOptional = eventRepo.findEventByIdAndBusinessAndClient(id,idBusiness,idClient);
+        if(eventOptional.isEmpty()){
             throw new Exception("El evento no existe");
         }
         return eventOptional.get();

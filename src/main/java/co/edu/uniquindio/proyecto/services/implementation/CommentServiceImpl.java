@@ -121,18 +121,4 @@ public class CommentServiceImpl implements CommentService {
         return commentOptional.get();
     }
 
-    @Override
-    public void deleteComment(DeleteCommentDTO deleteCommentDTO) throws Exception {
-        Business business = businessService.search(deleteCommentDTO.business());
-        Optional<Comment> comment = commentRepo.findCommentByIdAndIdBusiness(deleteCommentDTO.id(), deleteCommentDTO.business());
-        if(comment.isEmpty()){
-            throw new Exception("El comentario no existe");
-        }
-        if(business.getIdClient().equals(deleteCommentDTO.idClientOwnerBusiness())){
-            commentRepo.deleteByIdAndIdClientAndIdBusiness(deleteCommentDTO.id(), deleteCommentDTO.idCliente(), deleteCommentDTO.business());
-        }else{
-            throw new Exception("El cliente no tiene permisos para eliminar los mensajes de este negocio");
-        }
-    }
-
 }

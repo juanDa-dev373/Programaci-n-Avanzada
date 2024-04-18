@@ -32,6 +32,7 @@ public class BusinessServiceImpl implements BusinessService {
             throw new Exception("El Negocio ya existe");
         }
         Business business = new Business();
+        business.setId(addBusinessDto.id());
         business.setStateBusiness(StateRecord.ACTIVE);
         business.setState(StateBusiness.PENDING);
         business.setTypeBusiness(addBusinessDto.typeBusiness());
@@ -168,5 +169,4 @@ public class BusinessServiceImpl implements BusinessService {
     public boolean existBusiness(String id){
         return businessRepo.findBusinessById(id).isPresent();
     }
-
 }

@@ -10,7 +10,7 @@ public record ChangePasswordDTO(
         @NotBlank(message = "Es necesario que ingrese la contraseña") String password,
         @NotBlank
         @Pattern( regexp = "^(?!.*\\s)(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–\\[{}\\]:;',?/*~$^+=<>]).{8,20}$")
-        @NotBlank(message = "Es necesario que ingrese la contraseña") String passwordConfirmation,
-        @NotBlank(message = "Es necesario que ingrese el email") @Email String email
-        ) {
+        @NotBlank(message = "Es necesario que ingrese la contraseña") String passwordConfirmation
+        )
+{
 }
