@@ -26,7 +26,6 @@ public class EventServiceImpl implements EventService {
             throw new Exception("El evento ya existe");
         }
         Event event = new Event();
-        event.setId(eventDTO.id());
         event.setDate(eventDTO.date());
         event.setBusiness(eventDTO.business());
         event.setClient(eventDTO.client());

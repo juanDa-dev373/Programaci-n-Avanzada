@@ -87,5 +87,6 @@ public interface ClientService extends AccountService {
      */
     void deleteBusinessToList(BusinessToListDTO removeBusiness, String token) throws Exception;
     boolean existEmail(String email) throws Exception;
+    Client getClientId(String id) throws Exception;
     Client getClient(String mail) throws Exception;
 }

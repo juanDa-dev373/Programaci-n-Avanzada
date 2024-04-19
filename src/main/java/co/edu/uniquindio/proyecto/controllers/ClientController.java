@@ -74,7 +74,7 @@ public class ClientController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Creado Exitosamente"));
     }
 
-    @PostMapping("/deleteBusinessClient")
+    @DeleteMapping("/deleteBusinessClient")
     ResponseEntity<MensajeDTO<String>> deleteBusiness(@Valid @RequestBody DeleteBusinessDTO deleteBusinessDTO, @RequestHeader("Authorization") String token) throws Exception {
         businessService.deleteBusiness(deleteBusinessDTO,token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Eliminado Correctamente"));
@@ -133,7 +133,7 @@ public class ClientController {
     }
     @DeleteMapping("/deleteComment")
     ResponseEntity<MensajeDTO<String>> deleteComment(@Valid @RequestBody DeleteCommentDTO deleteCommentDTO) throws Exception {
-        //commentService.deleteComment(deleteCommentDTO);
+        commentService.deleteComment(deleteCommentDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Comentario eliminado correctamente"));
     }
     @PostMapping("/createEvent")

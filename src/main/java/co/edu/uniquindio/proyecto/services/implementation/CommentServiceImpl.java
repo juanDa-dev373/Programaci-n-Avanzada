@@ -36,14 +36,14 @@ public class CommentServiceImpl implements CommentService {
         comment.setIdClient(createCommentDTO.idClient());
         Business business= businessService.search(createCommentDTO.idBusiness());
         // se le envia email al creador del negocio
-        AccountDetailDTO clientOwner = clientService.getClientById(business.getIdClient());
-        AccountDetailDTO client= clientService.getClientById(createCommentDTO.idClient());
+        Client clientOwner = clientService.getClientId(business.getIdClient());
+        Client client = clientService.getClientId(createCommentDTO.idClient());
         mailService.sendMail(new EmailDTO(
                 "Creacion de comentario en mi negocio",
                 "        <h1>Notificación de Comentario</h1>\n" +
                         "        <p>se ha registrado un nuevo comentario en el negocio<br>"+business.getName()+"</p>\n" +
-                        "        <p>por parte del cliente "+client.nickname()+"</p>",
-                clientOwner.email()
+                        "        <p>por parte del cliente "+client.getNickname()+"</p>",
+                clientOwner.getEmail()
 
         ));
         //se le envia mensaje por email al creador del comentario
@@ -61,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
                         "            <li>Comentario: "+createCommentDTO.message()+"</li>\n" +
                         "        </ul>\n" +
                         "        <p>¡Gracias por compartir su experiencia!</p>\n",
-                        client.email()
+                        client.getEmail()
         ));
     }
 
@@ -84,7 +84,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepo.save(comment);
 
         Business business= businessService.search(responseCommentDTO.idBusiness());
-        AccountDetailDTO client= clientService.getClientById(responseCommentDTO.idClient());
+        Client client = clientService.getClientId(responseCommentDTO.idClient());
         mailService.sendMail(new EmailDTO(
                 "Notificación de Comentario y Calificación",
                 "        <h1>Notificación de Comentario y Calificación</h1>\n" +
@@ -93,11 +93,11 @@ public class CommentServiceImpl implements CommentService {
                         "        <ul>\n" +
                         "            <li>Negocio: "+business.getName()+"</li>\n" +
                         "            <li>Comentario: "+comment.getMessage()+"</li>\n" +
-                        "            <li>Respuesta del usuario: "+client.nickname()+"</li>\n" +
+                        "            <li>Respuesta del usuario: "+client.getNickname()+"</li>\n" +
                         "            <li>Respuesta: "+response.getMessage()+"</li>\n" +
                         "        </ul>\n" +
                         "        <p>¡Gracias por compartir su experiencia!</p>\n",
-                client.name()
+                client.getEmail()
 
         ));
 
@@ -130,6 +130,20 @@ public class CommentServiceImpl implements CommentService {
             throw new Exception("El comentario no existe");
         }
         return commentOptional.get();
+    }
+
+    @Override
+    public void deleteComment(DeleteCommentDTO deleteCommentDTO) throws Exception {
+        Optional<Comment> commentOptional = commentRepo.findCommentByIdAndIdClientAndIdBusiness(deleteCommentDTO.id(), deleteCommentDTO.idCliente(), deleteCommentDTO.business());
+        if(commentOptional.isEmpty()){
+            throw  new Exception("El comentario no sirve");
+        }
+        Client clientOwner = clientService.getClientId(deleteCommentDTO.idClientOwnerBusiness());
+        if(clientOwner.getId().equals(deleteCommentDTO.idClientOwnerBusiness())){
+            commentRepo.deleteByIdAndIdBusinessAndAndIdClient(deleteCommentDTO.id(), deleteCommentDTO.business(), deleteCommentDTO.idCliente());
+        }else{
+            throw new Exception("No se puede borrar el comentario");
+        }
     }
 
 }
