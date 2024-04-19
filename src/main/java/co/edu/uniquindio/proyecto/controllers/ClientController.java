@@ -75,7 +75,7 @@ public class ClientController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Creado Exitosamente"));
     }
 
-    @PostMapping("/deleteBusinessClient")
+    @DeleteMapping("/deleteBusinessClient")
     ResponseEntity<MensajeDTO<String>> deleteBusiness(@Valid @RequestBody DeleteBusinessDTO deleteBusinessDTO, @RequestHeader("Authorization") String token) throws Exception {
         businessService.deleteBusiness(deleteBusinessDTO,token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Eliminado Correctamente"));
@@ -101,9 +101,9 @@ public class ClientController {
     ResponseEntity<MensajeDTO<List<Business>>> listBusinessType(@Valid @PathVariable TypeBusiness type) throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.searchBusiness(type)));
     }
-    @GetMapping("/listBusinessOwner/{idClient}")
-    ResponseEntity<MensajeDTO<List<Business>>> listBusinessOwner(@Valid @PathVariable String idClient) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.listBusinessOwner(idClient)));
+    @GetMapping("/listBusinessOwner")
+    ResponseEntity<MensajeDTO<List<Business>>> listBusinessOwner(@RequestHeader("Authorization") String token) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.listBusinessOwner(token.replace("Bearer ",""))));
     }
     @GetMapping("/getBusiness/{idBusiness}")
     ResponseEntity<MensajeDTO<Business>> getBusiness(@Valid @PathVariable String idBusiness) throws Exception{
@@ -134,7 +134,7 @@ public class ClientController {
     }
     @DeleteMapping("/deleteComment")
     ResponseEntity<MensajeDTO<String>> deleteComment(@Valid @RequestBody DeleteCommentDTO deleteCommentDTO) throws Exception {
-        //commentService.deleteComment(deleteCommentDTO);
+        commentService.deleteComment(deleteCommentDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Comentario eliminado correctamente"));
     }
     @PostMapping("/createEvent")

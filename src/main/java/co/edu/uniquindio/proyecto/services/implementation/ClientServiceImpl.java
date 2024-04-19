@@ -156,6 +156,11 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
  }
 
     @Override
+    public Client getClientId(String id) throws Exception {
+        return clientRepo.findById(id).get();
+    }
+
+    @Override
     public Client getClient(String mail) throws Exception {
         return clientRepo.findByEmail(mail).get();
     }
