@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.services.interfaces;
 
 import co.edu.uniquindio.proyecto.dto.*;
+import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 
 import java.util.List;
@@ -85,5 +86,6 @@ public interface ClientService extends AccountService {
      * @param removeBusiness Contiene El ID del cliente, lista y el negocio que se eliminará
      */
     void deleteBusinessToList(BusinessToListDTO removeBusiness, String token) throws Exception;
-
+    boolean existEmail(String email) throws Exception;
+    Client getClient(String mail) throws Exception;
 }

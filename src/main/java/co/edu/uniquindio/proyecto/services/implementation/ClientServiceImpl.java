@@ -155,10 +155,15 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         return client.getListClient();
     }
 
-
-    private boolean existEmail(String email) {
+    @Override
+    public boolean existEmail(String email) {
      return clientRepo.findByEmail(email).isPresent();
  }
+
+    @Override
+    public Client getClient(String mail) throws Exception {
+        return clientRepo.findByEmail(mail).get();
+    }
 
 
     private boolean existNickname(String nickname) {
