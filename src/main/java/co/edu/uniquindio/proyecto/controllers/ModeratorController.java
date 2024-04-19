@@ -18,12 +18,6 @@ public class ModeratorController {
     private final ModeratorService moderatorService;
     private final BusinessService businessService;
 
-    @GetMapping("/{moderatorId}")
-    public ResponseEntity<MensajeDTO<AccountDetailDTO>> getModeratorById(@Valid @PathVariable String moderatorId) throws Exception {
-        AccountDetailDTO accountDetailDTO = moderatorService.getModeratorById(moderatorId);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false,  accountDetailDTO));
-    }
-
     @PostMapping("/verifyAndApproveBusiness")
     public ResponseEntity<MensajeDTO<String>> verifyAndApproveBusiness(@Valid @RequestBody HistoryReviewDTO reviewDTO) throws Exception {
         String message = moderatorService.verifyAndApproveBusiness(reviewDTO);
@@ -42,20 +36,9 @@ public class ModeratorController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, message));
     }
 
-    @PostMapping("/markCommentAsInappropriate")
-    public ResponseEntity<MensajeDTO<String>> markCommentAsInappropriate(@Valid @RequestParam("moderatorId") String moderatorId, @Valid @RequestParam("commentId") String commentId) throws Exception {
-        String message = moderatorService.markCommentAsInappropriate(moderatorId, commentId);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, message));
-    }
-
     @GetMapping("/getListHistoryReviews")
     public ResponseEntity<MensajeDTO<List<ReviewDTO>>> getListHistoryReviews(@Valid @RequestParam("moderatorId") String moderatorId) throws Exception {
         List<ReviewDTO> reviewDTOList = moderatorService.getListHistoryReviews(moderatorId);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,  reviewDTOList));
-    }
-    @PostMapping("/registerReview")
-    public ResponseEntity<MensajeDTO<String>> addHistroyReview(@Valid @RequestBody RegistrerReviewDTO registrerReviewDTO) throws Exception {
-        businessService.registrerReview(registrerReviewDTO);
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, "Se Registro la Revición"));
     }
 }

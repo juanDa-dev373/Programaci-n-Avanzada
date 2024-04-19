@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.utils;
 
+import io.jsonwebtoken.Jws;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,17 +12,11 @@ import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-import java.io.IOException;
+
 @Component
 @RequiredArgsConstructor
 public class FiltroToken extends OncePerRequestFilter {

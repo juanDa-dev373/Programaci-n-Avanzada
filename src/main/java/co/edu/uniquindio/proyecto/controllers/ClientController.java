@@ -27,19 +27,19 @@ public class ClientController {
     private final EventService eventService;
     private final ImageService imageService;
 
-    @GetMapping("/{idClient}")
-    public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@Valid @PathVariable String idClient) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false,  clientService.getClientById(idClient)));
+    @GetMapping("/")
+    public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@RequestHeader("Authorization") String token) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false,  clientService.getClientById(token.replace("Bearer ", ""))));
     }
 
-    @GetMapping("/{idClient}/listBusiness")
-    public ResponseEntity<MensajeDTO<ListBusinessDTO>> getListBusiness(@Valid @PathVariable String idClient, @Valid @RequestParam("nameList") String nameList) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.getListBusiness(idClient, nameList)));
+    @GetMapping("/listBusiness")
+    public ResponseEntity<MensajeDTO<ListBusinessDTO>> getListBusiness(@RequestHeader("Authorization") String token, @Valid @RequestParam("nameList") String nameList) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.getListBusiness(token.replace("Bearer ", ""), nameList)));
     }
 
-    @GetMapping("/{idClient}/listsBusinesses")
-    public ResponseEntity<MensajeDTO<List<ListBusiness>>> getListsBusinesses(@Valid @PathVariable String idClient) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.getListsBusinesses(idClient)));
+    @GetMapping("/listsBusinesses")
+    public ResponseEntity<MensajeDTO<List<ListBusiness>>> getListsBusinesses(@RequestHeader("Authorization") String token) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.getListsBusinesses(token.replace("Bearer ", ""))));
     }
 
     @GetMapping("/listClient")
@@ -47,14 +47,14 @@ public class ClientController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.listClient()));
     }
 
-    @PostMapping("/{clientId}/createBusinessList")
-    public ResponseEntity<MensajeDTO<ListBusiness>> createBusinessList(@Valid @PathVariable String clientId, @RequestParam("listName") String listName) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.createBusinessList(clientId, listName)));
+    @PostMapping("/createBusinessList")
+    public ResponseEntity<MensajeDTO<ListBusiness>> createBusinessList(@RequestHeader("Authorization") String token, @RequestParam("listName") String listName) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, clientService.createBusinessList(token.replace("Bearer ", ""), listName)));
     }
 
-    @DeleteMapping("/{clientId}/deleteBusinessList")
-    public ResponseEntity<MensajeDTO<String>> deleteBusinessList(@Valid @PathVariable String clientId, @RequestParam("idList") String idList) throws Exception {
-        clientService.deleteBusinessList(clientId, idList);
+    @DeleteMapping("/deleteBusinessList")
+    public ResponseEntity<MensajeDTO<String>> deleteBusinessList(@RequestHeader("Authorization") String token, @RequestParam("idList") String idList) throws Exception {
+        clientService.deleteBusinessList(token.replace("Bearer ", ""), idList);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Lista de negocios eliminada correctamente"));
     }
 
@@ -103,7 +103,7 @@ public class ClientController {
     }
     @GetMapping("/listBusinessOwner")
     ResponseEntity<MensajeDTO<List<Business>>> listBusinessOwner(@RequestHeader("Authorization") String token) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.listBusinessOwner(token.replace("Bearer ",""))));
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.listBusinessOwner(token.replace("Bearer ", ""))));
     }
     @GetMapping("/getBusiness/{idBusiness}")
     ResponseEntity<MensajeDTO<Business>> getBusiness(@Valid @PathVariable String idBusiness) throws Exception{

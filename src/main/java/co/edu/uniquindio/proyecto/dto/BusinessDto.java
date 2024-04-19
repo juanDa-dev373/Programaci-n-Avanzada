@@ -12,6 +12,7 @@ public record BusinessDto(
         String description,
         Location location,
         List<String> images,
-        TypeBusiness typeBusiness
+        TypeBusiness typeBusiness,
+        boolean open
 ) {
 }
