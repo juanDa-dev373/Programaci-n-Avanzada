@@ -35,4 +35,5 @@ public class Business {
     private HistoryReview review;
     private StateBusiness stateBusiness;
     private StateRecord state;
+    private boolean open;
 }

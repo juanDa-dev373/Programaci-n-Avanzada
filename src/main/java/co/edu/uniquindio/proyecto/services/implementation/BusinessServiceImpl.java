@@ -2,6 +2,7 @@ package co.edu.uniquindio.proyecto.services.implementation;
 
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Business;
+import co.edu.uniquindio.proyecto.model.entity.Schedule;
 import co.edu.uniquindio.proyecto.model.enums.StateBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
@@ -19,6 +20,8 @@ import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.stereotype.Service;
 
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -154,9 +157,26 @@ public class BusinessServiceImpl implements BusinessService {
         if(business.isEmpty()){
             throw new Exception("El negocio no existe");
         }
+        business.get().setOpen(isBusinessOpen(business.get().getTimeSchedules()));
         return business.get();
     }
 
+    public boolean isBusinessOpen(List<Schedule> timeSchedules){
+        String dayNow = LocalDateTime.now().getDayOfWeek().name();
+
+        for (Schedule s: timeSchedules){
+            if(dayNow.equalsIgnoreCase(s.getDay())) {
+                CharSequence start = s.getStart();
+                LocalTime timeStart = LocalTime.parse(start);
+                CharSequence end = s.getEnd();
+                LocalTime timeEnd = LocalTime.parse(end);
+                if(LocalTime.now().isAfter(timeStart)&&LocalTime.now().isBefore(timeEnd)) return true;
+
+            }
+        }
+
+        return false;
+    }
     @Override
     public List<Business> listBusinessModerator(String idModerator) throws Exception {
         List<Business> businesses = businessRepo.findBusinessByModerator(idModerator);

@@ -4,6 +4,7 @@ import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
+import co.edu.uniquindio.proyecto.model.entity.Schedule;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
@@ -11,10 +12,12 @@ import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -22,7 +25,6 @@ import java.util.*;
 public class ClientServiceImpl extends AccountServiceImpl implements ClientService {
 
     private final BusinessService businessService;
-    private final ImageService imageService;
 
     @Override
     public String signUpUser(SignUpDTO sing) throws Exception {
@@ -124,7 +126,8 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
                             b.getDescription(),
                             b.getLocation(),
                             b.getImages(),
-                            b.getTypeBusiness()
+                            b.getTypeBusiness(),
+                            b.isOpen()
                     ));
                 }
                 listBusinessDto=new ListBusinessDTO(list.getId(),list.getListName(),business);
@@ -135,6 +138,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         }
         return listBusinessDto;
     }
+
     @Override
     public List<ListBusiness> getListsBusinesses(String token) throws Exception {
         Jws<Claims> jws = jwtUtils.parseJwt(token);
@@ -206,17 +210,19 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     @Override
     public ListBusiness createBusinessList(String token, String listName)throws Exception {
         Jws<Claims> jws = jwtUtils.parseJwt(token);
+        String idCliente= (String)jws.getPayload().get("id");
 
-        Client client =clientRepo.findById((String)jws.getPayload().get("id"))
+        Client client =clientRepo.findById(idCliente)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "{message:"+ "\"No se encuentra una cuenta con el id= "+ token +"\"\n ,"+ "statusCode: Error }"));
+                        "No se encuentra una cuenta con el id= "+ idCliente));
+
+        if(listBusinessExistByName(idCliente,listName))
+            throw new Exception( "El cliente ya tiene una lista con este nombre = "+listName);
 
         ListBusiness listBusiness = new ListBusiness();
         listBusiness.setListName(listName);
-        listBusiness.setId((listClient().size()+1)+"");
         listBusiness.setIdBusiness(new ArrayList<>());
-        if(listBusinessExist(token,listName))
-            throw new Exception( "{message:"+ "\"El cliente ya tiene una lista con este nombre= "+listName+"\"\n ,"+ "statusCode: Error }");
+        listBusiness.setId(""+ generateIdListBusiness(client.getId(),client.getListClient().size()));
 
         client.getListClient().add(listBusiness);
 
@@ -224,19 +230,40 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
 
         return listBusiness;
     }
+
+    private int generateIdListBusiness(String id, int base) {
+        if(listBusinessExistById(id,""+(base+1)))
+            return generateIdListBusiness(id, base+1);
+        return base;
+    }
+
     /**
      * Obtener la ruta y dirección para llegar a un lugar deseado.
-     * @param idClient El ID único del cliente que desea buscar.
+     * @param idClient Se obtiene el ID único del cliente que desea buscar del token.
      * @param listName El nombre único de la lista de negocios crear.
      * @return True si existe en el cliente.
      */
-    private boolean listBusinessExist(String idClient,String listName) {
+    private boolean listBusinessExistByName(String idClient,String listName) {
+
         Client client = clientRepo.findById(idClient)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "{message:"+ "\"No se encuentra una cuenta con el id= "+idClient+"\"\n ,"+ "statusCode: Error }"));
+                        "No se encuentra una cuenta con el id= "+idClient));
 
         for (ListBusiness listBusiness : client.getListClient()) {
             if (listBusiness.getListName().equals(listName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean listBusinessExistById(String idClient,String id) {
+
+        Client client = clientRepo.findById(idClient)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No se encuentra una cuenta con el id= "+idClient));
+
+        for (ListBusiness listBusiness : client.getListClient()) {
+            if (listBusiness.getId().equals(id)) {
                 return true;
             }
         }
@@ -246,9 +273,10 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     @Override
     public void deleteBusinessList(String token, String listName) throws IllegalArgumentException{
         Jws<Claims> jws = jwtUtils.parseJwt(token);
-        Client client =clientRepo.findById((String)jws.getPayload().get("id"))
+        String idCliente=(String)jws.getPayload().get("id");
+        Client client =clientRepo.findById(idCliente)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "{message:"+ "\"No se encuentra una cuenta con el id= "+ token +"\"\n ,"+ "statusCode: Error }"));
+                        "{message:"+ "\"No se encuentra una cuenta con el id= "+ idCliente +"\"\n ,"+ "statusCode: Error }"));
 
         ListBusiness listToRemove = null;
         for (ListBusiness listBusiness : client.getListClient()) {
@@ -271,11 +299,11 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         Jws<Claims> jws = jwtUtils.parseJwt(token);
         Client client =clientRepo.findById((String)jws.getPayload().get("id"))
                 .orElseThrow(() -> new IllegalArgumentException(
-                "{message:"+ "\"No se encuentra una cuenta con el id= "+addBusiness.clientId()+"\"\n ,"+ "statusCode: Error }"));
+                "No se encuentra una cuenta con el id= "+addBusiness.clientId()+"\"\n ,"+ "statusCode: Error }"));
 
         ListBusiness listBusiness = null;
         for (ListBusiness list : client.getListClient()) {
-            if (list.getListName().equals(addBusiness.listId())) {
+            if (list.getId().equals(addBusiness.listId())) {
                 listBusiness = list;
                 break;
             }
