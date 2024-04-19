@@ -25,7 +25,6 @@ public class ClientController {
     private final BusinessService businessService;
     private final CommentService commentService;
     private final EventService eventService;
-    private final ImageService imageService;
 
     @GetMapping("/")
     public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@RequestHeader("Authorization") String token) throws Exception {
@@ -53,8 +52,8 @@ public class ClientController {
     }
 
     @DeleteMapping("/deleteBusinessList")
-    public ResponseEntity<MensajeDTO<String>> deleteBusinessList(@RequestHeader("Authorization") String token, @RequestParam("idList") String idList) throws Exception {
-        clientService.deleteBusinessList(token.replace("Bearer ", ""), idList);
+    public ResponseEntity<MensajeDTO<String>> deleteBusinessList(@RequestHeader("Authorization") String token, @RequestParam("listName") String listName) throws Exception {
+        clientService.deleteBusinessList(token.replace("Bearer ", ""), listName);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Lista de negocios eliminada correctamente"));
     }
 
@@ -159,5 +158,10 @@ public class ClientController {
     ResponseEntity<MensajeDTO<String>> deleteEvent(@Valid @RequestBody DeleteEventDTO deleteEventDTO) throws Exception {
         eventService.deleteEvent(deleteEventDTO);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "se elimino correctamente el evento"));
+    }
+    @PostMapping("/logOutUser")
+    public ResponseEntity<MensajeDTO<String>> logOutUser( @RequestHeader("Authorization") String token) throws Exception {
+        clientService.logOutUser(token.replace("Bearer ", ""));
+        return ResponseEntity.ok().body(new MensajeDTO<>(false,"Cierre exitoso" ));
     }
 }
