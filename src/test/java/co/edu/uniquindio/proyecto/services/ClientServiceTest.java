@@ -74,7 +74,7 @@ public class ClientServiceTest {
                 "foto.png",
                 "Armenia"
         );
-        clientService.updateProfile(update);
+        clientService.updateProfile(update,"");
 
         //Con el método obtenerCliente se obtiene el cliente con el ID "Cliente1"
         AccountDetailDTO client = clientService.getClientById("Cliente1");

@@ -44,7 +44,7 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public void updateProfile(ProfileDTO profileDTO) throws Exception{
+    public void updateProfile(ProfileDTO profileDTO, String token) throws Exception{
         TypeAccountDto type = verifyAccountById(profileDTO.id());
 
         if(type.tipo().equals("CLIENTE")){
