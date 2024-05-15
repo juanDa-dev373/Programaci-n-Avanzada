@@ -4,20 +4,15 @@ import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
-import co.edu.uniquindio.proyecto.model.entity.Schedule;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
-import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
 
 @Service
@@ -60,31 +55,39 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     //Se guarda en la base de datos y obtenemos el objeto registrado
      Client clientSave = clientRepo.save(cliente);
 
-     new Thread( () -> {
-         try {
-             mailService.sendMail(new EmailDTO(
-                             "Cuenta Creada Exitosamente",
-                             "      <h1>Felicitaciones por Crear su Cuenta Exitosamente</h1>\n" +
-                                     "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
-                                     "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
-                             sing.email()
-                     )
+        new Thread(() -> {
+            try {
+                 mailService.sendMail(new EmailDTO(
+                         "Cuenta Creada Exitosamente",
+                         "      <h1>Felicitaciones por Crear su Cuenta Exitosamente</h1>\n" +
+                                 "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
+                                 "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
+                                sing.email()
+                         )
 
-             );
-         } catch (Exception e) {
-             throw new RuntimeException(e);
-         }
-     } ).start();
-
+                 );
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        ).start();
 
     //Retornamos el ID (código) del cliente registrado
       return clientSave.getId();
     }
 
     @Override
-    public void updateProfile(ProfileDTO profileDTO) throws Exception{
-        //Se obtiene la cuenta con el ID
-        Optional<Client> optionalClient = clientRepo.findById(profileDTO.id()) ;
+    public void updateProfile(ProfileDTO profileDTO,String token) throws Exception{
+        //Buscamos el cliente que se quiere actualizar
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        String idToken=(String)jws.getPayload().get("id");
+
+        if (!idToken.equals(profileDTO.id()))
+            throw new Exception(
+                    "No cuenta con los permisos suficientes"
+            );
+
+        Optional<Client> optionalClient = clientRepo.findById(idToken);
 
         //Si no se encontró la cuenta, lanzamos una excepción
         if(optionalClient.isEmpty())
@@ -98,16 +101,22 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         client.setProfilePhoto(profileDTO.profilePhoto());
 
         clientRepo.save(client);
+        new Thread(() -> {
+            try {
+                mailService.sendMail(new EmailDTO(
+                                "Cuenta Actualizada Exitosamente",
+                                "      <h1>Felicitaciones por Crear su Cuenta Exitosamente</h1>\n" +
+                                        "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
+                                        "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
+                                client.getEmail()
+                        )
 
-        mailService.sendMail(new EmailDTO(
-                        "Cuenta Actualizada Exitosamente",
-                        "      <h1>Felicitaciones por Crear su Cuenta Exitosamente</h1>\n" +
-                                "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
-                                "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
-                        client.getEmail()
-                )
-
-        );
+                );
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        ).start();
     }
 
     @Override

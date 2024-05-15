@@ -29,7 +29,7 @@ public class BusinessServiceTest {
     private BusinessService businessService;
     @Test
     public void addText() throws Exception{
-        AddBusinessDTO addBusinessDTO = new AddBusinessDTO("negocio8", "helados"
+        AddBusinessDTO addBusinessDTO = new AddBusinessDTO( "helados"
                 , "este heladeria sirve helados muy rico",
                 "cliente2", new Location( 4.53389, -75.68111),
                 new ArrayList<>(Arrays.asList()),
@@ -38,8 +38,7 @@ public class BusinessServiceTest {
                 , new ArrayList<>(Arrays.asList("43123")),
                 null);
         businessService.addBusiness(addBusinessDTO,"test");
-        Business bus = businessService.search(addBusinessDTO.id());
-        Assertions.assertEquals(bus.getId(),"negocio8", "El Negocio se registro");
+        Assertions.assertEquals(addBusinessDTO.name(),"negocio8", "El Negocio se registro");
     }
     @Test
     public void deleteTest() throws Exception{

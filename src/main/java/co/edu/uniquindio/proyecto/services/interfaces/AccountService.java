@@ -25,7 +25,7 @@ public interface AccountService {
      * @param profileDTO Los datos actualizados del perfil del usuario.
      * @throws Exception Sí ocurre un error durante el proceso de actualización del perfil.
      */
-    void updateProfile(ProfileDTO profileDTO) throws Exception;
+    void updateProfile(ProfileDTO profileDTO, String token) throws Exception;
 
     /**
      * Permite a un usuario eliminar permanentemente su cuenta.
