@@ -124,9 +124,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void logOutUser(String userId) throws Exception {
+    public void logOutUser(String token) throws Exception {
         //Buscamos el cliente
-        TypeAccountDto type = verifyAccountById(userId);
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        TypeAccountDto type = verifyAccountById((String)jws.getPayload().get("id"));
         type.account().setLogin(StateRecord.INACTIVE);
 
         if(type.tipo().equals("CLIENTE")){

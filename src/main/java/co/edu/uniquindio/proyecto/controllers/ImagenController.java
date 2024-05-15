@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.controllers;
 import co.edu.uniquindio.proyecto.dto.ImagenDTO;
 import co.edu.uniquindio.proyecto.dto.MensajeDTO;
 import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ public class ImagenController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<MensajeDTO<Map>> delete(@RequestBody ImagenDTO imagenDTO) throws
+    public ResponseEntity<MensajeDTO<Map>> delete(@Valid @RequestBody ImagenDTO imagenDTO) throws
             Exception{
         Map respuesta = imagenesServicio.deleteImage( imagenDTO.id() );
         return ResponseEntity.ok().body(new MensajeDTO<>(false, respuesta ));

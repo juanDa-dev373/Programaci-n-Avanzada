@@ -68,7 +68,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
         moderator.getHistoryReview().add(history);
         businessRepo.save(business);
         moderatorRepo.save(moderator);
-        return business.getState().toString();
+        return business.getStateBusiness().toString();
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
         moderator.getHistoryReview().add(history);
         businessRepo.save(business);
         moderatorRepo.save(moderator);
-        return business.getState().toString();
+        return business.getStateBusiness().toString();
     }
 
     @Override
@@ -130,7 +130,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
         Optional<Moderator> moderatorOptional = moderatorRepo.findById(moderatorId);
         if (moderatorOptional.isEmpty())
             throw new IllegalArgumentException(
-                "{message:"+ "\"No se encontró el moderator con el id= "+moderatorId+"\","+ "statusCode: Error }");
+                "No se encontró el moderator con el id= "+moderatorId);
 
         return moderatorOptional.get();
     }

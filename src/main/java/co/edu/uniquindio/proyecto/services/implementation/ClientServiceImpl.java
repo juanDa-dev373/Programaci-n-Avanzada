@@ -286,7 +286,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         String idCliente=(String)jws.getPayload().get("id");
         Client client =clientRepo.findById(idCliente)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "{message:"+ "\"No se encuentra una cuenta con el id= "+ idCliente +"\"\n ,"+ "statusCode: Error }"));
+                        "No se encuentra una cuenta con el id= "+ idCliente ));
 
         ListBusiness listToRemove = null;
         for (ListBusiness listBusiness : client.getListClient()) {
@@ -297,7 +297,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         }
 
         if (listToRemove == null) throw new IllegalArgumentException(
-                "{message:"+ "\"No se encuentra una lista con el id= "+listName+"\"\n ,"+ "statusCode: Error }");
+                "No se encuentra una lista con el id = "+listName);
 
         client.getListClient().remove(listToRemove);
         clientRepo.save(client);
@@ -330,7 +330,8 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     @Override
     public void deleteBusinessToList(BusinessToListDTO removeBusiness, String token) throws IllegalArgumentException {
         Jws<Claims> jws = jwtUtils.parseJwt(token);
-        Client client =clientRepo.findById((String)jws.getPayload().get("id"))
+        String idClient = (String)jws.getPayload().get("id");
+        Client client =clientRepo.findById(idClient)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No se encuentra una cuenta con el id= "+removeBusiness.clientId()));
 
@@ -338,7 +339,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         ListBusiness listBusiness = null;
 
         for (ListBusiness list : client.getListClient()) {
-            if (list.getListName().equals(removeBusiness.listId())) {
+            if (list.getId().equals(removeBusiness.listId())) {
                 listBusiness = list;
                 break;
             }

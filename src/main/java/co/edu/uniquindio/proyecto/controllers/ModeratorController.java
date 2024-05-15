@@ -16,7 +16,6 @@ import java.util.List;
 public class ModeratorController {
 
     private final ModeratorService moderatorService;
-    private final BusinessService businessService;
 
     @PostMapping("/verifyAndApproveBusiness")
     public ResponseEntity<MensajeDTO<String>> verifyAndApproveBusiness(@Valid @RequestBody HistoryReviewDTO reviewDTO) throws Exception {
@@ -40,5 +39,11 @@ public class ModeratorController {
     public ResponseEntity<MensajeDTO<List<ReviewDTO>>> getListHistoryReviews(@Valid @RequestParam("moderatorId") String moderatorId) throws Exception {
         List<ReviewDTO> reviewDTOList = moderatorService.getListHistoryReviews(moderatorId);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,  reviewDTOList));
+    }
+
+    @PostMapping("/logOutUser")
+    public ResponseEntity<MensajeDTO<String>> logOutUser( @RequestHeader("Authorization") String token) throws Exception {
+        moderatorService.logOutUser(token.replace("Bearer ", ""));
+        return ResponseEntity.ok().body(new MensajeDTO<>(false,"Cierre exitoso" ));
     }
 }
