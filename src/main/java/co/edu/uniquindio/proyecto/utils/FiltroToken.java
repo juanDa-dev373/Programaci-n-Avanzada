@@ -79,7 +79,7 @@ public class FiltroToken extends OncePerRequestFilter {
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response);
 
             } catch (ExpiredJwtException e) {
-                crearRespuestaError("El token está vencido",
+                crearRespuestaError("El token esta vencido",
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR, response);
 
             } catch (Exception e) {

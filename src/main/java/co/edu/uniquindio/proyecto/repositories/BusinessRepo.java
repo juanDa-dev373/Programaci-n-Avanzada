@@ -30,7 +30,6 @@ public interface BusinessRepo  extends MongoRepository<Business, String> {
     List<Business> findBusinessByModerator(String id);
     @Query("{'state': 'ACTIVE', 'stateBusiness': 'APPROVED'}")
     List<Business> allBusiness();
-
     @Query(" { 'id' : ?0 , stateBusiness: 'APPROVED', 'state': 'ACTIVE'} ")
     Optional<Business> findBusiness(String idBusiness);
 }

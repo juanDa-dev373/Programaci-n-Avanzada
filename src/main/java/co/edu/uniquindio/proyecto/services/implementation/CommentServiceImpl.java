@@ -140,7 +140,7 @@ public class CommentServiceImpl implements CommentService {
         }
         Client clientOwner = clientService.getClientId(deleteCommentDTO.idClientOwnerBusiness());
         if(clientOwner.getId().equals(deleteCommentDTO.idClientOwnerBusiness())){
-            commentRepo.deleteByIdAndIdBusinessAndAndIdClient(deleteCommentDTO.id(), deleteCommentDTO.business(), deleteCommentDTO.idCliente());
+            commentRepo.deleteByIdAndIdBusinessAndIdClient(deleteCommentDTO.id(), deleteCommentDTO.business(), deleteCommentDTO.idCliente());
         }else{
             throw new Exception("No se puede borrar el comentario");
         }
