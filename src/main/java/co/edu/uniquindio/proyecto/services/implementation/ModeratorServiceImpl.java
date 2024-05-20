@@ -141,7 +141,18 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
     }
 
     @Override
+    public List<Business> allBusinessPending() throws Exception {
+        List<Business> business = businessRepo.allBusinessPending();
+        if(business.isEmpty()){
+            throw new Exception("No hay negocios");
+        }
+        return business;
+    }
+
+    @Override
     public String markCommentAsInappropriate(String moderatorId, String commentId) throws Exception {
         return null;
     }
+
+
 }

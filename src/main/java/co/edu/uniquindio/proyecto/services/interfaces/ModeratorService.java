@@ -3,6 +3,7 @@ package co.edu.uniquindio.proyecto.services.interfaces;
 import co.edu.uniquindio.proyecto.dto.AccountDetailDTO;
 import co.edu.uniquindio.proyecto.dto.HistoryReviewDTO;
 import co.edu.uniquindio.proyecto.dto.ReviewDTO;
+import co.edu.uniquindio.proyecto.model.documents.Business;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public interface ModeratorService extends AccountService {
      * @param moderatorId El ID único del moderador que marca el comentario.
      * @param commentId   El ID único del comentario que se está marcando como inapropiado.
      * @return Un mensaje de confirmación de la acción.
-     * @throws Exception Sí ocurre un error durante el proceso de marcado del comentario.
+     * @throws Exception Sí ocurre un error durante el proceso.
      */
     String markCommentAsInappropriate(String moderatorId, String commentId) throws Exception;
 
@@ -55,8 +56,15 @@ public interface ModeratorService extends AccountService {
      *
      * @param moderatorId El ID único del moderador que marca el comentario.
      * @return Una lista del historial de revisiones.
-     * @throws Exception Sí ocurre un error durante el proceso de marcado del comentario.
+     * @throws Exception Sí ocurre un error durante el proceso.
      */
     List<ReviewDTO> getListHistoryReviews(String moderatorId) throws Exception;
+    /**
+     * Devuelve la lista de negocios pendientes.
+     *
+     * @return Una lista negocios.
+     * @throws Exception Sí ocurre un error durante el proceso.
+     */
+    List<Business> allBusinessPending() throws Exception;
 
 }

@@ -26,6 +26,7 @@ public interface BusinessRepo  extends MongoRepository<Business, String> {
     Optional<Business> findBusinessByState(String id, StateBusiness stateBusiness);
     @Query("{'idClient': ?0, 'state':'ACTIVE'}")
     List<Business> findBusinessByIdClient(String idClient);
+
     @Query("{ 'review.codeModerator': ?0}")
     List<Business> findBusinessByModerator(String id);
     @Query("{'state': 'ACTIVE', 'stateBusiness': 'APPROVED'}")
@@ -33,4 +34,8 @@ public interface BusinessRepo  extends MongoRepository<Business, String> {
 
     @Query(" { 'id' : ?0 , stateBusiness: 'APPROVED', 'state': 'ACTIVE'} ")
     Optional<Business> findBusiness(String idBusiness);
+
+    @Query("{ stateBusiness: 'PENDING', 'state': 'ACTIVE'} ")
+    List<Business> allBusinessPending();
+
 }

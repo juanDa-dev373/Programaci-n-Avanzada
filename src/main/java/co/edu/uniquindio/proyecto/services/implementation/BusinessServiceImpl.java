@@ -143,6 +143,17 @@ public class BusinessServiceImpl implements BusinessService {
         if(businessList.isEmpty()){
             throw new Exception("No hay Negocios con ese dueño");
         }
+        for(Business business: businessList){
+            if(business.getStateBusiness().equals(StateBusiness.REJECTED)) {
+                LocalDateTime reviewDate = business.getReview().getDate();
+                LocalDateTime fiveDaysLater = reviewDate.plusDays(5);
+                if (LocalDateTime.now().isAfter(fiveDaysLater)) {
+                    // Ya pasaron 5 días después de la fecha de revisión
+                    business.setState(StateRecord.INACTIVE);
+                }
+            }
+        }
+
         return businessList;
     }
     @Override
@@ -164,12 +175,13 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public Business search(String id) throws Exception {
-        Optional<Business> business = businessRepo.findBusiness(id);
-        if(business.isEmpty()){
+        Optional<Business> optionalBusiness = businessRepo.findBusiness(id);
+        if(optionalBusiness.isEmpty()){
             throw new Exception("El negocio no existe");
         }
-        business.get().setOpen(isBusinessOpen(business.get().getTimeSchedules()));
-        return business.get();
+        Business business=optionalBusiness.get();
+        business.setOpen(isBusinessOpen(business.getTimeSchedules()));
+        return business;
     }
 
     public boolean isBusinessOpen(List<Schedule> timeSchedules){
@@ -199,11 +211,11 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public List<Business> allBusiness() throws Exception {
-        List<Business> busines = businessRepo.allBusiness();
-        if(busines.isEmpty()){
+        List<Business> business = businessRepo.allBusiness();
+        if(business.isEmpty()){
             throw new Exception("No hay negocios");
         }
-        return busines;
+        return business;
     }
 
     public boolean existBusiness(String id){
