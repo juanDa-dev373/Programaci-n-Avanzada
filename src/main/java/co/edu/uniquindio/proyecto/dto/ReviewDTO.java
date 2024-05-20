@@ -5,5 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record ReviewDTO( @NotBlank StateBusiness stateBusiness,
                          @NotBlank(message = "Es necesario que ingrese el id del moderador") String moderatorId,
-                         @NotBlank(message = "Es necesario que ingrese el id del negocio") String idBusiness) {
+                         @NotBlank(message = "Es necesario que ingrese el id del negocio") String idBusiness,
+                         String nameBusiness
+                         ) {
 }

@@ -134,7 +134,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
         Moderator moderator= existModerator(moderatorId);
         List<ReviewDTO> list=new ArrayList<>();
         for(HistoryReview review: moderator.getHistoryReview()){
-            ReviewDTO history= new ReviewDTO(review.getStateBusiness(),moderatorId,review.getIdBusiness());
+            ReviewDTO history= new ReviewDTO(review.getStateBusiness(),moderatorId,review.getIdBusiness(),businessRepo.findBusiness(review.getIdBusiness()).get().getName());
             list.add(history);
         }
         return list;
