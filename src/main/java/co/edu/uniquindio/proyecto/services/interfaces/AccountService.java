@@ -34,7 +34,7 @@ public interface AccountService {
      * @return Un mensaje de confirmación de la eliminación de la cuenta.
      * @throws Exception Sí ocurre un error durante el proceso de eliminación de la cuenta.
      */
-    String deactivateAccount(String userId) throws Exception;
+    String deactivateAccount(String token,String userId) throws Exception;
 
     /**
      * Cierra sesión para un usuario autenticado.

@@ -52,7 +52,7 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
         );
     }
     @Override
-    public String verifyAndApproveBusiness(HistoryReviewDTO reviewDTO) {
+    public String verifyAndApproveBusiness(HistoryReviewDTO reviewDTO) throws Exception {
 
         Moderator moderator= existModerator(reviewDTO.idModerator());
         Business business= existBusiness(reviewDTO.idBusiness());
@@ -68,31 +68,18 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
         moderator.getHistoryReview().add(history);
         businessRepo.save(business);
         moderatorRepo.save(moderator);
+        mailService.sendMail(new EmailDTO(
+                        "Negocio Aceptado Exitosamente",
+                        "      <h1>Se negocio con id: "+business.getId()+" fue aceptado.\n observaciones:"+reviewDTO.description()
+                                +"</h1>\n",
+                        clientService.getClientId(business.getIdClient()).getEmail()
+                )
+        );
         return business.getStateBusiness().toString();
     }
 
     @Override
-    public void forgotPassword(String email) throws Exception {
-        Optional<Moderator> optionalModerator = moderatorRepo.findByEmail(email);
-
-        if (optionalModerator.isEmpty()) {
-            throw new Exception("El correo no se encuentra registrado");
-        }
-        Moderator client = optionalModerator.get();
-        Map<String, Object> map = new HashMap<>();
-        map.put("rol", "MODERATOR");
-        map.put("nombre", client.getName());
-        map.put("id", client.getId());
-
-        String token= jwtUtils.generateToken(client.getEmail(), map);
-        mailService.sendMail(new EmailDTO(
-                "",
-                "",
-                ""
-        ));
-    }
-    @Override
-    public String rejectBusiness(HistoryReviewDTO reviewDTO) {
+    public String rejectBusiness(HistoryReviewDTO reviewDTO) throws Exception {
         Moderator moderator= existModerator(reviewDTO.idModerator());
         Business business= existBusiness(reviewDTO.idBusiness());
         business.setStateBusiness(StateBusiness.REJECTED);
@@ -107,13 +94,20 @@ public class ModeratorServiceImpl extends AccountServiceImpl implements Moderato
         moderator.getHistoryReview().add(history);
         businessRepo.save(business);
         moderatorRepo.save(moderator);
+        mailService.sendMail(new EmailDTO(
+                        "Negocio rechazado",
+                        "      <h1>Se negocio con id: "+business.getId()+" fue rechazado tiene 5 dias hábiles para mejorarlo o será eliminado observaciones:"+reviewDTO.description()
+                                +"</h1>\n",
+                    clientService.getClientId(business.getIdClient()).getEmail()
+                )
+        );
         return business.getStateBusiness().toString();
     }
 
     @Override
-    public String deactivateUserAccount(String moderatorId, String userId) throws  Exception {
+    public String deactivateUserAccount(String token,String moderatorId, String userId) throws  Exception {
 
-        return clientService.deactivateAccount(userId);
+        return clientService.deactivateAccount(token,userId);
 
     }
 

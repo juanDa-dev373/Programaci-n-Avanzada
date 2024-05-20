@@ -9,6 +9,7 @@ import co.edu.uniquindio.proyecto.model.enums.TypeBusiness;
 import co.edu.uniquindio.proyecto.repositories.BusinessRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import co.edu.uniquindio.proyecto.services.interfaces.ImageService;
+import co.edu.uniquindio.proyecto.services.interfaces.MailService;
 import co.edu.uniquindio.proyecto.utils.JWTUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -32,7 +33,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     private final BusinessRepo businessRepo;
     private final JWTUtils jwtUtils;
-
+    private final MailService mailService;
     @Override
     public void addBusiness(AddBusinessDTO addBusinessDto , String token) throws Exception {
 
@@ -71,6 +72,13 @@ public class BusinessServiceImpl implements BusinessService {
             business.setReview(updateBusinessDTO.review());
 
             businessRepo.save(business);
+            mailService.sendMail(new EmailDTO(
+                    "Negocio actualizado exitosamente",
+                    "      <h1>Hola "+jws.getPayload().get("name")+", Usted actualizo su negocio identificado con el id:"+business.getId()+" </h1>\n" +
+                            "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
+                            "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
+                    jws.getPayload().getSubject()
+            ));
         }else {
             throw new Exception("the client is not the owner");
         }
@@ -87,6 +95,13 @@ public class BusinessServiceImpl implements BusinessService {
         if((jws.getPayload().get("id")).equals(business1.getIdClient())){
             business1.setState(StateRecord.INACTIVE);
             businessRepo.save(business1);
+            mailService.sendMail(new EmailDTO(
+                    "Negocio eliminado exitosamente",
+                    "      <h1>Hola "+jws.getPayload().get("name")+", Usted elimino el negocio identificado con el id:"+business1.getId()+" </h1>\n" +
+                            "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
+                            "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
+                    jws.getPayload().getSubject()
+            ));
         }else{
             throw new Exception("the client is not owner");
         }

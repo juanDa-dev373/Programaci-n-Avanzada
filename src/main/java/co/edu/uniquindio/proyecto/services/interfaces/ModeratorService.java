@@ -38,7 +38,7 @@ public interface ModeratorService extends AccountService {
      * @return Un mensaje de confirmación de la acción.
      * @throws Exception Sí ocurre un error durante el proceso de desactivación de la cuenta.
      */
-    String deactivateUserAccount(String moderatorId, String userId) throws Exception;
+    String deactivateUserAccount(String token,String moderatorId, String userId) throws Exception;
 
     /**
      * Marcar un comentario de usuario como inapropiado.

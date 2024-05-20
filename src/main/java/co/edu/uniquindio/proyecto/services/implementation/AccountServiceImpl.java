@@ -44,16 +44,30 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public void updateProfile(ProfileDTO profileDTO, String token) throws Exception{
+    public void updateProfile(ProfileDTO profileDTO, String token) throws Exception {
+        //Buscamos el cliente que se quiere actualizar
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        String idToken = (String) jws.getPayload().get("id");
+
+        if (!idToken.equals(profileDTO.id()))
+            throw new Exception(
+                    "No cuenta con los permisos suficientes"
+            );
+
         TypeAccountDto type = verifyAccountById(profileDTO.id());
 
-        if(type.tipo().equals("CLIENTE")){
-            Client client = (Client) type.account();
-            clientRepo.save(client);
-        }else{
-            Moderator moderator = (Moderator) type.account();
-            moderatorRepo.save(moderator);
-        }
+        type.account().setName(profileDTO.name());
+        Moderator moderator = (Moderator) type.account();
+        moderatorRepo.save(moderator);
+
+        mailService.sendMail(new EmailDTO(
+                        "Cuenta Actualizada Exitosamente",
+                        "      <h1>Felicitaciones por Crear su Cuenta Exitosamente</h1>\n" +
+                                "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
+                                "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
+                        type.account().getEmail()
+                )
+        );
     }
 
     @Override
@@ -103,12 +117,19 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public String deactivateAccount(String userId) throws Exception {
+    public String deactivateAccount(String token,String userId) throws Exception {
 
+        Jws<Claims> jws = jwtUtils.parseJwt(token);
+        TypeAccountDto peticion = verifyAccountById((String)jws.getPayload().get("id"));
         //Obtenemos la cuenta que se quiere eliminar y le asignamos el estado inactivo
+        if(peticion.tipo().equals("CLIENTE")){
+            if (!peticion.account().getId().equals(userId)){
+                throw new Exception(
+                        "No tiene los permisos sufientes");
+            }
+        }
         TypeAccountDto type = verifyAccountById(userId);
         type.account().setState(StateRecord.INACTIVE);
-
 
         //Como el objeto cliente ya tiene un id, el save() no crea un nuevo registro sino que
         // actualiza el que ya existe
