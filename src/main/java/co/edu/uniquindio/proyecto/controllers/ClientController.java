@@ -26,7 +26,7 @@ public class ClientController {
     private final CommentService commentService;
     private final EventService eventService;
 
-    @GetMapping("/getClienId/{id}")
+    @GetMapping("/getClientId/{id}")
     public ResponseEntity<MensajeDTO<Client>> getClientById(@Valid @PathVariable String id) throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false,  clientService.getClientById(id)));
     }
