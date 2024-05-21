@@ -27,8 +27,8 @@ public class ClientController {
     private final EventService eventService;
 
     @GetMapping("/getClienId/{id}")
-    public ResponseEntity<MensajeDTO<Client>> getClientById(@PathVariable String id) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<Client>(false,  clientService.getClientById(id)));
+    public ResponseEntity<MensajeDTO<Client>> getClientById(@Valid @PathVariable String id) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false,  clientService.getClientById(id)));
     }
 
     @GetMapping("/listBusiness")
