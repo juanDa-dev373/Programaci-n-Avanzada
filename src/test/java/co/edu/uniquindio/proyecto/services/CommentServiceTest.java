@@ -21,15 +21,13 @@ public class CommentServiceTest {
     @Test
     public void createCommentTest() throws Exception{
         CreateCommentDTO createCommentDTO = new CreateCommentDTO(
-                "",
-          LocalDateTime.now(),
           "Cliente2",
           "negocio3",
           "muy buen negocio, la atención todo estuvo estupendo"
         );
         commentService.createComentary(createCommentDTO);
 
-        Assertions.assertEquals("comment1", createCommentDTO.id());
+        Assertions.assertEquals("comment1", createCommentDTO.idClient());
     }
     @Test
     public void responseTest() throws Exception{
