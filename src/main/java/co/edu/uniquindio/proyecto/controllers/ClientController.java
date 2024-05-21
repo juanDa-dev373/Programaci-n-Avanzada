@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.controllers;
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Business;
+import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.documents.Comment;
 import co.edu.uniquindio.proyecto.model.documents.Event;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -27,8 +27,8 @@ public class ClientController {
     private final EventService eventService;
 
     @GetMapping("/getClienId/{id}")
-    public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@PathVariable String id) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false,  clientService.getClientById(id)));
+    public ResponseEntity<MensajeDTO<Client>> getClientById(@PathVariable String id) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<Client>(false,  clientService.getClientById(id)));
     }
 
     @GetMapping("/listBusiness")
