@@ -16,15 +16,24 @@ public class MailServiceImpl implements MailService {
     private final JavaMailSender javaMailSender;
     @Override
     public void sendMail(EmailDTO emailDTO) throws Exception {
-        MimeMessage mensaje = javaMailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(mensaje);
 
-        helper.setSubject(emailDTO.getAsunto());
-        helper.setText(emailDTO.getCuerpo(), true);
-        helper.setTo(emailDTO.getDestinatario());
-        helper.setFrom("no_reply@dominio.com");
+        new Thread(() -> {
+            try {
+                MimeMessage mensaje = javaMailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(mensaje);
 
-        javaMailSender.send(mensaje);
+                helper.setSubject(emailDTO.getAsunto());
+                helper.setText(emailDTO.getCuerpo(), true);
+                helper.setTo(emailDTO.getDestinatario());
+                helper.setFrom("no_reply@dominio.com");
+
+                javaMailSender.send(mensaje);
+
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        ).start();
 
     }
 

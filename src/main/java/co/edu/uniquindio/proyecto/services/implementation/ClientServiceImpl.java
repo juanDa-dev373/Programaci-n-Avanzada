@@ -54,24 +54,15 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
 
     //Se guarda en la base de datos y obtenemos el objeto registrado
      Client clientSave = clientRepo.save(cliente);
-
-        new Thread(() -> {
-            try {
-                 mailService.sendMail(new EmailDTO(
+     mailService.sendMail(new EmailDTO(
                          "Cuenta Creada Exitosamente",
                          "      <h1>Felicitaciones por Crear su Cuenta Exitosamente</h1>\n" +
                                  "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
                                  "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
                                 sing.email()
-                         )
+                        )
 
-                 );
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        ).start();
-
+     );
     //Retornamos el ID (código) del cliente registrado
       return clientSave.getId();
     }
@@ -101,22 +92,13 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         client.setProfilePhoto(profileDTO.profilePhoto());
 
         clientRepo.save(client);
-        new Thread(() -> {
-            try {
-                mailService.sendMail(new EmailDTO(
-                                "Cuenta Actualizada Exitosamente",
-                                "      <h1>Felicitaciones por Crear su Cuenta Exitosamente</h1>\n" +
-                                        "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" +
-                                        "        <p>Su cuenta ha sido creada exitosamente.</p>\n" ,
-                                client.getEmail()
-                        )
-
-                );
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        ).start();
+        mailService.sendMail(new EmailDTO(
+                "Cuenta Actualizada Exitosamente",
+                        "      <h1>Felicitaciones por Crear su Cuenta Exitosamente</h1>\n" +
+                                "        <p>¡Gracias por unirse a nuestra plataforma!</p>\n" ,
+                        client.getEmail()
+                )
+        );
     }
 
     @Override

@@ -50,7 +50,7 @@ public class ClientServiceTest {
 
     @Test
     public void deleteAccountTest() throws Exception {
-        String remove= clientService.deactivateAccount("Cliente1");
+        String remove= clientService.deactivateAccount("","Cliente1");
         Assertions.assertEquals(StateRecord.INACTIVE.toString(),remove);
     }
 

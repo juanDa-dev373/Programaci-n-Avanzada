@@ -22,12 +22,12 @@ class ModeratorServiceTest {
     private ModeratorService moderatorService;
     @Test
     public void deleteAccount() throws Exception {
-        String state= moderatorService.deactivateAccount("Moderator1");
+        String state= moderatorService.deactivateAccount("","Moderator1");
         Assertions.assertEquals(StateRecord.INACTIVE.toString(),state);
     }
     @Test
     public void deactivateUserAccount() throws Exception {
-        String state= moderatorService.deactivateUserAccount("Moderator1","Cliente1");
+        String state= moderatorService.deactivateUserAccount("","Moderator1","Cliente1");
         Assertions.assertEquals(StateRecord.INACTIVE.toString(),state);
     }
 

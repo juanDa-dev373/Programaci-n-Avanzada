@@ -1,5 +1,6 @@
 package co.edu.uniquindio.proyecto.controllers;
 
+import co.edu.uniquindio.proyecto.model.documents.Business;
 import co.edu.uniquindio.proyecto.services.interfaces.BusinessService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,8 +31,8 @@ public class ModeratorController {
     }
 
     @PostMapping("/deactivateUserAccount")
-    public ResponseEntity<MensajeDTO<String>> deactivateUserAccount(@Valid @RequestParam("moderatorId") String moderatorId,@Valid  @RequestParam("userId") String userId) throws Exception {
-        String message = moderatorService.deactivateUserAccount(moderatorId, userId);
+    public ResponseEntity<MensajeDTO<String>> deactivateUserAccount(@RequestHeader("Authorization") String token,@Valid @RequestParam("moderatorId") String moderatorId,@Valid  @RequestParam("userId") String userId) throws Exception {
+        String message = moderatorService.deactivateUserAccount(token.replace("Bearer ", ""),moderatorId, userId);
         return ResponseEntity.ok().body(new MensajeDTO<>(false, message));
     }
 
@@ -39,6 +40,11 @@ public class ModeratorController {
     public ResponseEntity<MensajeDTO<List<ReviewDTO>>> getListHistoryReviews(@Valid @RequestParam("moderatorId") String moderatorId) throws Exception {
         List<ReviewDTO> reviewDTOList = moderatorService.getListHistoryReviews(moderatorId);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,  reviewDTOList));
+    }
+
+    @GetMapping("/getAllBusinessPending")
+    ResponseEntity<MensajeDTO<List<Business>>> getAllBusinessPending() throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, moderatorService.allBusinessPending()));
     }
 
     @PostMapping("/logOutUser")
