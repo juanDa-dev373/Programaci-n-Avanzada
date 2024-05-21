@@ -12,6 +12,7 @@ import co.edu.uniquindio.proyecto.services.interfaces.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -30,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
             throw new Exception("El comentario ya existe");
         }
         Comment comment = new Comment();
-        comment.setDate(createCommentDTO.date());
+        comment.setDate(LocalDateTime.now());
         comment.setMessage(createCommentDTO.message());
         comment.setIdBusiness(createCommentDTO.idBusiness());
         comment.setIdClient(createCommentDTO.idClient());

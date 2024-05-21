@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 public record CreateCommentDTO(
         @NotBlank(message = "Es necesario que ingrese el id ") String id,
-        @NotNull LocalDateTime date,
         @NotBlank(message = "Es necesario que ingrese el id del cliente") String idClient,
         @NotBlank(message = "Es necesario que ingrese el id del negocio") String idBusiness,
         @NotBlank(message = "Es necesario que ingrese un mensaje") String message
