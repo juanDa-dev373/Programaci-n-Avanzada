@@ -175,10 +175,9 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
  }
 
     @Override
-    public AccountDetailDTO getClientById(String token) throws Exception {
-        //Buscamos el cliente que se quiere actualizar
-        Jws<Claims> jws = jwtUtils.parseJwt(token);
-        Optional<Client> optionalClient = clientRepo.findById((String)jws.getPayload().get("id"));
+    public Client getClientById(String token) throws Exception {
+        //Buscamos el cliente que se quiere actualiza
+        Optional<Client> optionalClient = clientRepo.findById(token);
 
         //Si no se encontró el cliente, lanzamos una excepción
         if(optionalClient.isEmpty()){
@@ -190,13 +189,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         Client client = optionalClient.get();
         //Obtenemos el cliente que se quiere actualizar y le asignamos los
         // nuevos valores (el nickname no se puede cambiar)
-        return new AccountDetailDTO(
-                client.getId(),
-                client.getName(),
-                client.getNickname(),
-                client.getEmail(),
-                client.getLogin()
-        );
+        return client;
     }
 
     @Override

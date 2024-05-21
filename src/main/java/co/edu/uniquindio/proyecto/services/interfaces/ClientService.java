@@ -24,7 +24,7 @@ public interface ClientService extends AccountService {
      * @param token El ID único del cliente.
      * @return Los detalles del cliente.
      */
-    AccountDetailDTO getClientById(String token) throws Exception;
+    Client getClientById(String token) throws Exception;
 
     /**
      * Obtener una lista de negocios.

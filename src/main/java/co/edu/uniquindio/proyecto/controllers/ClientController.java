@@ -26,9 +26,9 @@ public class ClientController {
     private final CommentService commentService;
     private final EventService eventService;
 
-    @GetMapping("/")
-    public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@RequestHeader("Authorization") String token) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false,  clientService.getClientById(token.replace("Bearer ", ""))));
+    @GetMapping("/getClienId/{id}")
+    public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@PathVariable String id) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false,  clientService.getClientById(id)));
     }
 
     @GetMapping("/listBusiness")
