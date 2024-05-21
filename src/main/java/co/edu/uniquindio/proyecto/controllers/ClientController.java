@@ -25,6 +25,7 @@ public class ClientController {
     private final BusinessService businessService;
     private final CommentService commentService;
     private final EventService eventService;
+    private final ImageService imageService;
 
     @GetMapping("/")
     public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@RequestHeader("Authorization") String token) throws Exception {

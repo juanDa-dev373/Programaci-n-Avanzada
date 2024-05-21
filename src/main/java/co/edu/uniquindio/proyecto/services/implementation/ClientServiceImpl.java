@@ -289,7 +289,7 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
 
         ListBusiness listToRemove = null;
         for (ListBusiness listBusiness : client.getListClient()) {
-            if (listBusiness.getListName().equals(listName)) {
+            if (listBusiness.getListName().equals(listName) && !listName.equals("Favorites")) {
                 listToRemove = listBusiness;
                 break;
             }
