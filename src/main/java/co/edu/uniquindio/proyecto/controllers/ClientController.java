@@ -162,6 +162,6 @@ public class ClientController {
     @PostMapping("/logOutUser")
     public ResponseEntity<MensajeDTO<String>> logOutUser( @RequestHeader("Authorization") String token) throws Exception {
         clientService.logOutUser(token.replace("Bearer ", ""));
-        return ResponseEntity.ok().body(new MensajeDTO<>(false,"Cierre exitoso" ));
+        return ResponseEntity.ok().body(new MensajeDTO<>(false,"Cierre exitoso"));
     }
 }
