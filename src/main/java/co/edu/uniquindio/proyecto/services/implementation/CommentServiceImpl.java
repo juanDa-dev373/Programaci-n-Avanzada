@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 @Service
 @RequiredArgsConstructor
@@ -43,7 +44,8 @@ public class CommentServiceImpl implements CommentService {
                 "Creacion de comentario en mi negocio",
                 "        <h1>Notificación de Comentario</h1>\n" +
                         "        <p>se ha registrado un nuevo comentario en el negocio<br>"+business.getName()+"</p>\n" +
-                        "        <p>por parte del cliente "+client.getNickname()+"</p>",
+                        "        <p>por parte del cliente "+client.getNickname()+"</p>"+
+                        "        <p> el mensaje es el siguiente: "+createCommentDTO.message(),
                 clientOwner.getEmail()
 
         ));
