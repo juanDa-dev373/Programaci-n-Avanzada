@@ -12,6 +12,7 @@ import co.edu.uniquindio.proyecto.services.interfaces.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -76,8 +77,7 @@ public class CommentServiceImpl implements CommentService {
         }
         Comment comment = commentOptional.get();
         Comment response = new Comment();
-        response.setId(responseCommentDTO.idResponse());
-        response.setDate(responseCommentDTO.date());
+        response.setDate(LocalDateTime.now());
         response.setIdClient(responseCommentDTO.idClient());
         response.setIdBusiness(responseCommentDTO.idBusiness());
         response.setMessage(responseCommentDTO.message());
