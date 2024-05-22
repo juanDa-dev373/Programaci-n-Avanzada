@@ -37,6 +37,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setMessage(createCommentDTO.message());
         comment.setIdBusiness(createCommentDTO.idBusiness());
         comment.setIdClient(createCommentDTO.idClient());
+        comment.setRating(-1);
         Business business= businessService.search(createCommentDTO.idBusiness());
         // se le envia email al creador del negocio
         Client clientOwner = clientService.getClientId(business.getIdClient());
@@ -52,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
         ));
         //se le envia mensaje por email al creador del comentario
         String comentary="No asignaste una clalificación";
-        if(comment.getRating()!=0) comentary=""+comment.getRating();
+        if(comment.getRating()!=-1) comentary=""+comment.getRating();
         commentRepo.save(comment);
         mailService.sendMail(new EmailDTO(
                 "Notificación de Comentario y Calificación",
