@@ -13,5 +13,5 @@ public interface CommentRepo extends MongoRepository<Comment, String> {
     Optional<Comment> findCommentByIdAndIdClientAndIdBusiness(String id, String idClient, String idBusiness);
     List<Comment> findCommentByIdBusiness(String idBusiness);
     Optional<Comment> findCommentByIdAndIdBusiness(String id, String idBusiness);
-    void deleteByIdAndIdBusinessAndIdClient(String idComment, String idBusiness, String idClientOwner);
+    void deleteByIdAndIdBusinessAndIdClient(String idComment, String idBusiness, String idClient);
 }

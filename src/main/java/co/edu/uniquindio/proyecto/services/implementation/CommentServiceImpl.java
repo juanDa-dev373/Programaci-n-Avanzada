@@ -142,6 +142,7 @@ public class CommentServiceImpl implements CommentService {
         if(commentOptional.isEmpty()){
             throw  new Exception("El comentario no sirve");
         }
+        System.out.println(commentOptional.get());
         Client clientOwner = clientService.getClientId(deleteCommentDTO.idClientOwnerBusiness());
         if(clientOwner.getId().equals(deleteCommentDTO.idClientOwnerBusiness())){
             commentRepo.deleteByIdAndIdBusinessAndIdClient(deleteCommentDTO.id(), deleteCommentDTO.business(), deleteCommentDTO.idCliente());
