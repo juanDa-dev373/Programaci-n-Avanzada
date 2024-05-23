@@ -16,12 +16,12 @@ import java.util.Optional;
 
 @Repository
 public interface BusinessRepo  extends MongoRepository<Business, String> {
-    @Query("{ 'name': ?0, 'state': 'ACTIVE', 'stateBusiness': 'APPROVED' }")
+    @Query("{ 'name': { $regex: ?0, $options: 'i' }, 'state': 'ACTIVE', 'stateBusiness': 'APPROVED' }")
     List<Business> findByName(String name);
-    @Query("{ 'typeBusiness': ?0, 'state': 'ACTIVE', 'stateBusiness': 'APPROVED' }")
-    List<Business> findByTypeBusiness(TypeBusiness type);
-    @Query("{location : { $near : { $geometry : { type : 'Point', coordinates:[?0,?1] }, $maxDistance : ?2 }}, state: 'ACTIVE', 'stateBusiness': 'APPROVED'}")
-    List<Business> findByLocationNear(double longitude, double latitude, double maxDistance);
+    @Query("{ 'typeBusiness': { $regex: ?0, $options: 'i' }, 'state': 'ACTIVE', 'stateBusiness': 'APPROVED' }")
+    List<Business> findByTypeBusiness(String type);
+    @Query("{location : { $near : { $geometry : { type : 'Point', coordinates:[?0,?1] }, $maxDistance : ?2 }},'name': { $regex: ?3, $options: 'i' }, state: 'ACTIVE', 'stateBusiness': 'APPROVED'}")
+    List<Business> findByLocationNear(double longitude, double latitude, double maxDistance, String search);
     @Query("{'id': ?0, 'stateBusiness': ?1 }")
     Optional<Business> findBusinessByState(String id, StateBusiness stateBusiness);
     @Query("{'idClient': ?0, 'state':'ACTIVE'}")

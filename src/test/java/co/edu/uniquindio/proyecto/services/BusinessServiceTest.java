@@ -69,7 +69,7 @@ public class BusinessServiceTest {
     }
     @Test
     public void listTypeTest() throws Exception{
-        List<Business> businessList = businessService.searchBusiness(TypeBusiness.HELADERIA);
+        List<Business> businessList = businessService.searchBusiness(TypeBusiness.HELADERIA.toString());
         Assertions.assertEquals(1,businessList.size(), "la lista no es nula");
     }
     @Test
@@ -106,7 +106,7 @@ public class BusinessServiceTest {
     }
     @Test
     public void listLocationTest() throws Exception{
-        LocationDTO locationDTO = new LocationDTO(new Location( 4.53389, -75.68111), 1000);
+        LocationDTO locationDTO = new LocationDTO(new Location( 4.53389, -75.68111), 1000,"restauras");
         List<Business> businessList = businessService.searchBusinessLocation(locationDTO);
         Assertions.assertEquals(1,businessList.size(), "la lista no es nula");
     }
