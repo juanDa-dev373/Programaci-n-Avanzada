@@ -23,7 +23,7 @@ public class EventServiceTest {
                 "event6",
                 "este evento se creo con el fin de poder celebrar " +
                         "el cumpleaños de nuestros clientes el mes actual",
-                LocalDateTime.now(),
+                "",
                 "cumpleaños",
                 "client3",
                 "negocio4"
@@ -56,7 +56,7 @@ public class EventServiceTest {
                 "event6",
                 "este evento se creo con el fin de poder celebrar " +
                         "el cumpleaños de nuestros clientes el mes actual",
-                LocalDateTime.now(),
+                "",
                 "fiesta pagana",
                 "client3",
                 "negocio4"
