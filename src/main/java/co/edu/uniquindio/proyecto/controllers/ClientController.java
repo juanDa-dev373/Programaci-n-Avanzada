@@ -97,7 +97,7 @@ public class ClientController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.searchName(name)));
     }
     @GetMapping("/listBusinessType/{type}")
-    ResponseEntity<MensajeDTO<List<Business>>> listBusinessType(@Valid @PathVariable TypeBusiness type) throws Exception {
+    ResponseEntity<MensajeDTO<List<Business>>> listBusinessType(@Valid @PathVariable String type) throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.searchBusiness(type)));
     }
     @GetMapping("/listBusinessOwner")
