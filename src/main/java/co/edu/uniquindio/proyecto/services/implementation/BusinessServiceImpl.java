@@ -109,7 +109,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public List<Business> searchBusinessLocation(LocationDTO locationDTO) throws Exception {
-        List<Business> businessList = businessRepo.findByLocationNear(locationDTO.location().getLongituded(), locationDTO.location().getLatitude(), locationDTO.maxDistance());
+        List<Business> businessList = businessRepo.findByLocationNear(locationDTO.location().getLongitude(), locationDTO.location().getLatitude(), locationDTO.maxDistance(),locationDTO.search());
         if(businessList.isEmpty()){
             throw new Exception("No se encontraron Negocios cerca");
         }
@@ -117,10 +117,10 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    public List<Business> searchBusiness(TypeBusiness type) throws Exception {
-        List<Business> list = businessRepo.findByTypeBusiness(type);
+    public List<Business> searchBusiness(String type) throws Exception {
+        List<Business> list = businessRepo.findByTypeBusiness(type.toUpperCase());
         if (list.isEmpty()){
-            throw new Exception("no matches found");
+            throw new Exception("No se encontró negocio de tipo: \""+type+"\"");
         }
         return list;
     }
@@ -130,7 +130,7 @@ public class BusinessServiceImpl implements BusinessService {
 
         List<Business> businessList = businessRepo.findByName(name);
         if(businessList.isEmpty()){
-           throw new Exception("no matches found");
+           throw new Exception("No se encontró negocio con el nombre: \""+name+"\"");
         }
         return businessList;
     }

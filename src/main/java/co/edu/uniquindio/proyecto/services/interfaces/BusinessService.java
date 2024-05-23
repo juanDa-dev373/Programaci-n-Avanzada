@@ -13,7 +13,7 @@ public interface BusinessService {
     void updateBusiness(UpdateBusinessDTO updateBusinessDTO, String token) throws Exception;
     void deleteBusiness(DeleteBusinessDTO deleteBusinessDTO, String token) throws Exception;
     List<Business> searchBusinessLocation(LocationDTO locationDTO) throws Exception;
-    List<Business> searchBusiness(TypeBusiness type) throws Exception;
+    List<Business> searchBusiness(String type) throws Exception;
     List<Business> searchName(String name) throws Exception;
     List<Business> listBusinessOwner(String token) throws Exception;
     void registrerReview(RegistrerReviewDTO registrerReviewDTO) throws Exception;

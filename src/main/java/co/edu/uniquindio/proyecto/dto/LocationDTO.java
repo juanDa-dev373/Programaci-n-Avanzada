@@ -9,6 +9,7 @@ import java.awt.*;
 
 public record LocationDTO(
         @NotNull @GeoSpatialIndexed Location location,
-        @NotNull double maxDistance
+        @NotNull double maxDistance,
+        String search
 ) {
 }
