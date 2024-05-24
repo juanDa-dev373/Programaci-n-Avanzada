@@ -1,6 +1,7 @@
 package co.edu.uniquindio.proyecto.controllers;
 import co.edu.uniquindio.proyecto.dto.*;
 import co.edu.uniquindio.proyecto.model.documents.Business;
+import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.documents.Comment;
 import co.edu.uniquindio.proyecto.model.documents.Event;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -25,11 +25,10 @@ public class ClientController {
     private final BusinessService businessService;
     private final CommentService commentService;
     private final EventService eventService;
-    private final ImageService imageService;
 
-    @GetMapping("/")
-    public ResponseEntity<MensajeDTO<AccountDetailDTO>> getClientById(@RequestHeader("Authorization") String token) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false,  clientService.getClientById(token.replace("Bearer ", ""))));
+    @GetMapping("/getClientId/{id}")
+    public ResponseEntity<MensajeDTO<Client>> getClientById(@Valid @PathVariable String id) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false,  clientService.getClientById(id)));
     }
 
     @GetMapping("/listBusiness")
@@ -75,7 +74,7 @@ public class ClientController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Creado Exitosamente"));
     }
 
-    @DeleteMapping("/deleteBusinessClient")
+    @PostMapping("/deleteBusinessClient")
     ResponseEntity<MensajeDTO<String>> deleteBusiness(@Valid @RequestBody DeleteBusinessDTO deleteBusinessDTO, @RequestHeader("Authorization") String token) throws Exception {
         businessService.deleteBusiness(deleteBusinessDTO,token.replace("Bearer ", ""));
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Negocio Eliminado Correctamente"));
@@ -89,7 +88,7 @@ public class ClientController {
     ResponseEntity<MensajeDTO<List<Business>>> getAllBusiness() throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.allBusiness()));
     }
-    @PostMapping("/listBusinessLocation")
+    @GetMapping("/listBusinessLocation")
     ResponseEntity<MensajeDTO<List<Business>>> listBusinessLocation(@Valid @RequestBody LocationDTO locationDTO) throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.searchBusinessLocation(locationDTO)));
     }
@@ -163,6 +162,6 @@ public class ClientController {
     @PostMapping("/logOutUser")
     public ResponseEntity<MensajeDTO<String>> logOutUser( @RequestHeader("Authorization") String token) throws Exception {
         clientService.logOutUser(token.replace("Bearer ", ""));
-        return ResponseEntity.ok().body(new MensajeDTO<>(false,"Cierre exitoso"));
+        return ResponseEntity.ok().body(new MensajeDTO<>(false,"Cierre exitoso" ));
     }
 }
