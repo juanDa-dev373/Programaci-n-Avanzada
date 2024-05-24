@@ -117,8 +117,9 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         for(ListBusiness list: client.getListClient()){
             if(list.getListName().equals(nameList)){
 
-                for (String idBusiness: list.getIdBusiness()){
-                    Business b= businessService.search(idBusiness);
+                for (Map<String, String> entry : list.getIdBusiness()) {
+                    String idBusiness = entry.get("idBusiness");
+                    Business b = businessService.search(idBusiness);
                     business.add(new BusinessDto(
                             b.getId(),
                             b.getName(),
@@ -297,11 +298,12 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
     }
 
     @Override
-    public void addBusinessToList(BusinessToListDTO addBusiness ,String token) throws IllegalArgumentException {
+    public void addBusinessToList(BusinessToListDTO addBusiness ,String token) throws Exception {
         Jws<Claims> jws = jwtUtils.parseJwt(token);
         Client client =clientRepo.findById((String)jws.getPayload().get("id"))
                 .orElseThrow(() -> new IllegalArgumentException(
                 "No se encuentra una cuenta con el id= "+addBusiness.clientId()+"\"\n ,"+ "statusCode: Error }"));
+        Business business= businessService.search(addBusiness.businessId());
 
         ListBusiness listBusiness = null;
         for (ListBusiness list : client.getListClient()) {
@@ -313,8 +315,10 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
 
         if (listBusiness == null) throw new IllegalArgumentException(
                 "No se encuentra una lista con el id= "+addBusiness.listId());
-
-        listBusiness.getIdBusiness().add(addBusiness.businessId());
+        Map<String,String> idBusiness= new HashMap();
+        idBusiness.put("idBusiness",addBusiness.businessId());
+        idBusiness.put("name",business.getName());
+        listBusiness.getIdBusiness().add(idBusiness);
         clientRepo.save(client);
 
     }
@@ -340,7 +344,19 @@ public class ClientServiceImpl extends AccountServiceImpl implements ClientServi
         if (listBusiness == null) throw new IllegalArgumentException(
                 "No se encuentra una lista con el id= "+removeBusiness.listId());
 
-        listBusiness.getIdBusiness().remove(removeBusiness.businessId());
+        Map <String,String> business=null;
+        for (Map<String,String> idbusiness : listBusiness.getIdBusiness()) {
+            if (idbusiness.get("idBusiness").equals(removeBusiness.businessId())){
+                business=idbusiness;
+                break;
+            }
+        }
+
+        if (business == null) throw new IllegalArgumentException(
+                "No se encuentra un negocio con el id= "+removeBusiness.listId()+" en la lista");
+
+        listBusiness.getIdBusiness().remove(business);
+
         clientRepo.save(client);
     }
 }

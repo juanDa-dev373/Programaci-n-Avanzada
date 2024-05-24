@@ -16,7 +16,7 @@ import java.util.List;
 public class Event {
     private String id;
     private String description;
-    private LocalDateTime date;
+    private String date;
     private String title;
     private String client;
     private String business;

@@ -88,7 +88,7 @@ public class ClientController {
     ResponseEntity<MensajeDTO<List<Business>>> getAllBusiness() throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.allBusiness()));
     }
-    @GetMapping("/listBusinessLocation")
+    @PostMapping("/listBusinessLocation")
     ResponseEntity<MensajeDTO<List<Business>>> listBusinessLocation(@Valid @RequestBody LocationDTO locationDTO) throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.searchBusinessLocation(locationDTO)));
     }

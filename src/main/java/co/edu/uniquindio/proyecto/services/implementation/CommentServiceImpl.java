@@ -12,7 +12,10 @@ import co.edu.uniquindio.proyecto.services.interfaces.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 @Service
 @RequiredArgsConstructor
@@ -30,10 +33,11 @@ public class CommentServiceImpl implements CommentService {
             throw new Exception("El comentario ya existe");
         }
         Comment comment = new Comment();
-        comment.setDate(createCommentDTO.date());
+        comment.setDate(LocalDateTime.now());
         comment.setMessage(createCommentDTO.message());
         comment.setIdBusiness(createCommentDTO.idBusiness());
         comment.setIdClient(createCommentDTO.idClient());
+        comment.setRating(-1);
         Business business= businessService.search(createCommentDTO.idBusiness());
         // se le envia email al creador del negocio
         Client clientOwner = clientService.getClientId(business.getIdClient());
@@ -42,13 +46,14 @@ public class CommentServiceImpl implements CommentService {
                 "Creacion de comentario en mi negocio",
                 "        <h1>Notificación de Comentario</h1>\n" +
                         "        <p>se ha registrado un nuevo comentario en el negocio<br>"+business.getName()+"</p>\n" +
-                        "        <p>por parte del cliente "+client.getNickname()+"</p>",
+                        "        <p>por parte del cliente "+client.getNickname()+"</p>"+
+                        "        <p> el mensaje es el siguiente: "+createCommentDTO.message(),
                 clientOwner.getEmail()
 
         ));
         //se le envia mensaje por email al creador del comentario
         String comentary="No asignaste una clalificación";
-        if(comment.getRating()!=0) comentary=""+comment.getRating();
+        if(comment.getRating()!=-1) comentary=""+comment.getRating();
         commentRepo.save(comment);
         mailService.sendMail(new EmailDTO(
                 "Notificación de Comentario y Calificación",
@@ -73,8 +78,7 @@ public class CommentServiceImpl implements CommentService {
         }
         Comment comment = commentOptional.get();
         Comment response = new Comment();
-        response.setId(responseCommentDTO.idResponse());
-        response.setDate(responseCommentDTO.date());
+        response.setDate(LocalDateTime.now());
         response.setIdClient(responseCommentDTO.idClient());
         response.setIdBusiness(responseCommentDTO.idBusiness());
         response.setMessage(responseCommentDTO.message());
@@ -138,9 +142,10 @@ public class CommentServiceImpl implements CommentService {
         if(commentOptional.isEmpty()){
             throw  new Exception("El comentario no sirve");
         }
+        System.out.println(commentOptional.get());
         Client clientOwner = clientService.getClientId(deleteCommentDTO.idClientOwnerBusiness());
         if(clientOwner.getId().equals(deleteCommentDTO.idClientOwnerBusiness())){
-            commentRepo.deleteByIdAndIdBusinessAndAndIdClient(deleteCommentDTO.id(), deleteCommentDTO.business(), deleteCommentDTO.idCliente());
+            commentRepo.deleteByIdAndIdBusinessAndIdClient(deleteCommentDTO.id(), deleteCommentDTO.business(), deleteCommentDTO.idCliente());
         }else{
             throw new Exception("No se puede borrar el comentario");
         }

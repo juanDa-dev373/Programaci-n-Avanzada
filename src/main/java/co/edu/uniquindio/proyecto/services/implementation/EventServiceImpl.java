@@ -8,6 +8,7 @@ import co.edu.uniquindio.proyecto.repositories.EventRepo;
 import co.edu.uniquindio.proyecto.services.interfaces.EventService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
