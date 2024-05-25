@@ -21,8 +21,7 @@ public class CommentServiceTest {
     @Test
     public void createCommentTest() throws Exception{
         CreateCommentDTO createCommentDTO = new CreateCommentDTO(
-                "",
-          LocalDateTime.now(),
+                "comment1",
           "Cliente2",
           "negocio3",
           "muy buen negocio, la atención todo estuvo estupendo"
@@ -36,7 +35,6 @@ public class CommentServiceTest {
         ResponseCommentDTO responseCommentDTO = new ResponseCommentDTO(
           "comment1",
           "response1",
-          LocalDateTime.now(),
           "cliente3",
           "negocio3",
           "muchas gracias por sus palabras"
