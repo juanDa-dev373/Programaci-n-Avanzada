@@ -1,7 +1,6 @@
 package co.edu.uniquindio.proyecto.services;
 
 import co.edu.uniquindio.proyecto.dto.*;
-import co.edu.uniquindio.proyecto.model.documents.Client;
 import co.edu.uniquindio.proyecto.model.entity.ListBusiness;
 import co.edu.uniquindio.proyecto.model.enums.StateRecord;
 import co.edu.uniquindio.proyecto.services.interfaces.ClientService;
@@ -78,10 +77,10 @@ public class ClientServiceTest {
         clientService.updateProfile(update,"");
 
         //Con el método obtenerCliente se obtiene el cliente con el ID "Cliente1"
-        Client client = clientService.getClientById("Cliente1");
+        AccountDetailDTO client = clientService.getClientById("Cliente1");
 
         //Se verifica que la foto de perfil sea la misma que se actualizó
-        Assertions.assertEquals(update.name(), client.getName());
+        Assertions.assertEquals(update.name(), client.name());
     }
 
     @Test

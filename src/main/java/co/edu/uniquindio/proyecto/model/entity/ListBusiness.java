@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -15,6 +16,6 @@ public class ListBusiness {
 
     private String id;
     private String listName;
-    private List<String> idBusiness;
+    private List<Map<String,String>> idBusiness;
 
 }
