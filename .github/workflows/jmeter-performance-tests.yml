@@ -19,7 +19,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
-          java-version: '11' # Ajusta la versión de Java si es necesario
+          java-version: '17'
 
       - name: Download JMeter
         run: |
