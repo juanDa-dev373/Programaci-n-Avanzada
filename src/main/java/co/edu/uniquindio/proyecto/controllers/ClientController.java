@@ -88,7 +88,7 @@ public class ClientController {
     ResponseEntity<MensajeDTO<List<Business>>> getAllBusiness() throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.allBusiness()));
     }
-    @PostMapping("/listBusinessLocation")
+    @GetMapping("/listBusinessLocation")
     ResponseEntity<MensajeDTO<List<Business>>> listBusinessLocation(@Valid @RequestBody LocationDTO locationDTO) throws Exception {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, businessService.searchBusinessLocation(locationDTO)));
     }
@@ -151,8 +151,8 @@ public class ClientController {
         return ResponseEntity.ok().body(new MensajeDTO<>(false, "Se actualizo el evento correctamente"));
     }
     @GetMapping("/getEvent")
-    ResponseEntity<MensajeDTO<Event>> getEvent(@Valid @RequestBody GetEventDTO getEventDTO) throws Exception {
-        return ResponseEntity.ok().body(new MensajeDTO<>(false, eventService.getEvent(getEventDTO.id(),getEventDTO.idBusiness(),getEventDTO.idClient())));
+    ResponseEntity<MensajeDTO<Event>> getEvent(@Valid @RequestParam String id, @Valid @RequestParam String idBusiness, @Valid @RequestParam String idClient) throws Exception {
+        return ResponseEntity.ok().body(new MensajeDTO<>(false, eventService.getEvent(id,idBusiness,idClient)));
     }
     @DeleteMapping("/deleteEvent")
     ResponseEntity<MensajeDTO<String>> deleteEvent(@Valid @RequestBody DeleteEventDTO deleteEventDTO) throws Exception {

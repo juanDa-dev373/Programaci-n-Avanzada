@@ -17,6 +17,7 @@ import java.util.List;
 public class ModeratorController {
 
     private final ModeratorService moderatorService;
+    private final BusinessService businessService;
 
     @PostMapping("/verifyAndApproveBusiness")
     public ResponseEntity<MensajeDTO<String>> verifyAndApproveBusiness(@Valid @RequestBody HistoryReviewDTO reviewDTO) throws Exception {
@@ -37,8 +38,8 @@ public class ModeratorController {
     }
 
     @GetMapping("/getListHistoryReviews")
-    public ResponseEntity<MensajeDTO<List<ReviewDTO>>> getListHistoryReviews(@Valid @RequestParam("moderatorId") String moderatorId) throws Exception {
-        List<ReviewDTO> reviewDTOList = moderatorService.getListHistoryReviews(moderatorId);
+    public ResponseEntity<MensajeDTO<List<Business>>> getListHistoryReviews(@Valid @RequestParam("moderatorId") String moderatorId) throws Exception {
+        List<Business> reviewDTOList = businessService.listBusinessModerator(moderatorId);
         return ResponseEntity.ok().body(new MensajeDTO<>(false,  reviewDTOList));
     }
 
