@@ -21,20 +21,11 @@ jobs:
         with:
           java-version: '17'  # Actualizado a Java 17
           distribution: 'temurin'  # Especifica la distribución de Java
-          
-      - name: Listar Carpetas
-        run: |
-          ls
-          
-      - name: Copy JMX file
-        run: |
-          mkdir -p jmeter-scripts
-          cp jmeter-scripts/Obtener_todos_los_negocios.jmx jmeter-scripts/
-      
+
       - name: Verify JMX file exists
         run: |
-          if [ ! -f jmeter-scripts/Obtener_todos_los_negocios.jmx ]; then
-            echo "Error: jmeter-scripts/Obtener_todos_los_negocios.jmx not found!"
+          if [ ! -f jmeter-scripts/obtener_todos_los_negocios.jmx ]; then
+            echo "Error: jmeter-scripts/obtener_todos_los_negocios.jmx not found!"
             exit 1
           else
             echo "JMX file found."
@@ -48,7 +39,7 @@ jobs:
 
       - name: Run JMeter Test
         run: |
-          ./jmeter/bin/jmeter -n -t jmeter-scripts/Obtener_todos_los_negocios.jmx -l test_results.jtl -j jmeter.log -e -o test_report
+          ./jmeter/bin/jmeter -n -t jmeter-scripts/obtener_todos_los_negocios.jmx -l test_results.jtl -j jmeter.log -e -o test_report
 
       - name: Upload JMeter Report as Artifact
         uses: actions/upload-artifact@v4  # Actualizado a v4
