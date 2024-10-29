@@ -22,15 +22,6 @@ jobs:
           java-version: '17'  # Actualizado a Java 17
           distribution: 'temurin'  # Especifica la distribución de Java
 
-      - name: Listar Carpetas
-        run: |
-          ls
-
-      - name: Copy JMX file
-        run: |
-          mkdir -p jmeter-scripts
-          cp jmeter-scripts/obtener_todos_los_negocios.jmx jmeter-scripts/
-      
       - name: Verify JMX file exists
         run: |
           if [ ! -f jmeter-scripts/obtener_todos_los_negocios.jmx ]; then
