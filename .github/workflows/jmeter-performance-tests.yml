@@ -22,6 +22,20 @@ jobs:
           java-version: '17'  # Actualizado a Java 17
           distribution: 'temurin'  # Especifica la distribución de Java
 
+      - name: Copy JMX file
+        run: |
+          mkdir -p jmeter-scripts
+          cp jmeter-scripts/Obtener_todos_los_negocios.jmx jmeter-scripts/
+      
+      - name: Verify JMX file exists
+        run: |
+          if [ ! -f jmeter-scripts/Obtener_todos_los_negocios.jmx ]; then
+            echo "Error: jmeter-scripts/Obtener_todos_los_negocios.jmx not found!"
+            exit 1
+          else
+            echo "JMX file found."
+          fi
+
       - name: Download JMeter
         run: |
           wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz
