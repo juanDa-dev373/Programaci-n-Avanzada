@@ -1,0 +1,44 @@
+name: JMeter Performance Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  jmeter-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11' # Ajusta la versión de Java si es necesario
+
+      - name: Download JMeter
+        run: |
+          wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz
+          tar -xzf apache-jmeter-5.4.1.tgz
+          mv apache-jmeter-5.4.1 jmeter
+
+      - name: Run JMeter Test
+        run: |
+          ./jmeter/bin/jmeter -n -t jmeter-scripts/Obtener_todos_los_negocios.jmx -l test_results.jtl -e -o test_report
+
+      - name: Upload JMeter Report as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: jmeter-test-report
+          path: test_report/
+
+      - name: Archive Raw Test Results
+        uses: actions/upload-artifact@v2
+        with:
+          name: jmeter-raw-results
+          path: test_results.jtl
